@@ -1,18 +1,42 @@
+import { useState } from "react";
+import Pill from "../../ui/Pill";
+import TickButton from "../../ui/TickButton";
+
 interface CalendarDayProps {
   day: { id: number; label: string; abbreviation: string };
-  children: React.ReactNode;
   onClick: () => void;
 }
 
-function CalendarDay({ day, children, onClick }: CalendarDayProps) {
+function CalendarDay({ day, onClick }: CalendarDayProps) {
+  const eventList = ["Tue", "Thu", "Sat"];
+  const [totalGoing, setTotalGoing] = useState<number>(14);
+
   return (
     <div
       onClick={onClick}
-      className="w-42 h-56 text-center py-4 rounded-lg border-amber-100 border-2 shadow-md text-2xl text-stone-200 flex flex-col justify-start hover:bg-secondaryColor transition-all hover:cursor-pointer hover:w-44 hover:h-58 hover:font-semibold"
+      className="flex flex-col justify-start h-64 py-4 text-2xl text-center transition-all border-2 rounded-lg shadow-md w-42 border-amber-100 text-stone-200 hover:cursor-pointer hover:w-44 hover:h-58 hover:font-semibold"
     >
-      <div className="w-full border-b-2 pb-2">{day.abbreviation}</div>
-      <div className="border-t h-5/6 w-full flex items-center justify-center">
-        {children}
+      <div className="w-full pb-2 border-b-2">{day.abbreviation}</div>
+      <div className="flex flex-col items-center justify-center w-full gap-2 border-t h-5/6">
+        {day.abbreviation === "Tue" && <Pill type="secondary">Training</Pill>}
+        {day.abbreviation === "Thu" && (
+          <>
+            <Pill type="secondary">Training</Pill>
+            <p className="text-xl">{totalGoing} / 22 going</p>
+            <div>
+              <TickButton
+                onClick={() => setTotalGoing(totalGoing + 1)}
+                type="success"
+              />
+              or{" "}
+              <TickButton
+                onClick={() => setTotalGoing(totalGoing - 1)}
+                type="fail"
+              />
+            </div>
+          </>
+        )}
+        {day.abbreviation === "Sat" && <Pill type="danger">Game</Pill>}
       </div>
     </div>
   );

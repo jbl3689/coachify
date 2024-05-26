@@ -35,26 +35,21 @@ function Calendar() {
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
 
   const handleDayClick = (day: DayOfWeek) => {
-    console.log(day);
     setSelectedDay(day);
   };
 
   return (
     <>
-      <p className="text-center text-accentColor font-semibold text-4xl pb-8 ">
+      <p className="pb-8 text-4xl font-semibold text-center text-accentColor">
         Week beginning on {weekStartDate.toDateString()}
       </p>
-      <div className="rounded-xl grid grid-cols-7 gap-4 p-4 ">
+      <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
         {daysOfWeek.map((day) => (
           <CalendarDay
             key={day.id}
             day={day}
             onClick={() => handleDayClick(day)}
-          >
-            {day.abbreviation === "Tue" && <Pill type="accent">Training</Pill>}
-            {day.abbreviation === "Thu" && <Pill type="accent">Training</Pill>}
-            {day.abbreviation === "Sat" && <Pill type="danger">Game</Pill>}
-          </CalendarDay>
+          />
         ))}
       </div>
       {selectedDay ? (

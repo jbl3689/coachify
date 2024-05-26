@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 
-function Button({ to, children, type }) {
+interface ButtonProps {
+  to: string;
+  children: React.ReactNode;
+  type: "primary" | "secondary" | "accent";
+}
+
+function Button({ to, children, type }: ButtonProps) {
   const btnColor = (() => {
     switch (type) {
       case "primary":

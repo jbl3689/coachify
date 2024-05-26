@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Calendar from "./features/calendar/Calendar";
 import AppLayout from "./ui/AppLayout";
+import CreateEvent from "./features/event/CreateEvent";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "/calendar",
         element: <Calendar />,
+      },
+      {
+        path: "/event/create?",
+        element: <CreateEvent />,
       },
       {
         path: "/user",

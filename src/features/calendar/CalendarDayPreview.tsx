@@ -6,33 +6,52 @@ interface CalendarDayPreviewProps {
   weekStartDate: Date;
 }
 
+function getDateFromStartOfWeek(startOfWeek: Date, dayIndex: number): Date {
+  const daysToAdd = dayIndex - startOfWeek.getDay();
+  const currentDate = new Date(startOfWeek);
+  currentDate.setDate(startOfWeek.getDate() + daysToAdd);
+  return currentDate;
+}
+
 function CalendarDayPreview({
   selectedDay,
   weekStartDate,
 }: CalendarDayPreviewProps) {
-  const isDayEmpty = true;
-  const currentDate = weekStartDate.setDate(
-    weekStartDate.getDate() + (selectedDay.id - 1)
-  );
+  const isDayEmpty = selectedDay.abbreviation !== "Sat";
+  const currentDate = getDateFromStartOfWeek(weekStartDate, selectedDay.id);
 
   return (
-    <div className="flex justify-center items-center px-4 py-3 text-stone-200 text-3xl mt-6">
+    <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
       {isDayEmpty ? (
-        <div className="flex flex-col gap-4 justify-center items-center ">
+        <div className="flex flex-col items-center justify-center gap-4 ">
           <p>
-            {selectedDay.label} | {currentDate.toLocaleString()}
+            {selectedDay.label} |{" "}
+            {currentDate.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
           </p>
           <div className="flex gap-10 mt-2">
-            <Button to="/event/training/new" type="secondary">
+            <Button
+              to={`/event/create?eventType=training&date=${currentDate.toISOString()}`}
+              type="secondary"
+            >
               Create Training
             </Button>
-            <Button to="/event/game/new" type="secondary">
+            <Button to="/event/create" type="secondary">
               Create Game
             </Button>
           </div>
         </div>
       ) : (
-        <div>GAME</div>
+        <div className="flex flex-col w-4/6 gap-2 text-2xl text-center border border-white rounded-md min-h-32 h-3/5">
+          <div className="w-full border-b border-white bg-secondaryColor">
+            Warm-up
+          </div>
+          <div className="flex items-center justify-center w-full h-8 border-b border-white bg-secondaryLightColor">
+            Rondo's
+          </div>
+        </div>
       )}
     </div>
   );
