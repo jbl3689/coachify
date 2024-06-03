@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { AppState, CalendarState } from "../../types";
 
-const initialState = {
+const initialState: CalendarState = {
+  currentWeek: new Date("2024-05-27"),
   weeks: [
     {
-      weekNumber: 1,
-      startDate: "2024-05-04",
+      startDate: new Date("2024-05-04"),
       days: [
-        { dayId: 1, date: "2024-05-04", selectedDay: "Monday", events: [] },
+        {
+          dayId: 1,
+          date: new Date("2024-05-04"),
+          selectedDay: "Monday",
+          events: [],
+        },
         {
           dayId: 2,
-          date: "2024-05-05",
+          date: new Date("2024-05-05"),
           selectedDay: "Tuesday",
           events: [
             {
@@ -22,43 +28,112 @@ const initialState = {
             },
           ],
         },
-        { dayId: 3, date: "2024-05-06", selectedDay: "Wednedsay", events: [] },
-        { dayId: 3, date: "2024-05-06", selectedDay: "Wednedsay", events: [] },
-        { dayId: 4, date: "2024-05-07", selectedDay: "Thursday", events: [] },
-        { dayId: 5, date: "2024-05-08", selectedDay: "Friday", events: [] },
-        { dayId: 6, date: "2024-05-09", selectedDay: "Saturday", events: [] },
-        { dayId: 7, date: "2024-05-10", selectedDay: "Sunday", events: [] },
+        {
+          dayId: 3,
+          date: new Date("2024-05-06"),
+          selectedDay: "Wednesday",
+          events: [],
+        },
+        {
+          dayId: 4,
+          date: new Date("2024-05-07"),
+          selectedDay: "Thursday",
+          events: [],
+        },
+        {
+          dayId: 5,
+          date: new Date("2024-05-08"),
+          selectedDay: "Friday",
+          events: [],
+        },
+        {
+          dayId: 6,
+          date: new Date("2024-05-09"),
+          selectedDay: "Saturday",
+          events: [],
+        },
+        {
+          dayId: 7,
+          date: new Date("2024-05-10"),
+          selectedDay: "Sunday",
+          events: [],
+        },
       ],
     },
   ],
+};
+
+// Function to add days to a date
+const addDays = (date: Date, days: number) => {
+  date.setDate(date.getDate() + days);
+  return date;
 };
 
 const calendarSlice = createSlice({
   name: "calendar",
   initialState,
   reducers: {
-    // COPILOT WRITTEN FUNCTIONS:
-    addEvent: (state, action) => {
-      const { weekNumber, dayId, event } = action.payload;
-      const week = state.weeks.find((week) => week.weekNumber === weekNumber);
-      if (week) {
-        const day = week.days.find((day) => day.dayId === dayId);
-        if (day) day.events.push(event);
-      }
+    changeCurrentWeek: (state, action) => {
+      state.currentWeek = action.payload;
     },
+    addWeek: (state, action) => {
+      if (findWeek(action.payload)) return;
 
-    removeEvent: (state, action) => {
-      const { weekNumber, dayId, eventId } = action.payload;
-      const week = state.weeks.find((week) => week.weekNumber === weekNumber);
-      if (week) {
-        const day = week.days.find((day) => day.dayId === dayId);
-        if (day)
-          day.events = day.events.filter((event) => event.eventId !== eventId);
+      const weekStartDate = action.payload;
+      const weekDays = [];
+      // add 7 days to the weekDays array
+      for (let i = 0; i < 7; i++) {
+        weekDays.push({
+          dayId: i + 1,
+          date: addDays(new Date(weekStartDate), i + 1),
+          selectedDay: "Monday",
+          events: [],
+        });
       }
+
+      // add a new week object to the weeks array
+      state.weeks.push({
+        startDate: weekStartDate,
+        days: [
+          weekDays[0],
+          weekDays[1],
+          weekDays[2],
+          weekDays[3],
+          weekDays[4],
+          weekDays[5],
+          weekDays[6],
+        ],
+      });
+
+      console.log(state.weeks);
     },
+    // COPILOT WRITTEN FUNCTIONS:
+    // addEvent: (state, action) => {
+    //   const { weekNumber, dayId, event } = action.payload;
+    //   const week = state.weeks.find((week) => week.weekNumber === weekNumber);
+    //   if (week) {
+    //     const day = week.days.find((day) => day.dayId === dayId);
+    //     if (day) day.events.push(event);
+    //   }
+    // },
+
+    // removeEvent: (state, action) => {
+    //   const { weekNumber, dayId, eventId } = action.payload;
+    //   const week = state.weeks.find((week) => week.weekNumber === weekNumber);
+    //   if (week) {
+    //     const day = week.days.find((day) => day.dayId === dayId);
+    //     if (day)
+    //       day.events = day.events.filter((event) => event.eventId !== eventId);
+    //   }
+    // },
   },
 });
 
-export const { addEvent, removeEvent } = calendarSlice.actions;
+export const { addWeek } = calendarSlice.actions;
 
 export default calendarSlice.reducer;
+
+export const findWeek = (date: Date) => (state: AppState) => {
+  console.log(date, state);
+  return state.calendar.weeks.find((week) => week.startDate === date) ?? null;
+};

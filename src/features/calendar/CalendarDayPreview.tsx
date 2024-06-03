@@ -21,9 +21,9 @@ function CalendarDayPreview({
   const currentDate = getDateFromStartOfWeek(weekStartDate, selectedDay.id);
 
   return (
-    <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
+    <div>
       {isDayEmpty ? (
-        <div className="flex flex-col items-center justify-center gap-4 ">
+        <div className="flex flex-col items-center justify-center gap-4">
           <p>
             {selectedDay.label} |{" "}
             {currentDate.toLocaleDateString("en-US", {
@@ -38,7 +38,10 @@ function CalendarDayPreview({
             >
               Create Training
             </Button>
-            <Button to="/event/create" type="secondary">
+            <Button
+              to={`/event/create?eventType=game&date=${currentDate.toISOString()}`}
+              type="secondary"
+            >
               Create Game
             </Button>
           </div>

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CalendarDayPreview from "./CalendarDayPreview";
-import Pill from "../../ui/Pill";
 import CalendarDay from "./CalendarDay";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { addWeek, findWeek } from "./calendarSlice";
 
 type DayOfWeek = {
   id: number;
@@ -30,9 +33,42 @@ const startOfWeek = () => {
   return startOfWeek;
 };
 
+// Function to add days to a date
+const addDays = (date: Date, days: number) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
 function Calendar() {
-  const weekStartDate = startOfWeek();
+  const dispatch = useDispatch();
+
+  const [weekStartDate, setWeekStartDate] = useState<Date>(startOfWeek());
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
+  const [nextWeekDate, setNextWeekDate] = useState<Date | null>(null);
+
+  const currentWeek = useSelector(findWeek(weekStartDate));
+  // const nextWeek = useSelector(() =>
+  //   nextWeekDate ? findWeek(nextWeekDate) : null
+  // );
+
+  const handleClickNextWeek = () => {
+    const date = addDays(weekStartDate, 7);
+    setNextWeekDate(date);
+    setSelectedDay(null);
+  };
+
+  const handleClickPrevWeek = () => {
+    const date = addDays(weekStartDate, -7);
+    setNextWeekDate(date);
+    setSelectedDay(null);
+  };
+
+  useEffect(() => {
+    dispatch(addWeek(nextWeekDate));
+
+    if (nextWeekDate) setWeekStartDate(nextWeekDate);
+  }, [dispatch, nextWeekDate]);
 
   const handleDayClick = (day: DayOfWeek) => {
     setSelectedDay(day);
@@ -40,9 +76,24 @@ function Calendar() {
 
   return (
     <>
-      <p className="pb-8 text-4xl font-semibold text-center text-accentColor">
-        Week beginning on {weekStartDate.toDateString()}
-      </p>
+      <div className="flex items-center justify-center gap-8 pb-8 text-primaryColor">
+        <span
+          className="pt-2 text-3xl cursor-pointer hover:text-slate-500 font-semiBold"
+          onClick={handleClickPrevWeek}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </span>
+        <p className="text-4xl font-semibold text-center text-accentColor">
+          Week beginning on {weekStartDate.toDateString()}
+        </p>
+        <span
+          className="pt-2 text-3xl cursor-pointer font-semiBold hover:text-slate-500"
+          onClick={handleClickNextWeek}
+        >
+          <FontAwesomeIcon icon={faArrowRight} />
+        </span>
+      </div>
+
       <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
         {daysOfWeek.map((day) => (
           <CalendarDay
@@ -52,12 +103,14 @@ function Calendar() {
           />
         ))}
       </div>
-      {selectedDay ? (
-        <CalendarDayPreview
-          selectedDay={selectedDay}
-          weekStartDate={weekStartDate}
-        />
-      ) : null}
+      <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
+        {selectedDay ? (
+          <CalendarDayPreview
+            selectedDay={selectedDay}
+            weekStartDate={weekStartDate}
+          />
+        ) : null}
+      </div>
     </>
   );
 }

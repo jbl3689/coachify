@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Training from "./Training";
+import Game from "./Game";
 
 function CreateEvent() {
   const urlLocation = useLocation();
@@ -13,17 +14,22 @@ function CreateEvent() {
   const [startTime, setStartTime] = React.useState<string>("");
   const [endTime, setEndTime] = React.useState<string>("");
   const [location, setLocation] = React.useState<string>("");
+  const [eventData, setEventData] = React.useState({
+    startTime: "",
+    endTime: "",
+    location: "",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ startTime, location });
+    setEventData({ startTime, endTime, location });
   };
 
   const baseInputStyles = "w-full h-14 p-2 text-xl border rounded text-bgDark";
 
   return (
-    <div className="grid justify-between grid-cols-3 gap-10">
-      <div className="flex items-center justify-center col-span-1 gap-6 px-4 text-primaryColor">
+    <div className="grid justify-between grid-cols-5 gap-10">
+      <div className="flex items-center justify-center col-span-2 gap-6 px-4 text-primaryColor">
         <form onSubmit={handleSubmit} className="w-full rounded shadow-md">
           <h2 className="mb-6 text-2xl font-bold text-center">
             Add a New {eventLabel} for {new Date(date!).toDateString()}
@@ -76,8 +82,17 @@ function CreateEvent() {
           )}
         </form>
       </div>
-      <div className="col-span-2">
-        <Training />
+      <div className="col-span-3">
+        {eventType === "training" ? (
+          <Training
+            isDisabled={startTime === "" && endTime === "" && location === ""}
+            startTime={eventData.startTime}
+            endTime={eventData.endTime}
+            location={eventData.location}
+          />
+        ) : (
+          <Game />
+        )}
       </div>
     </div>
   );

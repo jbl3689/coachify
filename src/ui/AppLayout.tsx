@@ -6,7 +6,7 @@ function AppLayout() {
     <div className="grid bg-bgDark h-screen grid-rows-[auto-1fr-auto]">
       <Header />
       <div className="my-10 overflow-auto">
-        <main className="mx-auto w-5/6">
+        <main className="w-5/6 mx-auto text-xl text-center text-primaryColor">
           <Outlet />
         </main>
       </div>

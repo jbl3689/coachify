@@ -9,6 +9,7 @@ export default {
       colors: {
         bgDark: "var(--color-backgroundDark)",
         bgLight: "var(--color-backgroundLight)",
+        bgGray: "var(--color-backgroundGray)",
         primaryColor: "var(--color-primary)",
         secondaryColor: "var(--color-secondary)",
         secondaryLightColor: "var(--color-secondaryLight)",

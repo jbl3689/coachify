@@ -28,7 +28,6 @@ function CalendarDay({ day, onClick }: CalendarDayProps) {
                 onClick={() => setTotalGoing(totalGoing + 1)}
                 type="success"
               />
-              or{" "}
               <TickButton
                 onClick={() => setTotalGoing(totalGoing - 1)}
                 type="fail"

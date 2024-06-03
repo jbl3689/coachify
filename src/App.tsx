@@ -2,6 +2,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Calendar from "./features/calendar/Calendar";
 import AppLayout from "./ui/AppLayout";
 import CreateEvent from "./features/event/CreateEvent";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Provider } from "react-redux";
+import Dashboard from "./features/dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -9,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome to Coachify</h1>,
+        element: <Dashboard />,
       },
       {
         path: "/calendar",
@@ -28,7 +32,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <RouterProvider router={router}></RouterProvider>
+    </DndProvider>
+  );
 }
 
 export default App;
