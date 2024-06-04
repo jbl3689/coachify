@@ -1,5 +1,7 @@
 import React from "react";
 import UserList from "../user/UserList";
+import ClubDetails from "./ClubDetails";
+import Button from "../../ui/Button";
 
 function Dashboard() {
   const boxStyles =
@@ -8,25 +10,39 @@ function Dashboard() {
   return (
     <>
       <div>
-        <h1 className="mb-8 text-4xl font-semibold text-center text-accentColor">
-          MyTeam FC
+        <h1 className="mb-8 text-4xl font-semibold text-center sm:text-3xl text-accentLightColor">
+          Admin Dashboard
         </h1>
       </div>
       <div className="flex gap-12">
         <div className="grid grid-cols-2 grid-rows-2 gap-8 grow">
-          <div className={boxStyles}>Club Details</div>
-          <div className={boxStyles}>Box 2</div>
-          <div className={boxStyles}>Upcoming Training</div>
-          <div className={boxStyles}>Upcoming Game</div>
+          <div className={`${boxStyles} `}>
+            <ClubDetails />
+          </div>
+          <div className={`${boxStyles} flex flex-col gap-8`}>
+            <Button type="secondary" to="/user/add">
+              Add a player
+            </Button>
+            <Button type="danger" to="/user/remove">
+              Remove a player
+            </Button>
+          </div>
+          <div className={boxStyles}>
+            <span>Next Training</span>
+          </div>
+          <div className={boxStyles}>Next Game</div>
         </div>
+
         <div className="w-1/4">
           <div
-            className={`${boxStyles} h-[550px] flex flex-col justify-between `}
+            className={`${boxStyles} h-[550px] flex flex-col justify-between`}
           >
             <h1 className="text-3xl font-semibold text-dangerLightColor">
               Team List
             </h1>
-            <UserList />
+            <div className="w-full align-center">
+              <UserList />
+            </div>
           </div>
         </div>
       </div>

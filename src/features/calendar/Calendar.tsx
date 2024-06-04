@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addWeek, findWeek } from "./calendarSlice";
+import { useBreakpoint } from "use-breakpoint";
+import { BREAKPOINTS } from "../../types";
 
 type DayOfWeek = {
   id: number;
@@ -42,7 +44,8 @@ const addDays = (date: Date, days: number) => {
 
 function Calendar() {
   const dispatch = useDispatch();
-
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  console.log(breakpoint);
   const [weekStartDate, setWeekStartDate] = useState<Date>(startOfWeek());
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
   const [nextWeekDate, setNextWeekDate] = useState<Date | null>(null);
@@ -99,6 +102,7 @@ function Calendar() {
           <CalendarDay
             key={day.id}
             day={day}
+            isSelected={selectedDay?.id === day.id}
             onClick={() => handleDayClick(day)}
           />
         ))}

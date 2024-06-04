@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 interface ButtonProps {
   to: string;
   children: React.ReactNode;
-  type: "primary" | "secondary" | "accent";
+  type: "primary" | "secondary" | "accent" | "danger";
 }
 
 function Button({ to, children, type }: ButtonProps) {
@@ -15,6 +15,8 @@ function Button({ to, children, type }: ButtonProps) {
         return "bg-secondaryColor hover:bg-secondaryLightColor";
       case "accent":
         return "bg-accentColor hover:bg-accentLightColor";
+      case "danger":
+        return "bg-dangerColor hover:bg-dangerLightColor";
       default:
         return "bg-bgLight";
     }

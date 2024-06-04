@@ -177,7 +177,7 @@ function Game() {
   return (
     <div>
       {/* <FootballField home={home} away={away} /> */}
-      <SoccerLineUp size={"small"} color={"lightseagreen"} pattern={"lines"} />
+      {/* <SoccerLineUp size={"small"} color={"lightseagreen"} pattern={"lines"} /> */}
     </div>
   );
 }

@@ -1,11 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import Calendar from "./features/calendar/Calendar";
 import AppLayout from "./ui/AppLayout";
 import CreateEvent from "./features/event/CreateEvent";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Provider } from "react-redux";
 import Dashboard from "./features/dashboard/Dashboard";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -33,9 +43,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <RouterProvider router={router}></RouterProvider>
-    </DndProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+
+      <DndProvider backend={HTML5Backend}>
+        <RouterProvider router={router}></RouterProvider>
+      </DndProvider>
+    </QueryClientProvider>
   );
 }
 
