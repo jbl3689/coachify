@@ -1,9 +1,15 @@
-import React from "react";
+import { useState } from "react";
+import { IoMdArrowDropdownCircle as DropdownArrow } from "react-icons/io";
+import { IoMdArrowDropupCircle as DropupArrow } from "react-icons/io";
+
 import UserList from "../user/UserList";
 import ClubDetails from "./ClubDetails";
+import AddUserForm from "../user/AddUserForm";
 import Button from "../../ui/Button";
 
 function Dashboard() {
+  const [formShown, setFormShown] = useState<boolean>(false);
+
   const boxStyles =
     "p-6 border border-8 h-64 flex items-center justify-center rounded shadow";
 
@@ -15,25 +21,32 @@ function Dashboard() {
         </h1>
       </div>
       <div className="flex gap-12">
-        <div className="grid grid-cols-2 grid-rows-2 gap-8 grow">
+        <div className="grid w-8/12 grid-cols-2 gap-8">
           <div className={`${boxStyles} `}>
             <ClubDetails />
           </div>
           <div className={`${boxStyles} flex flex-col gap-8`}>
-            <Button type="secondary" to="/user/add">
-              Add a player
-            </Button>
-            <Button type="danger" to="/user/remove">
-              Remove a player
-            </Button>
-          </div>
-          <div className={boxStyles}>
             <span>Next Training</span>
           </div>
-          <div className={boxStyles}>Next Game</div>
+          <Button type="accent" onClick={() => setFormShown(!formShown)}>
+            {formShown ? (
+              <span className="flex items-center justify-between">
+                Hide Form <DropupArrow />
+              </span>
+            ) : (
+              <span className="flex items-center justify-between">
+                Add a new Player <DropdownArrow />
+              </span>
+            )}
+          </Button>
+          {formShown && (
+            <div className={`border-8 rounded col-span-2`}>
+              <AddUserForm />
+            </div>
+          )}
         </div>
 
-        <div className="w-1/4">
+        <div className="w-4/12">
           <div
             className={`${boxStyles} h-[550px] flex flex-col justify-between`}
           >

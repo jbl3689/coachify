@@ -15,7 +15,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   return (
     <div
       onClick={onClick}
-      className="grid h-64 grid-rows-4 pt-4 text-2xl text-center transition-all border-2 rounded-t-lg shadow-md w-42 border-amber-100 text-stone-200 hover:cursor-pointer hover:w-44 hover:h-58 hover:font-semibold"
+      className="grid h-64 grid-rows-4 pt-4 text-2xl text-center transition-all border-2 rounded-t-lg shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold"
     >
       <div className="w-full pb-2 border-b-2">{day.abbreviation}</div>
       <div className="flex flex-col items-center justify-between w-full row-start-2 gap-2 mt-4 h-5/6">

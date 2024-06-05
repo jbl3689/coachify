@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
 interface ButtonProps {
-  to: string;
+  to?: string;
   children: React.ReactNode;
   type: "primary" | "secondary" | "accent" | "danger";
+  onClick?: () => void;
 }
 
-function Button({ to, children, type }: ButtonProps) {
+function Button({ to, children, type, onClick }: ButtonProps) {
   const btnColor = (() => {
     switch (type) {
       case "primary":
@@ -26,6 +27,7 @@ function Button({ to, children, type }: ButtonProps) {
     <Link
       to={to}
       className={`${btnColor} px-4 py-2 min-w-40 text-center text-white rounded-xl shadow-md`}
+      onClick={onClick}
     >
       {children}
     </Link>

@@ -12,7 +12,7 @@ function ClubDetails() {
           width="150"
           className="rounded-xl"
         ></img>
-        <div className="flex flex-col text-2xl justify-evenly text-secondaryLightColor">
+        <div className="flex flex-col text-xl justify-evenly text-secondaryLightColor">
           <span>Michaels Ave</span>
           <span>NRF Division 1</span>
           <span>Football ⚽️</span>
