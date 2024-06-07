@@ -15,9 +15,9 @@ const StyledFormRow = styled.div`
     padding-top: 0;
   }
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
+  // &:not(:last-child) {
+  //   border-bottom: 1px solid var(--color-backgroundGray);
+  // }
 
   &:has(button) {
     display: flex;
@@ -31,17 +31,18 @@ const Label = styled.label`
 `;
 
 const Error = styled.span`
-  font-size: 1.4rem;
-  color: var(--color-red-700);
+  font-size: 1rem;
+  color: var(--color-danger);
 `;
 
 interface FormRowProps {
   label?: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactElement;
 }
 
 function FormRow({ label, error, children }: FormRowProps) {
+  console.log(error);
   return (
     <StyledFormRow>
       {label && <Label htmlFor={children.props.id}>{label}</Label>}

@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-
-import CalendarDayPreview from "./CalendarDayPreview";
-import CalendarDay from "./CalendarDay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addWeek, findWeek } from "./calendarSlice";
 import { useBreakpoint } from "use-breakpoint";
+import { useQuery } from "@tanstack/react-query";
+
 import { BREAKPOINTS } from "../../types";
+import { useBookings, useWeeks } from "./useWeeks";
+import { getWeeksByTeamId } from "../../services/apiTeams";
+import { addWeek, findWeek } from "../../context/calendarSlice";
+import { addDays, startOfWeek } from "./calendarLogic";
+
+import CalendarDay from "./CalendarDay";
+import CalendarDayPreview from "./CalendarDayPreview";
 
 type DayOfWeek = {
   id: number;
@@ -25,27 +30,12 @@ const daysOfWeek = [
   { id: 7, abbreviation: "Sun", label: "Sunday" },
 ];
 
-const startOfWeek = () => {
-  const startOfWeek = new Date();
-  const dayOfWeek = startOfWeek.getDay();
-  const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  startOfWeek.setDate(startOfWeek.getDate() - diff);
-  startOfWeek.setHours(0, 0, 0, 0);
-
-  return startOfWeek;
-};
-
-// Function to add days to a date
-const addDays = (date: Date, days: number) => {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
 function Calendar() {
+  const { isLoading, weeks, error } = useWeeks();
+
   const dispatch = useDispatch();
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
-  console.log(breakpoint);
+
   const [weekStartDate, setWeekStartDate] = useState<Date>(startOfWeek());
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
   const [nextWeekDate, setNextWeekDate] = useState<Date | null>(null);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldError, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoMdArrowDropdownCircle as DropdownArrow } from "react-icons/io";
 import { IoMdArrowDropupCircle as DropupArrow } from "react-icons/io";
@@ -11,6 +11,7 @@ import Input from "../../ui/Input";
 import FormRow from "../../ui/FormRow";
 import Heading from "../../ui/Heading";
 import Button from "../../ui/Button";
+import toast from "react-hot-toast";
 
 const positions = [
   "GK",
@@ -32,20 +33,21 @@ const positions = [
 
 function AddUserForm() {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, formState } = useForm();
+  const { errors } = formState;
   const [formShown, setFormShown] = useState<boolean>(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: createUser,
     onSuccess: () => {
-      alert("User added");
+      toast("User added");
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
       reset();
     },
     onError: (error) => {
-      alert("Error adding user");
+      toast("Error adding user");
       console.error(error);
     },
   });
@@ -62,15 +64,12 @@ function AddUserForm() {
 
   return (
     <>
-      <div className="flex justify-center gap-16 pt-2">
-        <Heading as="h3" className="text-accentColor">
-          Add a Player
-        </Heading>
-      </div>
-
       <Form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2">
         <div>
-          <FormRow label="First name">
+          <FormRow
+            label="First name"
+            error={errors?.first_name?.message as string}
+          >
             <Input
               type="text"
               id="first_name"
@@ -80,7 +79,10 @@ function AddUserForm() {
               })}
             />
           </FormRow>
-          <FormRow label="Last name">
+          <FormRow
+            label="Last name"
+            error={errors?.last_name?.message as string}
+          >
             <Input
               type="text"
               id="last_name"
@@ -90,7 +92,7 @@ function AddUserForm() {
               })}
             />
           </FormRow>
-          <FormRow label="Email">
+          <FormRow label="Email" error={errors?.email?.message as string}>
             <Input
               type="text"
               id="email"
