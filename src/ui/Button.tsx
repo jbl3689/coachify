@@ -25,7 +25,7 @@ function Button({ to, children, type, onClick }: ButtonProps) {
 
   return (
     <Link
-      to={to}
+      to={to as string}
       className={`${btnColor} px-4 py-2 min-w-40 text-center text-white rounded-xl shadow-md`}
       onClick={onClick}
     >

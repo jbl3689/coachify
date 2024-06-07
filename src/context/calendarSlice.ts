@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState, CalendarState } from "../../types";
+import { AppState, CalendarState } from "../types";
 
 const initialState: CalendarState = {
   currentWeek: new Date("2024-05-27"),
@@ -105,27 +105,8 @@ const calendarSlice = createSlice({
         ],
       });
 
-      console.log(state.weeks);
+      // console.log(state.weeks);
     },
-    // COPILOT WRITTEN FUNCTIONS:
-    // addEvent: (state, action) => {
-    //   const { weekNumber, dayId, event } = action.payload;
-    //   const week = state.weeks.find((week) => week.weekNumber === weekNumber);
-    //   if (week) {
-    //     const day = week.days.find((day) => day.dayId === dayId);
-    //     if (day) day.events.push(event);
-    //   }
-    // },
-
-    // removeEvent: (state, action) => {
-    //   const { weekNumber, dayId, eventId } = action.payload;
-    //   const week = state.weeks.find((week) => week.weekNumber === weekNumber);
-    //   if (week) {
-    //     const day = week.days.find((day) => day.dayId === dayId);
-    //     if (day)
-    //       day.events = day.events.filter((event) => event.eventId !== eventId);
-    //   }
-    // },
   },
 });
 
@@ -134,6 +115,5 @@ export const { addWeek } = calendarSlice.actions;
 export default calendarSlice.reducer;
 
 export const findWeek = (date: Date) => (state: AppState) => {
-  console.log(date, state);
   return state.calendar.weeks.find((week) => week.startDate === date) ?? null;
 };
