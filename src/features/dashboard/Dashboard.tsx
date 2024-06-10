@@ -5,7 +5,6 @@ import { IoMdArrowDropupCircle as DropupArrow } from "react-icons/io";
 import UserList from "../user/UserList";
 import ClubDetails from "./ClubDetails";
 import AddUserForm from "../user/AddUserForm";
-import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 
 function Dashboard() {

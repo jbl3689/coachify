@@ -3,16 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useBreakpoint } from "use-breakpoint";
-import { useQuery } from "@tanstack/react-query";
 
-import { BREAKPOINTS } from "../../types";
-import { useBookings, useWeeks } from "./useWeeks";
-import { getWeeksByTeamId } from "../../services/apiTeams";
-import { addWeek, findWeek } from "../../context/calendarSlice";
-import { addDays, startOfWeek } from "./calendarLogic";
-
+import { BREAKPOINTS } from "../../../types";
+import { getCurrentWeek, useWeeks } from "../hooks/useWeeks";
+import { addDays, startOfWeek } from "../services/calendarLogic";
+import { addWeek } from "../context/calendarSlice";
 import CalendarDay from "./CalendarDay";
 import CalendarDayPreview from "./CalendarDayPreview";
+
+import { WeekState } from "../types";
 
 type DayOfWeek = {
   id: number;
@@ -31,37 +30,49 @@ const daysOfWeek = [
 ];
 
 function Calendar() {
-  const { isLoading, weeks, error } = useWeeks();
+  const { weeks, isLoading, error } = useWeeks();
+  console.log(weeks);
 
   const dispatch = useDispatch();
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  console.log(breakpoint);
 
-  const [weekStartDate, setWeekStartDate] = useState<Date>(startOfWeek());
+  const [currWeekStartDate, setCurrWeekStartDate] =
+    useState<Date>(startOfWeek());
+  const [currWeekObject, setCurrWeekObject] = useState<WeekState | undefined>(
+    undefined
+  );
+
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
   const [nextWeekDate, setNextWeekDate] = useState<Date | null>(null);
 
-  const currentWeek = useSelector(findWeek(weekStartDate));
-  // const nextWeek = useSelector(() =>
-  //   nextWeekDate ? findWeek(nextWeekDate) : null
-  // );
+  useEffect(() => {
+    console.log(
+      `useEffect (currWeekStartDate && weeks): ${currWeekStartDate} | ${weeks?.at(0).week_start_date}`
+    );
+    if (currWeekStartDate && weeks) {
+      setCurrWeekObject(getCurrentWeek(weeks, currWeekStartDate));
+      console.log(`currWeekObject: ${currWeekObject}`);
+    }
+  }, [currWeekStartDate, weeks]);
+
+  useEffect(() => {
+    dispatch(addWeek(nextWeekDate));
+
+    if (nextWeekDate) setCurrWeekStartDate(nextWeekDate);
+  }, [dispatch, nextWeekDate]);
 
   const handleClickNextWeek = () => {
-    const date = addDays(weekStartDate, 7);
+    const date = addDays(currWeekStartDate, 7);
     setNextWeekDate(date);
     setSelectedDay(null);
   };
 
   const handleClickPrevWeek = () => {
-    const date = addDays(weekStartDate, -7);
+    const date = addDays(currWeekStartDate, -7);
     setNextWeekDate(date);
     setSelectedDay(null);
   };
-
-  useEffect(() => {
-    dispatch(addWeek(nextWeekDate));
-
-    if (nextWeekDate) setWeekStartDate(nextWeekDate);
-  }, [dispatch, nextWeekDate]);
 
   const handleDayClick = (day: DayOfWeek) => {
     setSelectedDay(day);
@@ -77,7 +88,7 @@ function Calendar() {
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
         <p className="text-4xl font-semibold text-center text-accentColor">
-          Week beginning on {weekStartDate.toDateString()}
+          Week beginning on {currWeekStartDate.toDateString()}
         </p>
         <span
           className="pt-2 text-3xl cursor-pointer font-semiBold hover:text-slate-500"
@@ -88,20 +99,29 @@ function Calendar() {
       </div>
 
       <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
-        {daysOfWeek.map((day) => (
-          <CalendarDay
-            key={day.id}
-            day={day}
-            isSelected={selectedDay?.id === day.id}
-            onClick={() => handleDayClick(day)}
-          />
-        ))}
+        {breakpoint !== "desktop"
+          ? daysOfWeek.map((day) => (
+              <CalendarDay
+                key={day.id}
+                day={day}
+                isSelected={selectedDay?.id === day.id}
+                onClick={() => handleDayClick(day)}
+              />
+            ))
+          : daysOfWeek.map((day) => (
+              <CalendarDay
+                key={day.id}
+                day={day}
+                isSelected={selectedDay?.id === day.id}
+                onClick={() => handleDayClick(day)}
+              />
+            ))}
       </div>
       <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
         {selectedDay ? (
           <CalendarDayPreview
             selectedDay={selectedDay}
-            weekStartDate={weekStartDate}
+            weekStartDate={currWeekStartDate}
           />
         ) : null}
       </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Pill from "../../ui/Pill";
-import TickButton from "../../ui/TickButton";
+import Pill from "../../../ui/Pill";
+import TickButton from "../../../ui/TickButton";
 
 interface CalendarDayProps {
   day: { id: number; label: string; abbreviation: string };

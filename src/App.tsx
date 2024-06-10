@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import Calendar from "./features/calendar/Calendar";
+import Calendar from "./features/calendar/components/Calendar";
 import AppLayout from "./ui/AppLayout";
 import CreateEvent from "./features/event/CreateEvent";
 import Dashboard from "./features/dashboard/Dashboard";
