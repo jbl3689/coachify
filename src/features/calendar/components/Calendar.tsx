@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
 import { useBreakpoint } from "use-breakpoint";
 
 import { BREAKPOINTS } from "../../../types";
-import { getCurrentWeek, useWeeks } from "../hooks/useWeeks";
+import { getCurrentWeek, useAddWeek, useWeeks } from "../hooks/useWeeks";
 import { addDays, startOfWeek } from "../services/calendarLogic";
-import { addWeek } from "../context/calendarSlice";
 import CalendarDay from "./CalendarDay";
 import CalendarDayPreview from "./CalendarDayPreview";
 
@@ -31,46 +29,30 @@ const daysOfWeek = [
 
 function Calendar() {
   const { weeks, isLoading, error } = useWeeks();
-  console.log(weeks);
 
-  const dispatch = useDispatch();
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
-  console.log(breakpoint);
 
-  const [currWeekStartDate, setCurrWeekStartDate] =
-    useState<Date>(startOfWeek());
-  const [currWeekObject, setCurrWeekObject] = useState<WeekState | undefined>(
+  const [currentWeekLocal, setCurrentWeekLocal] = useState<Date>(startOfWeek());
+  const [currentWeek, setCurrentWeek] = useState<WeekState | undefined>(
     undefined
   );
 
   const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
-  const [nextWeekDate, setNextWeekDate] = useState<Date | null>(null);
 
-  useEffect(() => {
-    console.log(
-      `useEffect (currWeekStartDate && weeks): ${currWeekStartDate} | ${weeks?.at(0).week_start_date}`
-    );
-    if (currWeekStartDate && weeks) {
-      setCurrWeekObject(getCurrentWeek(weeks, currWeekStartDate));
-      console.log(`currWeekObject: ${currWeekObject}`);
+  const { mutate: createWeek, isCreating } = useAddWeek();
+
+  const handleClickWeekButton = (isNext: boolean) => {
+    const date = addDays(currentWeekLocal, isNext ? 7 : -7);
+    if (weeks) {
+      const currWeek = getCurrentWeek(weeks, date);
+      if (!currWeek) {
+        createWeek(date.toLocaleDateString("en-CA"));
+        setCurrentWeek(getCurrentWeek(weeks, date));
+      } else {
+        setCurrentWeek(currWeek);
+      }
     }
-  }, [currWeekStartDate, weeks]);
-
-  useEffect(() => {
-    dispatch(addWeek(nextWeekDate));
-
-    if (nextWeekDate) setCurrWeekStartDate(nextWeekDate);
-  }, [dispatch, nextWeekDate]);
-
-  const handleClickNextWeek = () => {
-    const date = addDays(currWeekStartDate, 7);
-    setNextWeekDate(date);
-    setSelectedDay(null);
-  };
-
-  const handleClickPrevWeek = () => {
-    const date = addDays(currWeekStartDate, -7);
-    setNextWeekDate(date);
+    setCurrentWeekLocal(date);
     setSelectedDay(null);
   };
 
@@ -83,21 +65,21 @@ function Calendar() {
       <div className="flex items-center justify-center gap-8 pb-8 text-primaryColor">
         <span
           className="pt-2 text-3xl cursor-pointer hover:text-slate-500 font-semiBold"
-          onClick={handleClickPrevWeek}
+          onClick={() => handleClickWeekButton(false)}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
         <p className="text-4xl font-semibold text-center text-accentColor">
-          Week beginning on {currWeekStartDate.toDateString()}
+          Week beginning on {currentWeekLocal.toDateString()}
         </p>
         <span
           className="pt-2 text-3xl cursor-pointer font-semiBold hover:text-slate-500"
-          onClick={handleClickNextWeek}
+          onClick={() => handleClickWeekButton(true)}
         >
           <FontAwesomeIcon icon={faArrowRight} />
         </span>
       </div>
-
+      <div>{currentWeek && currentWeek.week_start_date}</div>
       <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
         {breakpoint !== "desktop"
           ? daysOfWeek.map((day) => (
@@ -121,7 +103,7 @@ function Calendar() {
         {selectedDay ? (
           <CalendarDayPreview
             selectedDay={selectedDay}
-            weekStartDate={currWeekStartDate}
+            weekStartDate={currentWeekLocal}
           />
         ) : null}
       </div>
