@@ -1,6 +1,9 @@
 import supabase from "../../../services/supabase";
 
 export async function getWeeksByTeamId(teamId: number) {
+  if (teamId === 0) {
+    return [];
+  }
   const { data, error } = await supabase
     .from("weeks")
     .select("*")

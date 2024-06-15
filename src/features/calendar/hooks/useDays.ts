@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getDaysByWeekId } from "../services/apiDays";
 
-export function useDays({ weekId: number }) {
+export function useDays(weekId: number) {
   const {
-    isLoading,
     data: days,
+    isLoading,
     error,
   } = useQuery({
-    queryKey: ["weeks"],
+    queryKey: ["days"],
     queryFn: () => getDaysByWeekId(weekId),
   });
 
