@@ -10,7 +10,7 @@ export function useWeeks() {
   const teamId = useSelector(getSelectedTeam());
 
   const {
-    isLoading,
+    isLoading: isLoadingWeeks,
     data: weeks,
     error,
   } = useQuery({
@@ -18,14 +18,14 @@ export function useWeeks() {
     queryFn: () => getWeeksByTeamId(teamId),
   });
 
-  return { weeks, isLoading, error };
+  return { weeks, isLoadingWeeks, error };
 }
 
 export function useAddWeek() {
   const queryClient = useQueryClient();
   const teamId = useSelector(getSelectedTeam());
 
-  const { mutate, isPending: isCreating } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (weekStartDate: string) => addWeek(weekStartDate, teamId),
     onSuccess: () => {
       toast.success("Week added");
@@ -39,7 +39,7 @@ export function useAddWeek() {
     },
   });
 
-  return { mutate, isCreating };
+  return { createWeek: mutate, isCreatingWeek: isPending };
 }
 
 export function getCurrentWeek(weeks: WeekState[], currentWeek: Date) {
