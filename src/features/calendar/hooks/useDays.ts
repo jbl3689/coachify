@@ -24,7 +24,6 @@ export function useAddDay() {
   const { mutate, isPending } = useMutation({
     mutationFn: (params: AddDayParams) => addDay(params),
     onSuccess: () => {
-      toast.success("Day added");
       queryClient.invalidateQueries({
         queryKey: ["days"],
       });
@@ -38,8 +37,9 @@ export function useAddDay() {
   return { createDay: mutate, isCreatingDay: isPending };
 }
 
-export function getDayObject(days: DayState[], currentDate: Date) {
+export async function getDayObject(days: DayState[], currentDate: Date) {
   const formattedDate = currentDate.toLocaleDateString("en-CA");
+  console.log(`Looking for day with formatted date: ${formattedDate}`);
 
   return days.find((day: DayState) => day.date === formattedDate);
 }

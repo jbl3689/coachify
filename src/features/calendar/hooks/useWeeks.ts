@@ -11,14 +11,14 @@ export function useWeeks() {
 
   const {
     isLoading: isLoadingWeeks,
-    data: weeks,
+    data: allWeeks,
     error,
   } = useQuery({
     queryKey: ["weeks"],
     queryFn: () => getWeeksByTeamId(teamId),
   });
 
-  return { weeks, isLoadingWeeks, error };
+  return { allWeeks, isLoadingWeeks, error };
 }
 
 export function useAddWeek() {
