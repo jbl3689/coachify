@@ -3,8 +3,9 @@ import { BREAKPOINTS } from "../../../types";
 import CalendarDay from "./CalendarDay";
 import { WeekState, daysOfWeek } from "../types";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addDays } from "../services/calendarLogic";
+import { updateWeek } from "../services/apiWeeks";
 
 type DayOfWeek = {
   id: number;
@@ -20,6 +21,7 @@ interface WeekViewProps {
 
 function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  const [isPending, setIsPending] = useState(false);
 
   const { createDay, isCreatingDay } = useAddDay();
 
@@ -29,16 +31,18 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     error: errorDays,
   } = useDays(weekData?.id || 0);
 
+  useEffect(() => {
+    console.log(`isLoadingDays: ${isLoadingDays} isPending: ${isPending}`);
+  }, [isLoadingDays, isPending]);
+
   async function loadDayData(date: Date) {
-    console.log(`daysData: ${JSON.stringify(daysData, null, 2)}`);
     if (weekData && daysData && !isLoadingDays && !errorDays) {
       let dayObject = await getDayObject(daysData, date);
 
-      console.log(`DayObject: ${dayObject?.date} for Date: ${date}`);
+      if (weekData.is_populated) return dayObject;
+
       if (!dayObject) {
         console.log(`DAY NOT FOUND FOR DATE: ${date}`);
-        const day = date.toLocaleDateString("en-NZ", { weekday: "long" });
-        console.log(day);
 
         await createDay({
           date: date.toLocaleDateString("en-CA"),
@@ -52,9 +56,9 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   }
 
   useEffect(() => {
-    console.log(`useEffect weekData: ${JSON.stringify(weekData, null, 2)}`);
-    if (weekData) {
+    if (weekData && !isPending) {
       const fetchDays = async () => {
+        setIsPending(true);
         try {
           const date = new Date(weekData.week_start_date);
           const results = Array.from({ length: 7 }, (_, i) =>
@@ -64,14 +68,26 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
           const weekDaysData = await Promise.all(results);
 
           console.log("results:", JSON.stringify(weekDaysData, null, 2));
+
+          setIsPending(false);
         } catch (error) {
           console.error("Error loading week days data:", error);
+          setIsPending(false);
         }
       };
 
       fetchDays();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weekData, daysData]);
+
+  useEffect(() => {
+    if (weekData && daysData && daysData.length === 7) {
+      updateWeek({
+        weekId: weekData.id,
+        weekData: { ...weekData, is_populated: true },
+      });
+    }
   }, [weekData, daysData]);
 
   return (

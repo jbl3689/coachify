@@ -8,7 +8,7 @@ export function useDays(weekId: number) {
   console.log(`Fetching days for weekId: ${weekId}`);
   const {
     data: days,
-    isLoading,
+    isPending: isLoading,
     error,
   } = useQuery({
     queryKey: ["days"],
@@ -39,6 +39,7 @@ export function useAddDay() {
 
 export async function getDayObject(days: DayState[], currentDate: Date) {
   const formattedDate = currentDate.toLocaleDateString("en-CA");
+  console.log(`days: ${JSON.stringify(days, null, 2)}`);
   console.log(`Looking for day with formatted date: ${formattedDate}`);
   console.log(
     `Found date: ${days.find((day: DayState) => day.date === formattedDate)}`

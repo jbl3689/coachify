@@ -1,4 +1,5 @@
 import supabase from "../../../services/supabase";
+import { WeekState } from "../types";
 
 export async function getWeeksByTeamId(teamId: number) {
   if (teamId === 0) {
@@ -24,6 +25,23 @@ export async function addWeek(weekStartDate: string, teamId: number) {
   if (error) {
     console.error(error);
     throw new Error("Week could not be added");
+  }
+  return data;
+}
+
+export interface UpdateWeekParams {
+  weekId: number;
+  weekData: WeekState;
+}
+export async function updateWeek({ weekId, weekData }: UpdateWeekParams) {
+  const { data, error } = await supabase
+    .from("weeks")
+    .update(weekData)
+    .eq("id", weekId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Week could not be updated");
   }
   return data;
 }

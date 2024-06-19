@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
-import { addWeek, getWeeksByTeamId } from "../services/apiWeeks";
+import {
+  UpdateWeekParams,
+  addWeek,
+  getWeeksByTeamId,
+  updateWeek,
+} from "../services/apiWeeks";
 import { getSelectedTeam } from "../../../context/teamSlice";
 import { WeekState } from "../types";
 import toast from "react-hot-toast";
@@ -40,6 +45,26 @@ export function useAddWeek() {
   });
 
   return { createWeek: mutate, isCreatingWeek: isPending };
+}
+
+export function useUpdateWeek() {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (params: UpdateWeekParams) => updateWeek(params),
+    onSuccess: () => {
+      toast.success("Week updated");
+      queryClient.invalidateQueries({
+        queryKey: ["weeks"],
+      });
+    },
+    onError: (error) => {
+      toast.error("Error updating week");
+      console.error(error);
+    },
+  });
+
+  return { updateWeek: mutate, isUpdatingWeek: isPending };
 }
 
 export function getCurrentWeek(weeks: WeekState[], currentWeek: Date) {

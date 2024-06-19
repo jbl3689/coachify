@@ -11,6 +11,7 @@ export const daysOfWeek = [
 export type WeekState = {
   id: number;
   week_start_date: string;
+  is_populated: boolean;
   team_id: number;
 };
 
