@@ -16,12 +16,13 @@ export async function getDaysByWeekId(weekId: number) {
 export interface AddDayParams {
   date: string;
   weekId: number;
+  day: string;
 }
 
-export async function addDay({ date, weekId }: AddDayParams) {
+export async function addDay({ date, weekId, day }: AddDayParams) {
   const { data, error } = await supabase
     .from("days")
-    .insert([{ date: date, week_id: weekId }]);
+    .insert([{ date: date, week_id: weekId, day: day }]);
 
   if (error) {
     console.error(error);

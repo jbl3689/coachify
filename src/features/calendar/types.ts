@@ -19,3 +19,11 @@ export type DayState = {
   date: string;
   week_id: number;
 };
+
+export type EventState = {
+  id: number;
+  event_start_time: string;
+  event_end_time: string;
+  event_type: string;
+  day_id: number;
+};

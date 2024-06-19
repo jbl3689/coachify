@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Pill from "../../../ui/Pill";
 import TickButton from "../../../ui/TickButton";
+import { useEvents } from "../hooks/useEvents";
+import { EventState } from "../types";
 
 interface CalendarDayProps {
   day: { id: number; label: string; abbreviation: string };
@@ -12,6 +14,18 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const eventList = ["Tue", "Thu", "Sat"];
   const [totalGoing, setTotalGoing] = useState<number>(14);
 
+  const { events, isLoading, error } = useEvents(
+    day.abbreviation === "Tue" ? 1 : 3
+  );
+
+  const event = {
+    id: 1,
+    event_start_time: "18:00",
+    event_end_time: "20:00",
+    event_type: "Training",
+    day_id: 1,
+  };
+
   return (
     <div
       onClick={onClick}
@@ -19,14 +33,14 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     >
       <div className="w-full pb-2 border-b-2">{day.abbreviation}</div>
       <div className="flex flex-col items-center justify-between w-full row-start-2 gap-2 mt-4 h-5/6">
-        {day.abbreviation === "Tue" && <Pill type="secondary">Training</Pill>}
-        {day.abbreviation === "Thu" && (
-          <>
-            <Pill type="secondary">Training</Pill>
-            <p className="text-xl">{totalGoing} / 22 going</p>
-          </>
-        )}
-        {day.abbreviation === "Sat" && <Pill type="danger">Game</Pill>}
+        {events && events.length > 0
+          ? events.map((event: EventState) => (
+              <>
+                <Pill type="secondary">{event.event_type}</Pill>
+                <p className="text-xl">{totalGoing} / 22 going</p>
+              </>
+            ))
+          : null}
       </div>
 
       <div className="flex items-stretch row-start-4 justify-stretch">

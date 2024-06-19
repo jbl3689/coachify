@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AddDayParams, addDay, getDaysByWeekId } from "../services/apiDays";
 import { DayState } from "../types";
 import toast from "react-hot-toast";
-import { isPending } from "@reduxjs/toolkit";
 
 export function useDays(weekId: number) {
+  console.log(`Fetching days for weekId: ${weekId}`);
   const {
     data: days,
     isLoading,
@@ -40,6 +40,8 @@ export function useAddDay() {
 export async function getDayObject(days: DayState[], currentDate: Date) {
   const formattedDate = currentDate.toLocaleDateString("en-CA");
   console.log(`Looking for day with formatted date: ${formattedDate}`);
-
+  console.log(
+    `Found date: ${days.find((day: DayState) => day.date === formattedDate)}`
+  );
   return days.find((day: DayState) => day.date === formattedDate);
 }
