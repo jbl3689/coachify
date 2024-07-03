@@ -1,18 +1,13 @@
-import { useBreakpoint } from "use-breakpoint";
-import { BREAKPOINTS } from "../types/types";
-import CalendarDay from "./CalendarDay";
-import { DayState, WeekState, daysOfWeek } from "../features/calendar/types";
-import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { useEffect, useState } from "react";
-import { addDays } from "../utils/calendarLogic";
-import { updateWeek } from "../services/apiWeeks";
-import Loader from "../ui/Loader";
+import { useBreakpoint } from "use-breakpoint";
 
-type DayOfWeek = {
-  id: number;
-  abbreviation: string;
-  label: string;
-};
+import { BREAKPOINTS, DayState, WeekState } from "../types/types";
+import { addDays } from "../utils/calendarLogic";
+import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
+import { updateWeek } from "../services/apiWeeks";
+
+import CalendarDay from "./CalendarDay";
+import Loader from "../ui/Loader";
 
 interface WeekViewProps {
   weekData: WeekState;

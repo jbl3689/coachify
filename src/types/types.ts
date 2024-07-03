@@ -10,27 +10,11 @@ export type TeamState = {
 };
 
 export type CalendarState = {
-  currentWeek: Date;
-  weeks: {
-    startDate: Date;
-    days: {
-      dayId: number;
-      date: Date;
-      selectedDay: string;
-      events: {
-        eventId: number;
-        type: string;
-        startTime: string;
-        duration: number;
-        location: string;
-        players: {
-          playerId: number;
-          name: string;
-          canAttend: boolean;
-        }[];
-      }[];
-    }[];
-  }[];
+  currentWeek: WeekState | null;
+  selectedDay: {
+    day: DayState | null;
+    events: EventState[] | null;
+  };
 };
 
 export type dayOfWeek =

@@ -1,47 +1,33 @@
+import { format } from "date-fns";
+import { DayState } from "../types/types";
 import Button from "../ui/Button";
 
 interface CalendarDayPreviewProps {
-  selectedDay: { id: number; label: string; abbreviation: string };
-  weekStartDate: Date;
+  selectedDay: DayState;
 }
 
-function getDateFromStartOfWeek(startOfWeek: Date, dayIndex: number): Date {
-  const daysToAdd = dayIndex - startOfWeek.getDay();
-  const currentDate = new Date(startOfWeek);
-  currentDate.setDate(startOfWeek.getDate() + daysToAdd);
-  return currentDate;
-}
-
-function CalendarDayPreview({
-  selectedDay,
-  weekStartDate,
-}: CalendarDayPreviewProps) {
-  const isDayEmpty = selectedDay.abbreviation !== "Sat";
-  const currentDate = getDateFromStartOfWeek(weekStartDate, selectedDay.id);
+function CalendarDayPreview({ selectedDay }: CalendarDayPreviewProps) {
+  const isDayEmpty = true;
 
   return (
     <div>
       {isDayEmpty ? (
         <div className="flex flex-col items-center justify-center gap-4">
           <p>
-            {selectedDay.label} |{" "}
-            {currentDate.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}
+            {selectedDay.day} | {format(new Date(selectedDay.date), "dd-MMM")}
           </p>
-          <div className="flex gap-10 mt-2">
+          <div className="flex gap-6 mt-2">
             <Button
-              to={`/event/create?eventType=training&date=${currentDate.toISOString()}`}
+              to={`/event/create?eventType=training&date=${selectedDay.date}`}
               type="secondary"
             >
-              Create Training
+              Add Training
             </Button>
             <Button
-              to={`/event/create?eventType=game&date=${currentDate.toISOString()}`}
+              to={`/event/create?eventType=game&date=${selectedDay.date}`}
               type="secondary"
             >
-              Create Game
+              Add Game
             </Button>
           </div>
         </div>

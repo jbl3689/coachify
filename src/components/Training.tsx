@@ -81,15 +81,6 @@ function Training({ isDisabled, startTime, endTime, location }: TrainingProps) {
         </div>
       </div>
     </div>
-    // <div className="grid grid-cols-6 text-2xl text-center border border-white rounded-md min-h-32 h-3/5">
-    //   <div></div>
-    //   <div className="w-full border-b border-white bg-secondaryColor">
-    //     Warm-up
-    //   </div>
-    //   <div className="flex items-center justify-center w-full h-8 border-b border-white bg-secondaryLightColor">
-    //     Rondo's
-    //   </div>
-    // </div>
   );
 }
 

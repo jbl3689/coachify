@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 
-import { DayState, WeekState } from "../features/calendar/types";
 import { getCurrentWeek, useAddWeek, useWeeks } from "../hooks/useWeeks";
 
 import { addDays, startOfWeek } from "../utils/calendarLogic";
@@ -9,12 +8,8 @@ import { addDays, startOfWeek } from "../utils/calendarLogic";
 import WeekView from "./WeekView";
 import Loader from "../ui/Loader";
 import WeekNavigator from "./WeekNavigator";
-
-type DayOfWeek = {
-  id: number;
-  abbreviation: string;
-  label: string;
-};
+import CalendarDayPreview from "./CalendarDayPreview";
+import { DayState, WeekState } from "../types/types";
 
 function Calendar() {
   const [selectedWeek, setSelectedWeek] = useState<Date>(startOfWeek());
@@ -89,14 +84,9 @@ function Calendar() {
         </>
       )}
 
-      {/* <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
-        {selectedDay ? (
-          <CalendarDayPreview
-            selectedDay={selectedDay}
-            weekStartDate={selectedWeek}
-          />
-        ) : null}
-      </div> */}
+      <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200 min-h-52">
+        {selectedDay ? <CalendarDayPreview selectedDay={selectedDay} /> : null}
+      </div>
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AddDayParams, addDay, getDaysByWeekId } from "../services/apiDays";
-import { DayState } from "../features/calendar/types";
 import toast from "react-hot-toast";
+import { DayState } from "../types/types";
 
 export function useDays(weekId: number) {
   const {
