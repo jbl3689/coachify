@@ -18,12 +18,13 @@ export function useWeeks() {
     isLoading: isLoadingWeeks,
     data: allWeeks,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["weeks"],
     queryFn: () => getWeeksByTeamId(teamId),
   });
 
-  return { allWeeks, isLoadingWeeks, error };
+  return { allWeeks, isLoadingWeeks, error, refetch };
 }
 
 export function useAddWeek() {

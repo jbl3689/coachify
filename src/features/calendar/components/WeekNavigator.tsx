@@ -5,6 +5,7 @@ interface WeekNavigatorProps {
   selectedWeek: Date;
   onClickWeekNavigate: (isNextWeek: boolean) => void;
 }
+
 function WeekNavigator({
   selectedWeek,
   onClickWeekNavigate,

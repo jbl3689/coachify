@@ -5,17 +5,19 @@ import { DayState } from "../types";
 import toast from "react-hot-toast";
 
 export function useDays(weekId: number) {
-  console.log(`Fetching days for weekId: ${weekId}`);
+  console.log(weekId);
   const {
     data: days,
-    isPending: isLoading,
+    isLoading,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ["days"],
+    queryKey: ["days", weekId],
     queryFn: () => getDaysByWeekId(weekId),
+    enabled: weekId > 0,
   });
 
-  return { days, isLoading, error };
+  return { days, isLoading, error, refetch };
 }
 
 export function useAddDay() {
@@ -39,10 +41,6 @@ export function useAddDay() {
 
 export async function getDayObject(days: DayState[], currentDate: Date) {
   const formattedDate = currentDate.toLocaleDateString("en-CA");
-  console.log(`days: ${JSON.stringify(days, null, 2)}`);
-  console.log(`Looking for day with formatted date: ${formattedDate}`);
-  console.log(
-    `Found date: ${days.find((day: DayState) => day.date === formattedDate)}`
-  );
+
   return days.find((day: DayState) => day.date === formattedDate);
 }

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from "react";
 
 import { DayState, WeekState, daysOfWeek } from "../types";
 import { getCurrentWeek, useAddWeek, useWeeks } from "../hooks/useWeeks";
@@ -24,18 +25,22 @@ type DayOfWeek = {
 function Calendar() {
   const [selectedWeek, setSelectedWeek] = useState<Date>(startOfWeek());
   const [weekData, setWeekData] = useState<WeekState | undefined>(undefined);
-  const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
+  const [selectedDay, setSelectedDay] = useState<DayState | null>(null);
   const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
 
-  const { allWeeks, isLoadingWeeks, error: errorWeeks } = useWeeks();
+  const { allWeeks, isLoadingWeeks, error: errorWeeks, refetch } = useWeeks();
   const { createWeek, isCreatingWeek } = useAddWeek();
 
-  const isPending = isLoadingWeeks || isCreatingWeek;
+  const [isPending, setIsPending] = useState(false);
+  // setIsPending(isLoadingWeeks || isCreatingWeek);
   const isError = errorWeeks;
+
+  const effectRunningRef = useRef(false);
 
   async function loadCurrentWeek(date: Date) {
     if (allWeeks) {
       let currWeek = getCurrentWeek(allWeeks, date);
+      console.log(`currWeekData: ${JSON.stringify(currWeek)}`);
       if (!currWeek) {
         await createWeek(date.toLocaleDateString("en-CA"));
         currWeek = getCurrentWeek(allWeeks, date);
@@ -45,33 +50,32 @@ function Calendar() {
   }
 
   useEffect(() => {
-    const fetchWeek = async () => {
-      if (isPending || !allWeeks) {
-        return;
-      }
+    if (selectedWeek) {
+      console.log(
+        `Week List Length: ${allWeeks?.length}\n\nSelected Week: ${selectedWeek}`
+      );
+      handleLoadWeek(selectedWeek);
+    }
+  }, [selectedWeek, allWeeks]);
 
-      try {
-        const week = await loadCurrentWeek(selectedWeek);
-        if (!week) {
-          return;
-        }
-        setWeekData(week);
-      } catch (error) {
-        console.error("Error loading weeks:", error);
-      }
-    };
-    fetchWeek();
-  }, [selectedWeek, isPending, allWeeks]);
+  async function handleLoadWeek(newDate: Date) {
+    if (!effectRunningRef.current) {
+      effectRunningRef.current = true;
+
+      const newWeekData = allWeeks ? await loadCurrentWeek(newDate) : undefined;
+      setWeekData(newWeekData);
+      setSelectedDay(null);
+      effectRunningRef.current = false;
+    }
+  }
 
   const handleClickWeekNavigate = async (isNext: boolean) => {
     const newDate = addDays(selectedWeek, isNext ? 7 : -7);
-    const newWeekData = allWeeks ? await loadCurrentWeek(newDate) : undefined;
+    await refetch();
     setSelectedWeek(newDate);
-    setWeekData(newWeekData);
-    setSelectedDay(null);
   };
 
-  const handleDayClick = (day: DayOfWeek) => {
+  const handleDayClick = (day: DayState) => {
     setSelectedDay(day);
   };
 
@@ -86,22 +90,24 @@ function Calendar() {
             onClickWeekNavigate={handleClickWeekNavigate}
           />
 
-          <WeekView
-            weekData={weekData}
-            selectedDay={selectedDay}
-            handleDayClick={handleDayClick}
-          />
+          {weekData && (
+            <WeekView
+              weekData={weekData}
+              selectedDay={selectedDay?.id || 0}
+              handleDayClick={handleDayClick}
+            />
+          )}
         </>
       )}
 
-      <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
+      {/* <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200">
         {selectedDay ? (
           <CalendarDayPreview
             selectedDay={selectedDay}
             weekStartDate={selectedWeek}
           />
         ) : null}
-      </div>
+      </div> */}
     </>
   );
 }

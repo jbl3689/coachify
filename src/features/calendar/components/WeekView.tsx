@@ -1,11 +1,12 @@
 import { useBreakpoint } from "use-breakpoint";
 import { BREAKPOINTS } from "../../../types";
 import CalendarDay from "./CalendarDay";
-import { WeekState, daysOfWeek } from "../types";
+import { DayState, WeekState, daysOfWeek } from "../types";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { useEffect, useState } from "react";
 import { addDays } from "../services/calendarLogic";
 import { updateWeek } from "../services/apiWeeks";
+import Loader from "../../../ui/Loader";
 
 type DayOfWeek = {
   id: number;
@@ -14,14 +15,16 @@ type DayOfWeek = {
 };
 
 interface WeekViewProps {
-  weekData: WeekState | undefined;
-  selectedDay: DayOfWeek | null;
-  handleDayClick: (day: DayOfWeek) => void;
+  weekData: WeekState;
+  selectedDay: number;
+  handleDayClick: (day: DayState) => void;
 }
 
 function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
   const [isPending, setIsPending] = useState(false);
+  const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
+  const weekDaysLoaded = !weekDaysData.some((day) => day === undefined);
 
   const { createDay, isCreatingDay } = useAddDay();
 
@@ -29,22 +32,17 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     days: daysData,
     isLoading: isLoadingDays,
     error: errorDays,
-  } = useDays(weekData?.id || 0);
-
-  useEffect(() => {
-    console.log(`isLoadingDays: ${isLoadingDays} isPending: ${isPending}`);
-  }, [isLoadingDays, isPending]);
+    refetch,
+  } = useDays(weekData.id || 0);
 
   async function loadDayData(date: Date) {
-    if (weekData && daysData && !isLoadingDays && !errorDays) {
+    if (daysData) {
       let dayObject = await getDayObject(daysData, date);
 
       if (weekData.is_populated) return dayObject;
 
       if (!dayObject) {
-        console.log(`DAY NOT FOUND FOR DATE: ${date}`);
-
-        await createDay({
+        createDay({
           date: date.toLocaleDateString("en-CA"),
           day: date.toLocaleDateString("en-NZ", { weekday: "long" }),
           weekId: weekData.id,
@@ -53,10 +51,11 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       }
       return dayObject;
     }
+    throw new Error("Error loading day data");
   }
 
   useEffect(() => {
-    if (weekData && !isPending) {
+    if (daysData && !isLoadingDays && !errorDays) {
       const fetchDays = async () => {
         setIsPending(true);
         try {
@@ -67,7 +66,8 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
 
           const weekDaysData = await Promise.all(results);
 
-          console.log("results:", JSON.stringify(weekDaysData, null, 2));
+          // @ts-expect-error abc
+          setWeekDaysData(weekDaysData);
 
           setIsPending(false);
         } catch (error) {
@@ -82,7 +82,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   }, [weekData, daysData]);
 
   useEffect(() => {
-    if (weekData && daysData && daysData.length === 7) {
+    if (daysData && daysData.length === 7) {
       updateWeek({
         weekId: weekData.id,
         weekData: { ...weekData, is_populated: true },
@@ -90,25 +90,32 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     }
   }, [weekData, daysData]);
 
+  useEffect(() => {
+    if (weekData?.id) {
+      refetch();
+    }
+  }, [weekData?.id, refetch]);
+
+  useEffect(() => {
+    console.log("weekDaysData", weekDaysData, "weekData", weekData);
+  }, [weekData, weekDaysData]);
+
   return (
     <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
-      {breakpoint !== "desktop"
-        ? daysOfWeek.map((day) => (
-            <CalendarDay
-              key={day.id}
-              day={day}
-              isSelected={selectedDay?.id === day.id}
-              onClick={() => handleDayClick(day)}
-            />
-          ))
-        : daysOfWeek.map((day) => (
-            <CalendarDay
-              key={day.id}
-              day={day}
-              isSelected={selectedDay?.id === day.id}
-              onClick={() => handleDayClick(day)}
-            />
-          ))}
+      {weekDaysLoaded ? (
+        weekDaysData.map((day) => (
+          <CalendarDay
+            key={day.id}
+            day={day}
+            isSelected={false}
+            onClick={() => handleDayClick(day)}
+          />
+        ))
+      ) : (
+        <div className="flex justify-center align-middle">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

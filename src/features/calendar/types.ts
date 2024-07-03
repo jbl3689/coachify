@@ -19,6 +19,7 @@ export type DayState = {
   id: number;
   date: string;
   week_id: number;
+  day: string;
 };
 
 export type EventState = {
