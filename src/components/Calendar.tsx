@@ -1,20 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 
-import { DayState, WeekState, daysOfWeek } from "../types";
+import { DayState, WeekState } from "../features/calendar/types";
 import { getCurrentWeek, useAddWeek, useWeeks } from "../hooks/useWeeks";
-import {
-  useDays as fetchDays,
-  getDayObject,
-  useAddDay,
-  useDays,
-} from "../hooks/useDays";
-import { addDays, startOfWeek } from "../services/calendarLogic";
 
-import CalendarDayPreview from "./CalendarDayPreview";
+import { addDays, startOfWeek } from "../utils/calendarLogic";
+
 import WeekView from "./WeekView";
+import Loader from "../ui/Loader";
 import WeekNavigator from "./WeekNavigator";
-import Loader from "../../../ui/Loader";
 
 type DayOfWeek = {
   id: number;
@@ -26,7 +20,6 @@ function Calendar() {
   const [selectedWeek, setSelectedWeek] = useState<Date>(startOfWeek());
   const [weekData, setWeekData] = useState<WeekState | undefined>(undefined);
   const [selectedDay, setSelectedDay] = useState<DayState | null>(null);
-  const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
 
   const { allWeeks, isLoadingWeeks, error: errorWeeks, refetch } = useWeeks();
   const { createWeek, isCreatingWeek } = useAddWeek();
@@ -40,7 +33,6 @@ function Calendar() {
   async function loadCurrentWeek(date: Date) {
     if (allWeeks) {
       let currWeek = getCurrentWeek(allWeeks, date);
-      console.log(`currWeekData: ${JSON.stringify(currWeek)}`);
       if (!currWeek) {
         await createWeek(date.toLocaleDateString("en-CA"));
         currWeek = getCurrentWeek(allWeeks, date);
@@ -51,9 +43,6 @@ function Calendar() {
 
   useEffect(() => {
     if (selectedWeek) {
-      console.log(
-        `Week List Length: ${allWeeks?.length}\n\nSelected Week: ${selectedWeek}`
-      );
       handleLoadWeek(selectedWeek);
     }
   }, [selectedWeek, allWeeks]);

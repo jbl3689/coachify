@@ -1,8 +1,8 @@
 import React from "react";
 import { Database } from "../../services/databaseTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteUser } from "../../services/apiUsers";
 import { HiTrash } from "react-icons/hi2";
+import { deleteUser } from "../services/apiUsers";
 
 interface UserListRowProps {
   user: {

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState, CalendarState } from "../../../types";
+import { AppState, CalendarState } from "../types/types";
 
 const initialState: CalendarState = {
   currentWeek: new Date("2024-05-27"),

@@ -4,11 +4,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import Calendar from "./features/calendar/components/Calendar";
+import Calendar from "./components/Calendar";
 import AppLayout from "./ui/AppLayout";
-import CreateEvent from "./features/event/CreateEvent";
-import Dashboard from "./features/dashboard/Dashboard";
+import Dashboard from "./components/Dashboard";
 import { Toaster } from "react-hot-toast";
+import CreateEvent from "./components/CreateEvent";
 
 const queryClient = new QueryClient({
   defaultOptions: {

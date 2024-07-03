@@ -1,12 +1,12 @@
 import { useBreakpoint } from "use-breakpoint";
-import { BREAKPOINTS } from "../../../types";
+import { BREAKPOINTS } from "../types/types";
 import CalendarDay from "./CalendarDay";
-import { DayState, WeekState, daysOfWeek } from "../types";
+import { DayState, WeekState, daysOfWeek } from "../features/calendar/types";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { useEffect, useState } from "react";
-import { addDays } from "../services/calendarLogic";
+import { addDays } from "../utils/calendarLogic";
 import { updateWeek } from "../services/apiWeeks";
-import Loader from "../../../ui/Loader";
+import Loader from "../ui/Loader";
 
 type DayOfWeek = {
   id: number;
@@ -96,10 +96,6 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     }
   }, [weekData?.id, refetch]);
 
-  useEffect(() => {
-    console.log("weekDaysData", weekDaysData, "weekData", weekData);
-  }, [weekData, weekDaysData]);
-
   return (
     <div className="grid grid-cols-7 gap-4 p-4 rounded-xl">
       {weekDaysLoaded ? (
@@ -107,7 +103,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
           <CalendarDay
             key={day.id}
             day={day}
-            isSelected={false}
+            isSelected={day.id === selectedDay}
             onClick={() => handleDayClick(day)}
           />
         ))

@@ -1,9 +1,9 @@
-import supabase from "../../../services/supabase";
+import supabase from "./supabase";
 
 export async function getDaysByWeekId(weekId: number) {
   const { data: days, error } = await supabase
     .from("days")
-    .select(`*`)
+    .select("*")
     .eq("week_id", weekId);
 
   if (error) {

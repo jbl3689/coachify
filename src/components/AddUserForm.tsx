@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { FieldError, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IoMdArrowDropdownCircle as DropdownArrow } from "react-icons/io";
-import { IoMdArrowDropupCircle as DropupArrow } from "react-icons/io";
 
-import { createUser } from "../../services/apiUsers";
-
-import Form from "../../ui/Form";
-import Input from "../../ui/Input";
-import FormRow from "../../ui/FormRow";
-import Heading from "../../ui/Heading";
-import Button from "../../ui/Button";
 import toast from "react-hot-toast";
+import { createUser } from "../services/apiUsers";
+import Form from "../ui/Form";
+import FormRow from "../ui/FormRow";
+import Input from "../ui/Input";
 
 const positions = [
   "GK",

@@ -6,10 +6,11 @@ export function useEvents(dayId: number) {
     data: events,
     isLoading,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["events", dayId],
     queryFn: () => getEventsByDayId(dayId),
   });
 
-  return { events, isLoading, error };
+  return { events, isLoading, error, refetch };
 }

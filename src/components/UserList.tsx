@@ -1,6 +1,6 @@
-import { getUsers } from "../../services/apiUsers";
 import { useQuery } from "@tanstack/react-query";
 import UserListRow from "./UserListRow";
+import { getUsers } from "../services/apiUsers";
 
 function UserList() {
   const {

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState, TeamState } from "../types";
+import { AppState, TeamState } from "../types/types";
 
 const initialState: TeamState = {
   selectedTeam: 1,

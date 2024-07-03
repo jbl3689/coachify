@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TrainingActivitySlot from "./TrainingActivitySlot";
 import TraningActivity from "./TrainingActivity";
 
@@ -7,14 +7,6 @@ const activitiesList = [
   { id: 2, name: "11 v 11", duration: 10 },
   { id: 3, name: "Cool-down", duration: 5 },
 ];
-
-// Utility function to format time as HH:MM
-// @ts-expect-error asd
-const formatTime = (minutes) => {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
-};
 
 interface TrainingProps {
   isDisabled: boolean;

@@ -7,8 +7,8 @@ import {
   getWeeksByTeamId,
   updateWeek,
 } from "../services/apiWeeks";
-import { getSelectedTeam } from "../../../context/teamSlice";
-import { WeekState } from "../types";
+import { getSelectedTeam } from "../context/teamSlice";
+import { WeekState } from "../features/calendar/types";
 import toast from "react-hot-toast";
 
 export function useWeeks() {
