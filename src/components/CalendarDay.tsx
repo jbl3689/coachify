@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Pill from "../ui/Pill";
 import TickButton from "../ui/TickButton";
 import { useEvents } from "../hooks/useEvents";
-import { DayState, EventState } from "../features/calendar/types";
 import { format } from "date-fns";
+import { DayState, EventState } from "../types/types";
+import { useDispatch } from "react-redux";
+import { setDayEvents } from "../context/calendarSlice";
 
 interface CalendarDayProps {
   day: DayState;
@@ -12,9 +14,21 @@ interface CalendarDayProps {
 }
 
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
+  const dispatch = useDispatch();
   const [totalGoing, setTotalGoing] = useState<number>(14);
 
   const { events, isLoading, error, refetch } = useEvents(day.id || 0);
+
+  useEffect(() => {
+    if (events && events?.length > 0) {
+      dispatch(
+        setDayEvents({
+          dayDate: day.date,
+          events: events[0],
+        })
+      );
+    }
+  }, [day.date, dispatch, events]);
 
   return (
     <div

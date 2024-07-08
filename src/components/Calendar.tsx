@@ -10,8 +10,12 @@ import Loader from "../ui/Loader";
 import WeekNavigator from "./WeekNavigator";
 import CalendarDayPreview from "./CalendarDayPreview";
 import { DayState, WeekState } from "../types/types";
+import { useDispatch } from "react-redux";
+import { moveWeeks, setWeekDate } from "../context/calendarSlice";
 
 function Calendar() {
+  const dispatch = useDispatch();
+
   const [selectedWeek, setSelectedWeek] = useState<Date>(startOfWeek());
   const [weekData, setWeekData] = useState<WeekState | undefined>(undefined);
   const [selectedDay, setSelectedDay] = useState<DayState | null>(null);
@@ -20,8 +24,6 @@ function Calendar() {
   const { createWeek, isCreatingWeek } = useAddWeek();
 
   const [isPending, setIsPending] = useState(false);
-  // setIsPending(isLoadingWeeks || isCreatingWeek);
-  const isError = errorWeeks;
 
   const effectRunningRef = useRef(false);
 
@@ -48,6 +50,7 @@ function Calendar() {
 
       const newWeekData = allWeeks ? await loadCurrentWeek(newDate) : undefined;
       setWeekData(newWeekData);
+      if (newWeekData) dispatch(setWeekDate(newWeekData));
       setSelectedDay(null);
       effectRunningRef.current = false;
     }
@@ -57,6 +60,7 @@ function Calendar() {
     const newDate = addDays(selectedWeek, isNext ? 7 : -7);
     await refetch();
     setSelectedWeek(newDate);
+    dispatch(moveWeeks(isNext ? 1 : -1));
   };
 
   const handleDayClick = (day: DayState) => {

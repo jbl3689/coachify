@@ -1,13 +1,20 @@
 import { format } from "date-fns";
-import { DayState } from "../types/types";
+import { AppState, DayState } from "../types/types";
 import Button from "../ui/Button";
+import { useSelector } from "react-redux";
+import { selectCurrentWeekDayEvents } from "../context/calendarSlice";
 
 interface CalendarDayPreviewProps {
   selectedDay: DayState;
 }
 
 function CalendarDayPreview({ selectedDay }: CalendarDayPreviewProps) {
-  const isDayEmpty = true;
+  const selectedDayEvents = useSelector((state: AppState) =>
+    selectCurrentWeekDayEvents(state, selectedDay.date)
+  );
+
+  console.log(selectedDayEvents);
+  const isDayEmpty = selectedDayEvents && selectedDayEvents.length === 0;
 
   return (
     <div>

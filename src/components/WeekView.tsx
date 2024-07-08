@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useBreakpoint } from "use-breakpoint";
 
-import { BREAKPOINTS, DayState, WeekState } from "../types/types";
+import { BREAKPOINTS, DayState } from "../types/types";
 import { addDays } from "../utils/calendarLogic";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { updateWeek } from "../services/apiWeeks";
 
 import CalendarDay from "./CalendarDay";
 import Loader from "../ui/Loader";
+import { useDispatch } from "react-redux";
+import { setWeekDays } from "../context/calendarSlice";
 
 interface WeekViewProps {
   weekData: WeekState;
@@ -16,6 +18,7 @@ interface WeekViewProps {
 }
 
 function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
+  const dispatch = useDispatch();
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
   const [isPending, setIsPending] = useState(false);
   const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
@@ -61,8 +64,9 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
 
           const weekDaysData = await Promise.all(results);
 
-          // @ts-expect-error abc
+          // @ts-expect-error I know that it isn't undefined at this point
           setWeekDaysData(weekDaysData);
+          dispatch(setWeekDays(weekDaysData));
 
           setIsPending(false);
         } catch (error) {

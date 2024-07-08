@@ -10,10 +10,17 @@ export type TeamState = {
 };
 
 export type CalendarState = {
-  currentWeek: WeekState | null;
-  selectedDay: {
-    day: DayState | null;
-    events: EventState[] | null;
+  prevWeek: {
+    date: WeekState | null;
+    days: { day: DayState; events: EventState[] }[] | null;
+  };
+  currWeek: {
+    date: WeekState | null;
+    days: { day: DayState; events: EventState[] }[] | null;
+  };
+  nextWeek: {
+    date: WeekState | null;
+    days: { day: DayState; events: EventState[] }[] | null;
   };
 };
 
@@ -45,9 +52,18 @@ export type WeekState = {
 
 export type DayState = {
   id: number;
+  created_at?: Date;
   date: string;
   week_id: number;
   day: string;
+};
+
+export type ReduxDayState = {
+  id: number;
+  date: string;
+  week_id: number;
+  day: string;
+  events: EventState[];
 };
 
 export type EventState = {
