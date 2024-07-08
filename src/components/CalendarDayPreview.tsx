@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { AppState, DayState } from "../types/types";
+import { AppState, DayState, ReduxAppState } from "../types/types";
 import Button from "../ui/Button";
 import { useSelector } from "react-redux";
 import { selectCurrentWeekDayEvents } from "../context/calendarSlice";
@@ -9,7 +9,7 @@ interface CalendarDayPreviewProps {
 }
 
 function CalendarDayPreview({ selectedDay }: CalendarDayPreviewProps) {
-  const selectedDayEvents = useSelector((state: AppState) =>
+  const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
 

@@ -1,26 +1,26 @@
 export const BREAKPOINTS = { mobile: 0, tablet: 768, desktop: 1280 };
 
-export interface AppState {
-  calendar: CalendarState;
-  team: TeamState;
+export interface ReduxAppState {
+  calendar: ReduxCalendarState;
+  team: ReduxTeamState;
 }
 
-export type TeamState = {
+export type ReduxTeamState = {
   selectedTeam: number;
 };
 
-export type CalendarState = {
+export type ReduxCalendarState = {
   prevWeek: {
     date: WeekState | null;
-    days: { day: DayState; events: EventState[] }[] | null;
+    days: ReduxDayState[] | null;
   };
   currWeek: {
     date: WeekState | null;
-    days: { day: DayState; events: EventState[] }[] | null;
+    days: ReduxDayState[] | null;
   };
   nextWeek: {
     date: WeekState | null;
-    days: { day: DayState; events: EventState[] }[] | null;
+    days: ReduxDayState[] | null;
   };
 };
 
@@ -32,6 +32,14 @@ export type dayOfWeek =
   | "Friday"
   | "Saturday"
   | "Sunday";
+
+export type ReduxDayState = {
+  id: number;
+  date: string;
+  week_id: number;
+  day: string;
+  events: EventState[];
+};
 
 export const daysOfWeek = [
   { id: 0, abbreviation: "Mon", label: "Monday" },
@@ -56,14 +64,6 @@ export type DayState = {
   date: string;
   week_id: number;
   day: string;
-};
-
-export type ReduxDayState = {
-  id: number;
-  date: string;
-  week_id: number;
-  day: string;
-  events: EventState[];
 };
 
 export type EventState = {

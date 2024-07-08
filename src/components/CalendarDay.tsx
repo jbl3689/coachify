@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import Pill from "../ui/Pill";
-import TickButton from "../ui/TickButton";
-import { useEvents } from "../hooks/useEvents";
 import { format } from "date-fns";
-import { DayState, EventState } from "../types/types";
 import { useDispatch } from "react-redux";
+
 import { setDayEvents } from "../context/calendarSlice";
+import { useEvents } from "../hooks/useEvents";
+import { DayState, EventState } from "../types/types";
+
+import TickButton from "../ui/TickButton";
+import FadeInContainer from "../ui/FadeInContainer";
+import Pill from "../ui/Pill";
 
 interface CalendarDayProps {
   day: DayState;
@@ -44,17 +47,21 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
 
       {!isLoading && events && events.length > 0
         ? events.map((event: EventState) => (
-            <div
-              className="flex flex-col items-center justify-between w-full row-start-2 gap-2 pt-8 h-5/6"
-              key={event.id}
-            >
-              <Pill
-                type={event.event_type === "Training" ? "secondary" : "accent"}
+            <FadeInContainer key={event.id}>
+              <div
+                className="flex flex-col items-center justify-between w-full row-start-2 gap-2 pt-8 h-5/6"
+                key={event.id}
               >
-                {event.event_type}
-              </Pill>
-              <p className="text-xl">{totalGoing} / 22 going</p>
-            </div>
+                <Pill
+                  type={
+                    event.event_type === "Training" ? "secondary" : "accent"
+                  }
+                >
+                  {event.event_type}
+                </Pill>
+                <p className="text-xl">{totalGoing} / 22 going</p>
+              </div>
+            </FadeInContainer>
           ))
         : null}
 

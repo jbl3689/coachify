@@ -2,6 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Training from "./Training";
 import Game from "./Game";
+import { useForm } from "react-hook-form";
+import { useAddEvent } from "../hooks/useEvents";
 
 function CreateEvent() {
   const urlLocation = useLocation();
@@ -10,6 +12,10 @@ function CreateEvent() {
   const date = params.get("date");
 
   const eventLabel = eventType === "training" ? "Training" : "Game";
+
+  const { mutate, isPending } = useAddEvent(0);
+
+  const { register, handleSubmit, reset, formState } = useForm();
 
   const [startTime, setStartTime] = React.useState<string>("");
   const [endTime, setEndTime] = React.useState<string>("");
@@ -20,9 +26,12 @@ function CreateEvent() {
     location: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setEventData({ startTime, endTime, location });
+  const onSubmit = (data: {
+    event_start_time: string;
+    event_end_time: string;
+    event_type: string;
+  }) => {
+    mutate(data);
   };
 
   const baseInputStyles = "w-full h-14 p-2 text-xl border rounded text-bgDark";
@@ -30,7 +39,10 @@ function CreateEvent() {
   return (
     <div className="grid justify-between grid-cols-5 gap-10">
       <div className="flex items-center justify-center col-span-2 gap-6 px-4 text-primaryColor">
-        <form onSubmit={handleSubmit} className="w-full rounded shadow-md">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full rounded shadow-md"
+        >
           <h2 className="mb-6 text-2xl font-bold text-center">
             Add a New {eventLabel} for {new Date(date!).toDateString()}
           </h2>
@@ -41,8 +53,11 @@ function CreateEvent() {
               <input
                 type="time"
                 value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
                 className={baseInputStyles}
+                id="event_start_time"
+                {...register("event_start_time", {
+                  required: "This field is required",
+                })}
               />
             </label>
           </div>
@@ -52,8 +67,11 @@ function CreateEvent() {
               <input
                 type="time"
                 value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
                 className={baseInputStyles}
+                id="event_end_time"
+                {...register("event_end_time", {
+                  required: "This field is required",
+                })}
               />
             </label>
           </div>
@@ -66,8 +84,11 @@ function CreateEvent() {
               <input
                 type="text"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
                 className={baseInputStyles}
+                id="location"
+                {...register("location", {
+                  required: "This field is required",
+                })}
               />
             </label>
           </div>

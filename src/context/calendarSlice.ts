@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState, DayState, ReduxDayState, WeekState } from "../types/types";
+import {
+  ReduxAppState,
+  DayState,
+  ReduxDayState,
+  WeekState,
+} from "../types/types";
 
 export type CalendarState = {
   prevWeek: {
@@ -79,14 +84,18 @@ export const { setWeekDate, setWeekDays, setDayEvents, moveWeeks } =
   calendarSlice.actions;
 
 // Selectors
-export const selectCurrentWeek = (state: AppState) => state.calendar.currWeek;
-export const selectPreviousWeek = (state: AppState) => state.calendar.prevWeek;
-export const selectNextWeek = (state: AppState) => state.calendar.nextWeek;
-export const selectCurrentWeekDate = (state: AppState) =>
+export const selectCurrentWeek = (state: ReduxAppState) =>
+  state.calendar.currWeek;
+export const selectPreviousWeek = (state: ReduxAppState) =>
+  state.calendar.prevWeek;
+export const selectNextWeek = (state: ReduxAppState) => state.calendar.nextWeek;
+export const selectCurrentWeekDate = (state: ReduxAppState) =>
   state.calendar.currWeek.date;
-export const selectCurrentWeekDays = (state: AppState) =>
+export const selectCurrentWeekDays = (state: ReduxAppState) =>
   state.calendar.currWeek.days;
-export const selectCurrentWeekDayEvents = (state: AppState, date: string) =>
-  state.calendar.currWeek.days?.find((day) => day.day.date === date)?.events;
+export const selectCurrentWeekDayEvents = (
+  state: ReduxAppState,
+  date: string
+) => state.calendar.currWeek.days?.find((day) => day.date === date)?.events;
 
 export default calendarSlice.reducer;
