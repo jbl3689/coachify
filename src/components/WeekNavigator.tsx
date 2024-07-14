@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import FadeInContainer from "../ui/FadeInContainer";
+import Button from "../ui/Button";
 
 interface WeekNavigatorProps {
   selectedWeek: Date;
@@ -12,25 +13,27 @@ function WeekNavigator({
   onClickWeekNavigate,
 }: WeekNavigatorProps) {
   return (
-    <div className="flex items-center justify-center gap-8 pb-8 text-primaryColor">
-      <span
-        className="pt-2 text-3xl cursor-pointer hover:text-slate-500 font-semiBold"
-        onClick={() => onClickWeekNavigate(false)}
-      >
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </span>
+    <div className="flex items-center justify-between gap-8 px-4 pb-8">
       <FadeInContainer>
-        <p className="text-4xl font-semibold text-center text-accentColor">
-          Week beginning on {selectedWeek.toDateString()}
+        <p className="text-4xl font-semibold text-center">
+          Week of {selectedWeek.toDateString()}
         </p>
       </FadeInContainer>
-
-      <span
-        className="pt-2 text-3xl cursor-pointer font-semiBold hover:text-slate-500"
-        onClick={() => onClickWeekNavigate(true)}
-      >
-        <FontAwesomeIcon icon={faArrowRight} />
-      </span>
+      <div className="flex items-center justify-center gap-4">
+        <span
+          className="text-3xl cursor-pointer hover:text-accentLight font-semiBold"
+          onClick={() => onClickWeekNavigate(false)}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </span>
+        <Button type="primary">Today</Button>
+        <span
+          className="text-3xl cursor-pointer font-semiBold hover:text-accentLight"
+          onClick={() => onClickWeekNavigate(true)}
+        >
+          <FontAwesomeIcon icon={faArrowRight} />
+        </span>
+      </div>
     </div>
   );
 }

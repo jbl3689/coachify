@@ -13,6 +13,14 @@ export async function getDaysByWeekId(weekId: number) {
   return days;
 }
 
+export async function getDayByDate(date: Date) {
+  let { data: days, error } = await supabase
+    .from("days")
+    .select("*")
+    // Filters
+    .eq("date", "Equal to");
+}
+
 export interface AddDayParams {
   date: string;
   weekId: number;

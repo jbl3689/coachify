@@ -4,6 +4,7 @@ import Training from "./Training";
 import Game from "./Game";
 import { useForm } from "react-hook-form";
 import { useAddEvent } from "../hooks/useEvents";
+import { useDays } from "../hooks/useDays";
 
 function CreateEvent() {
   const urlLocation = useLocation();
@@ -12,7 +13,6 @@ function CreateEvent() {
   const date = params.get("date");
 
   const eventLabel = eventType === "training" ? "Training" : "Game";
-
   const { mutate, isPending } = useAddEvent(0);
 
   const { register, handleSubmit, reset, formState } = useForm();

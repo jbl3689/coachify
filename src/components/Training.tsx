@@ -55,10 +55,7 @@ function Training({ isDisabled, startTime, endTime, location }: TrainingProps) {
 
   return (
     <div
-      className={
-        `flex flex-col items-center min-h-screen text-primaryColor rounded-2xl` +
-          isDisabled && "opacity-50 pointer-events-none"
-      }
+      className={`flex flex-col items-center min-h-screen text-primaryColor rounded-2xl`}
     >
       <div className="w-full max-w-4xl p-4 rounded shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Training Session Timetable</h2>

@@ -7,7 +7,7 @@ const Input = styled.input`
   padding: 5px 10px;
   box-shadow: 1.2rem;
   font-size: 1.4rem;
-  color: var(--color-backgroundDark);
+  color: var(--color-background-1);
   text-align: center;
 `;
 

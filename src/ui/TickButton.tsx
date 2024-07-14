@@ -10,7 +10,7 @@ function TickButton({ type, onClick }: TickButtonProps) {
     <button
       onClick={onClick}
       className={`
-    ${type === "success" ? "bg-accentColor" : "bg-dangerColor"} px-2 min-w-12 w-full py-1 text-black hover:text-white border-2 bg-accentColor `}
+    ${type === "success" ? "bg-successBase" : "bg-dangerBase"} px-2 min-w-12 w-full py-1 text-black hover:text-textBase border-2 `}
     >
       {type === "success" ? "Y" : "N"}
     </button>

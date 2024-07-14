@@ -9,6 +9,7 @@ import { DayState, EventState } from "../types/types";
 import TickButton from "../ui/TickButton";
 import FadeInContainer from "../ui/FadeInContainer";
 import Pill from "../ui/Pill";
+import EventBox from "./EventBox";
 
 interface CalendarDayProps {
   day: DayState;
@@ -33,52 +34,63 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
+  console.log("12:30:00".split(":")[0] < "13");
+
   return (
     <div
       onClick={onClick}
-      className="grid h-64 grid-rows-4 pt-4 text-2xl text-center transition-all border-2 rounded-t-lg shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold"
+      className="grid h-[400px] w-[212px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold bg-secondaryBase"
     >
-      <div>
-        <div className="w-full pb-1 ">{day.day}</div>
-        <div className="w-full pb-1 font-light border-b-2 text-md">
+      <div className="text-left">
+        <div className="w-full">{day.day}</div>
+        <div className="w-full text-lg font-light text-textAlt">
           {format(new Date(day.date), "dd-MMM")}
         </div>
       </div>
 
       {!isLoading && events && events.length > 0
         ? events.map((event: EventState) => (
-            <FadeInContainer key={event.id}>
-              <div
-                className="flex flex-col items-center justify-between w-full row-start-2 gap-2 pt-8 h-5/6"
-                key={event.id}
-              >
-                <Pill
-                  type={
-                    event.event_type === "Training" ? "secondary" : "accent"
+            <>
+              <FadeInContainer key={event.id}>
+                <div
+                  className={
+                    `flex flex-col items-center justify-between w-full gap-2` +
+                      event.event_start_time.split(":")[0] <
+                    "13"
+                      ? `row-start-2`
+                      : `row-start-3`
                   }
+                  key={event.id}
                 >
-                  {event.event_type}
-                </Pill>
-                <p className="text-xl">{totalGoing} / 22 going</p>
+                  {event.event_start_time.split(":")[0] < "13" ? (
+                    <EventBox event={event} />
+                  ) : null}
+
+                  <div className="row-start-3 py-2 border-b-2"></div>
+
+                  {event.event_start_time.split(":")[0] >= "13" ? (
+                    <EventBox event={event} />
+                  ) : null}
+                  {/* <p className="text-xl">{totalGoing} / 22 going</p> */}
+                </div>
+              </FadeInContainer>
+              <div className="flex items-stretch row-start-4 justify-stretch">
+                {isSelected && (
+                  <div className="flex items-end justify-center flex-grow ">
+                    <TickButton
+                      onClick={() => setTotalGoing(totalGoing + 1)}
+                      type="success"
+                    />
+                    <TickButton
+                      onClick={() => setTotalGoing(totalGoing - 1)}
+                      type="fail"
+                    />
+                  </div>
+                )}
               </div>
-            </FadeInContainer>
+            </>
           ))
         : null}
-
-      <div className="flex items-stretch row-start-4 justify-stretch">
-        {isSelected && (
-          <div className="flex items-end justify-center flex-grow ">
-            <TickButton
-              onClick={() => setTotalGoing(totalGoing + 1)}
-              type="success"
-            />
-            <TickButton
-              onClick={() => setTotalGoing(totalGoing - 1)}
-              type="fail"
-            />
-          </div>
-        )}
-      </div>
     </div>
   );
 }

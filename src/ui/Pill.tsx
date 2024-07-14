@@ -2,21 +2,21 @@ function Pill({ children, type }) {
   const btnColor = (() => {
     switch (type) {
       case "primary":
-        return "bg-bgDark hover:bg-bgLight";
+        return "bg-primaryBase hover:bg-primaryLight";
       case "secondary":
-        return "bg-secondaryColor hover:bg-secondaryLightColor";
+        return "bg-secondaryBase hover:bg-secondaryLight";
       case "accent":
-        return "bg-accentColor hover:bg-accentLightColor";
+        return "bg-accentBase hover:bg-accentLight";
       case "danger":
-        return "bg-dangerColor hover:bg-dangerLightColor";
+        return "bg-dangerBase hover:bg-dangerLight";
       default:
-        return "bg-bgLight";
+        return "bg-bg3";
     }
   })();
 
   return (
     <span
-      className={`${btnColor} px-5 py-3 min-w-32 text-center text-white rounded-3xl shadow-md`}
+      className={`${btnColor} px-5 py-3 min-w-32 text-center text-textBase rounded-3xl shadow-md`}
     >
       {children}
     </span>

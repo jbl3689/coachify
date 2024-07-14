@@ -16,7 +16,7 @@ function Dashboard() {
   return (
     <>
       <div>
-        <h1 className="mb-8 text-4xl font-semibold text-center sm:text-3xl text-accentLightColor">
+        <h1 className="mb-8 text-4xl font-semibold text-center sm:text-3xl text-accentLight">
           Admin Dashboard
         </h1>
       </div>
@@ -35,13 +35,13 @@ function Dashboard() {
             {formShown ? (
               <>
                 <div className="flex justify-center gap-16 pt-2">
-                  <Heading as="h3" className="text-accentColor">
+                  <Heading as="h3" className="text-accentBase">
                     Add a Player
                   </Heading>
 
                   <span
                     onClick={() => setFormShown(!formShown)}
-                    className="flex items-center justify-between text-4xl cursor-pointer hover:text-accentColor"
+                    className="flex items-center justify-between text-4xl cursor-pointer hover:text-accentBase"
                   >
                     <DropupArrow />
                   </span>
@@ -52,14 +52,14 @@ function Dashboard() {
               <div className="flex flex-col justify-evenly gap-14">
                 <span
                   onClick={() => setFormShown(!formShown)}
-                  className="flex items-center w-4/6 mx-auto text-3xl transition-all rounded-lg cursor-pointer justify-evenly bg-secondaryColor"
+                  className="flex items-center w-4/6 mx-auto text-3xl transition-all rounded-lg cursor-pointer justify-evenly bg-secondaryLight"
                 >
                   Add New Player
                   <DropdownArrow />
                 </span>
                 <span
                   onClick={() => setFormShown(!formShown)}
-                  className="flex items-center w-4/6 mx-auto text-3xl transition-all rounded-lg cursor-pointer justify-evenly bg-secondaryColor"
+                  className="flex items-center w-4/6 mx-auto text-3xl transition-all rounded-lg cursor-pointer justify-evenly bg-secondaryLight"
                 >
                   Add New Player
                   <DropdownArrow />
@@ -74,7 +74,7 @@ function Dashboard() {
           <div
             className={`${boxStyles} h-[550px] flex flex-col justify-between`}
           >
-            <h1 className="text-3xl font-semibold text-dangerLightColor">
+            <h1 className="text-3xl font-semibold text-dangerLight">
               Team List
             </h1>
             <div className="w-full align-center">

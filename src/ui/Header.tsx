@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between px-6 py-3 max-h-28 text-gray-100 font-semibold">
-      <Link to="/" className="text-4xl">
+    <header className="flex items-center justify-between px-6 py-3 font-semibold max-h-28 text-textBase">
+      <Link to="/" className="text-4xl text-accentBase">
         Coachify
       </Link>
       <div className="flex gap-10 text-xl">

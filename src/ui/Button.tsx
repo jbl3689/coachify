@@ -11,15 +11,15 @@ function Button({ to, children, type, onClick }: ButtonProps) {
   const btnColor = (() => {
     switch (type) {
       case "primary":
-        return "bg-bgDark hover:bg-bgLight";
+        return "bg-primaryBase hover:bg-primaryLight";
       case "secondary":
-        return "bg-secondaryColor hover:bg-secondaryLightColor";
+        return "bg-secondaryBase hover:bg-secondaryLight";
       case "accent":
-        return "bg-accentColor hover:bg-accentLightColor";
+        return "bg-accentBase hover:bg-accentLight";
       case "danger":
-        return "bg-dangerColor hover:bg-dangerLightColor";
+        return "bg-dangerBase hover:bg-dangerLight";
       default:
-        return "bg-bgLight";
+        return "bg-bg4";
     }
   })();
 

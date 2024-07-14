@@ -19,6 +19,8 @@ export function useDays(weekId: number) {
   return { days, isLoading, error, refetch };
 }
 
+export function useDayByDate(date: Date) {}
+
 export function useAddDay() {
   const queryClient = useQueryClient();
 
