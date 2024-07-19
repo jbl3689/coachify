@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 
 import { setDayEvents } from "../context/calendarSlice";
 import { useEvents } from "../hooks/useEvents";
-import { DayState, EventState } from "../types/types";
+import { BREAKPOINTS, DayState, EventState } from "../types/types";
 
 import TickButton from "../ui/TickButton";
 import FadeInContainer from "../ui/FadeInContainer";
-import Pill from "../ui/Pill";
 import EventBox from "./EventBox";
+import { useBreakpoint } from "use-breakpoint";
 
 interface CalendarDayProps {
   day: DayState;
@@ -20,6 +20,7 @@ interface CalendarDayProps {
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const dispatch = useDispatch();
   const [totalGoing, setTotalGoing] = useState<number>(14);
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
   const { events, isLoading, error, refetch } = useEvents(day.id || 0);
 
@@ -34,12 +35,10 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
-  console.log("12:30:00".split(":")[0] < "13");
-
   return (
     <div
       onClick={onClick}
-      className="grid h-[400px] w-[212px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold bg-secondaryBase"
+      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold bg-secondaryBase w-11/12 mx-auto"
     >
       <div className="text-left">
         <div className="w-full">{day.day}</div>
