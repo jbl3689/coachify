@@ -38,7 +38,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   return (
     <div
       onClick={onClick}
-      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:cursor-pointer hover:font-semibold bg-secondaryBase w-11/12 mx-auto"
+      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:font-semibold bg-secondaryBase w-11/12 mx-auto"
     >
       <div className="text-left">
         <div className="w-full">{day.day}</div>
@@ -47,49 +47,47 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
         </div>
       </div>
 
-      {!isLoading && events && events.length > 0
-        ? events.map((event: EventState) => (
-            <>
-              <FadeInContainer key={event.id}>
-                <div
-                  className={
-                    `flex flex-col items-center justify-between w-full gap-2` +
-                      event.event_start_time.split(":")[0] <
-                    "13"
-                      ? `row-start-2`
-                      : `row-start-3`
-                  }
-                  key={event.id}
-                >
-                  {event.event_start_time.split(":")[0] < "13" ? (
-                    <EventBox event={event} />
-                  ) : null}
+      <FadeInContainer key={day.id}>
+        <div
+          className={`flex flex-col items-center justify-between w-full gap-2`}
+        >
+          <div className="grid grid-rows-subgrid">
+            <div className="w-full row-start-2 py-2 mx-auto min-h-24">
+              {events
+                ?.filter((event) => event.is_morning)
+                .map((event) => (
+                  <EventBox key={event.id} event={event} onClick={onClick} />
+                ))}
+            </div>
 
-                  <div className="row-start-3 py-2 border-b-2"></div>
+            <div className="row-start-3 border-b-2"></div>
 
-                  {event.event_start_time.split(":")[0] >= "13" ? (
-                    <EventBox event={event} />
-                  ) : null}
-                  {/* <p className="text-xl">{totalGoing} / 22 going</p> */}
+            <div className="w-full row-start-4 mx-auto min-h-24">
+              {events
+                ?.filter((event) => !event.is_morning)
+                .map((event) => (
+                  <EventBox key={event.id} event={event} onClick={onClick} />
+                ))}
+            </div>
+            {/* <p className="text-xl">{totalGoing} / 22 going</p> */}
+
+            <div className="flex items-stretch row-start-5 justify-stretch">
+              {isSelected && (
+                <div className="flex items-end justify-center flex-grow ">
+                  <TickButton
+                    onClick={() => setTotalGoing(totalGoing + 1)}
+                    type="success"
+                  />
+                  <TickButton
+                    onClick={() => setTotalGoing(totalGoing - 1)}
+                    type="fail"
+                  />
                 </div>
-              </FadeInContainer>
-              <div className="flex items-stretch row-start-4 justify-stretch">
-                {isSelected && (
-                  <div className="flex items-end justify-center flex-grow ">
-                    <TickButton
-                      onClick={() => setTotalGoing(totalGoing + 1)}
-                      type="success"
-                    />
-                    <TickButton
-                      onClick={() => setTotalGoing(totalGoing - 1)}
-                      type="fail"
-                    />
-                  </div>
-                )}
-              </div>
-            </>
-          ))
-        : null}
+              )}
+            </div>
+          </div>
+        </div>
+      </FadeInContainer>
     </div>
   );
 }

@@ -89,7 +89,7 @@ function Calendar() {
       )}
 
       <div className="flex items-center justify-center w-5/6 px-4 py-3 mx-auto mt-6 text-3xl transition-all text-stone-200 min-h-52">
-        {selectedDay ? <CalendarDayPreview selectedDay={selectedDay} /> : null}
+        {/* {selectedDay ? <CalendarDayPreview selectedDay={selectedDay} /> : null} */}
       </div>
     </>
   );

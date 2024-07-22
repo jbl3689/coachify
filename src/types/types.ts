@@ -72,4 +72,5 @@ export type EventState = {
   event_end_time: string;
   event_type: string;
   day_id: number;
+  is_morning: boolean;
 };

@@ -72,7 +72,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
 
           const weekDaysData = await Promise.all(results);
 
-          // @ts-expect-error I know that it isn't undefined at this point
+          // @ts-expect-error I know that it isn't undefined by this point
           setWeekDaysData(weekDaysData);
           dispatch(setWeekDays(weekDaysData));
 
