@@ -10,7 +10,7 @@ function Pill({ children, type }) {
       case "danger":
         return "bg-dangerBase hover:bg-dangerLight";
       default:
-        return "bg-bg3";
+        return "bg-bgTertiary";
     }
   })();
 

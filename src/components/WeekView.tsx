@@ -6,7 +6,7 @@ import { addDays } from "../utils/calendarLogic";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { updateWeek } from "../services/apiWeeks";
 
-import CalendarDay from "./CalendarDay";
+import CalendarDay from "./CalendarDay/CalendarDay";
 import Loader from "../ui/Loader";
 import { useDispatch } from "react-redux";
 import { setWeekDays } from "../context/calendarSlice";
@@ -138,7 +138,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     setVisibleDays(weekDaysData.slice(newVisibleRange[0], newVisibleRange[1]));
     setVisibleRange(newVisibleRange);
   };
-  console.log(visibleRange);
+
   return (
     <div className="flex flex-row">
       {breakpoint !== "desktop" && (

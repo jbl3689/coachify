@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { useDispatch } from "react-redux";
 
-import { setDayEvents } from "../context/calendarSlice";
-import { useEvents } from "../hooks/useEvents";
-import { BREAKPOINTS, DayState, EventState } from "../types/types";
+import { setDayEvents } from "../../context/calendarSlice";
+import { useEvents } from "../../hooks/useEvents";
+import { BREAKPOINTS, DayState, EventState } from "../../types/types";
 
-import TickButton from "../ui/TickButton";
-import FadeInContainer from "../ui/FadeInContainer";
-import EventBox from "./EventBox";
+import TickButton from "../../ui/TickButton";
+import FadeInContainer from "../../ui/FadeInContainer";
+import EventBox from "../EventBox";
 import { useBreakpoint } from "use-breakpoint";
 
 interface CalendarDayProps {
@@ -38,7 +38,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   return (
     <div
       onClick={onClick}
-      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:font-semibold bg-secondaryBase w-11/12 mx-auto"
+      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:font-semibold bg-secondaryBase w-11/12 mx-auto cursor-pointer"
     >
       <div className="text-left">
         <div className="w-full">{day.day}</div>
@@ -60,7 +60,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
                 ))}
             </div>
 
-            <div className="row-start-3 border-b-2"></div>
+            {/* <div className="row-start-3 border-b-2"></div> */}
 
             <div className="w-full row-start-4 mx-auto min-h-24">
               {events
@@ -72,7 +72,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
             {/* <p className="text-xl">{totalGoing} / 22 going</p> */}
 
             <div className="flex items-stretch row-start-5 justify-stretch">
-              {isSelected && (
+              {/* {isSelected && (
                 <div className="flex items-end justify-center flex-grow ">
                   <TickButton
                     onClick={() => setTotalGoing(totalGoing + 1)}
@@ -83,7 +83,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
                     type="fail"
                   />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>

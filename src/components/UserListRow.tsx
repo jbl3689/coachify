@@ -33,7 +33,7 @@ function UserListRow({ user, rowKey }: UserListRowProps) {
 
   return (
     <li
-      className={`${rowKey % 2 === 0 ? "bg-bg2" : "bg-bgGray"} rounded-md flex items-center justify-between p-0.5 px-3`}
+      className={`${rowKey % 2 === 0 ? "bg-bgSecondary" : "bg-bgGray"} rounded-md flex items-center justify-between p-0.5 px-3`}
     >
       <span>
         {user.pos_primary} | {user.first_name} {user.last_name}

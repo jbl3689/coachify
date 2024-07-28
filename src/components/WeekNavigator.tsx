@@ -6,11 +6,13 @@ import Button from "../ui/Button";
 interface WeekNavigatorProps {
   selectedWeek: Date;
   onClickWeekNavigate: (isNextWeek: boolean) => void;
+  handleNavigateToToday: () => void;
 }
 
 function WeekNavigator({
   selectedWeek,
   onClickWeekNavigate,
+  handleNavigateToToday,
 }: WeekNavigatorProps) {
   return (
     <div className="flex items-center justify-between gap-8 px-4 pb-8">
@@ -26,7 +28,9 @@ function WeekNavigator({
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
-        <Button type="primary">Today</Button>
+        <Button type="primary" onClick={handleNavigateToToday}>
+          Today
+        </Button>
         <span
           className="text-3xl cursor-pointer font-semiBold hover:text-accentLight"
           onClick={() => onClickWeekNavigate(true)}
