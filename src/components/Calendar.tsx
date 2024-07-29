@@ -74,7 +74,7 @@ function Calendar() {
   };
 
   return (
-    <>
+    <div className="overflow-y-hidden">
       {isPending ? (
         <Loader />
       ) : (
@@ -98,7 +98,7 @@ function Calendar() {
       <div className="w-5/6 px-4 py-3 mx-auto mt-6 transition-all ">
         {selectedDay ? <DayDetails selectedDay={selectedDay} /> : null}
       </div>
-    </>
+    </div>
   );
 }
 

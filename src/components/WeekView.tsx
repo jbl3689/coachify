@@ -151,7 +151,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       )}
 
       <div
-        className={`grid grid-cols-${visibleDays.length} gap-4 py-4 rounded-xl mx-auto w-full`}
+        className={`grid grid-cols-${visibleDays.length} gap-2 py-4 rounded-xl mx-auto w-full`}
       >
         {weekDaysLoaded ? (
           visibleDays.map((day) => (

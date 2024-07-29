@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         bgPrimary: "var(--color-bg-primary)",
-        bSecondary: "var(--color-bg-secondary)",
+        bgSecondary: "var(--color-bg-secondary)",
         bgTertiary: "var(--color-bg-tertiary)",
         textBase: "var(--color-text-base)",
         textAlt: "var(--color-text-alt)",

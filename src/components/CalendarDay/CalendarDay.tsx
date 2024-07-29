@@ -48,9 +48,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
       </div>
 
       <FadeInContainer key={day.id}>
-        <div
-          className={`flex flex-col items-center justify-between w-full gap-2`}
-        >
+        <div className={`flex flex-col justify-between w-full gap-2`}>
           <div className="grid grid-rows-subgrid">
             <div className="w-full row-start-2 py-2 mx-auto min-h-24">
               {events

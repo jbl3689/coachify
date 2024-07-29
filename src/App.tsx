@@ -8,7 +8,7 @@ import Calendar from "./components/Calendar";
 import AppLayout from "./ui/AppLayout";
 import Dashboard from "./components/Dashboard";
 import { Toaster } from "react-hot-toast";
-import CreateEvent from "./components/CreateEvent";
+import CreateEvent from "./components/EventForm";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -20,18 +20,21 @@ function EventBox({ event, onClick }: EventBoxProps) {
 
   return (
     <div
-      className="flex flex-col justify-between w-11/12 h-24 px-2 py-1 mx-auto font-normal text-left rounded-md hover:px-1.5 hover:py-0.5 bg-bgTertiary hover:cursor-pointer"
+      className="flex flex-col justify-between w-11/12 h-28 px-2 py-1 mx-auto font-normal text-left rounded-md hover:px-1.5 hover:py-0.5 bg-bgTertiary hover:cursor-pointer"
       onClick={onClick}
     >
-      <div className="text-[20px]">{event.event_type}</div>
+      <div className="flex flex-row items-center justify-between">
+        <div className="text-[20px]">{event.event_type}</div>
+        <div className="text-sm">{eventAttendance?.length} / 32</div>
+      </div>
+
       <div>
         <div className="text-sm text-textAlt">
           {startTime ? format(startTime, "h:mma") : ""} -{" "}
           {endTime ? format(endTime, "h:mma") : ""}
           {/* {event.event_start_time} - {event.event_end_time} */}
         </div>
-        <div>{eventAttendance?.at(0)?.user_id}</div>
-        {/* <div className="text-sm text-textAlt">Eden Park</div> */}
+        <div className="text-sm text-textAlt">{event.location}</div>
       </div>
     </div>
   );

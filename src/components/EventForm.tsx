@@ -1,16 +1,18 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import Training from "./Training";
-import Game from "./Game";
+
 import { useForm } from "react-hook-form";
 import { useAddEvent } from "../hooks/useEvents";
-import { useDays } from "../hooks/useDays";
+import Button from "@mui/material/Button";
+import { DayState } from "../types/types";
 
-function CreateEvent() {
-  const urlLocation = useLocation();
-  const params = new URLSearchParams(urlLocation.search);
-  const eventType = params.get("eventType");
-  const date = params.get("date");
+interface EventFormProps {
+  selectedDay: DayState;
+  eventType: string;
+  isCreating?: boolean;
+}
+
+function EventForm({ selectedDay, eventType, isCreating }: EventFormProps) {
+  const date = selectedDay.date;
 
   const eventLabel = eventType === "training" ? "Training" : "Game";
   const { mutate, isPending } = useAddEvent(0);
@@ -37,13 +39,10 @@ function CreateEvent() {
   const baseInputStyles = "w-full h-14 p-2 text-xl border rounded text-bgDark";
 
   return (
-    <div className="grid justify-between grid-cols-5 gap-10">
-      <div className="flex items-center justify-center col-span-2 gap-6 px-4 text-primaryColor">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full rounded shadow-md"
-        >
-          <h2 className="mb-6 text-2xl font-bold text-center">
+    <div className="grid justify-between">
+      <div className="flex items-center justify-center col-span-2 gap-6 mx-auto rounded-lg shadow-md ">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          <h2 className="mb-6 text-3xl font-semibold text-center text-textAlt">
             Add a New {eventLabel} for {new Date(date!).toDateString()}
           </h2>
 
@@ -94,16 +93,17 @@ function CreateEvent() {
           </div>
 
           {location && (
-            <button
+            <Button
               type="submit"
-              className="w-full p-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+              variant="outlined"
+              // className="w-full p-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
             >
               Submit
-            </button>
+            </Button>
           )}
         </form>
       </div>
-      <div className="col-span-3">
+      {/* <div className="col-span-3">
         {eventType === "training" ? (
           <Training
             isDisabled={startTime === "" && endTime === "" && location === ""}
@@ -114,9 +114,9 @@ function CreateEvent() {
         ) : (
           <Game />
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
 
-export default CreateEvent;
+export default EventForm;

@@ -33,24 +33,10 @@ export type dayOfWeek =
   | "Saturday"
   | "Sunday";
 
-export type ReduxDayState = {
-  id: number;
-  date: string;
-  week_id: number;
-  day: string;
-  events: ReduxEventState[];
-};
-
-export type ReduxEventState = {
-  id: number;
-  event_start_time: string;
-  event_end_time: string;
-  event_type: string;
-  day_id: number;
-  is_morning: boolean;
+export type ReduxDayState = DayState & { events: ReduxEventState[] };
+export type ReduxEventState = EventState & {
   eventAttendance: EventAttendanceState[];
 };
-
 export const daysOfWeek = [
   { id: 0, abbreviation: "Mon", label: "Monday" },
   { id: 1, abbreviation: "Tue", label: "Tuesday" },
@@ -82,6 +68,7 @@ export type EventState = {
   event_end_time: string;
   event_type: string;
   day_id: number;
+  location: string;
   is_morning: boolean;
 };
 

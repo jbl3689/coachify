@@ -4,12 +4,15 @@ import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
 import { format, parse } from "date-fns";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
+import EventForm from "../EventForm";
 
 interface DayDetailsProps {
   selectedDay: DayState;
 }
 
 function DayDetails({ selectedDay }: DayDetailsProps) {
+  const [isFormDisplayed, setIsFormDisplayed] = useState<boolean>(false);
+
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
@@ -33,39 +36,65 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
 
   return (
     <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-dangerBase grid-rows-[auto_1fr]">
-      <div className="flex flex-row justify-between px-1 space-x-2 text-3xl tracking-wide text-left text-textBase">
-        <div>
-          <div className="font-semibold">
-            {selectedDay.day} | {format(new Date(selectedDay.date), "dd-MMM")}
-          </div>
-          {displayedEvent && (
-            <>
-              <div className="text-2xl text-textAlt">
-                {displayedEvent?.event_type} |{" "}
-                {startTime ? format(startTime, "h:mma") : ""} to{" "}
-                {endTime ? format(endTime, "h:mma") : ""}
+      {!isFormDisplayed ? (
+        <>
+          <div className="flex flex-row justify-between px-1 space-x-2 text-3xl tracking-wide text-left text-textBase">
+            <div>
+              <div className="font-semibold">
+                {selectedDay.day} |{" "}
+                {format(new Date(selectedDay.date), "dd-MMM")}
               </div>
-              <div className="text-2xl text-textAlt">Michael's Ave Reserve</div>
-            </>
-          )}
-        </div>
-        <div className="text-2xl text-textAlt">
-          {displayedEvent?.is_morning ? "Morning Event" : "Evening Event"}
-        </div>
-      </div>
-      <div className="flex flex-col justify-center flex-grow py-2">
-        {selectedDayEvents && selectedDayEvents?.length > 0 ? (
-          <div className="flex justify-between">
-            <div className="flex-1 p-2">Col-1</div>
-            <div className="flex-1 p-2">Col-2</div>
+              {displayedEvent && (
+                <>
+                  <div className="text-2xl text-textAlt">
+                    {displayedEvent?.event_type} |{" "}
+                    {startTime ? format(startTime, "h:mma") : ""} to{" "}
+                    {endTime ? format(endTime, "h:mma") : ""}
+                  </div>
+                  <div className="text-2xl text-textAlt">
+                    Michael's Ave Reserve
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="text-2xl text-textAlt">
+              {displayedEvent?.is_morning ? "Morning Event" : "Evening Event"}
+            </div>
           </div>
-        ) : (
-          <div className="flex flex-col w-4/6 gap-12 mx-auto">
-            <Button type="accent">Add a Training</Button>
-            <Button type="accent">Add a Game</Button>
+
+          <div className="flex flex-col justify-center flex-grow py-2">
+            {selectedDayEvents && selectedDayEvents?.length > 0 ? (
+              <div className="flex justify-between">
+                <div className="flex-1 p-2">Col-1</div>
+                <div className="flex-1 p-2">Col-2</div>
+              </div>
+            ) : (
+              <div className="flex flex-col w-4/6 gap-12 mx-auto">
+                {!isFormDisplayed && (
+                  <>
+                    <Button
+                      type="accent"
+                      onClick={() => setIsFormDisplayed(true)}
+                    >
+                      Add a Training
+                    </Button>
+                    <Button
+                      type="accent"
+                      to={`/event/create?eventType=game&date=${selectedDay.date}`}
+                    >
+                      Add a Game
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <div className="mt-4">
+          <EventForm selectedDay={selectedDay} eventType="training" />
+        </div>
+      )}
     </div>
   );
 }
