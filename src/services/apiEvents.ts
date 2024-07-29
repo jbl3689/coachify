@@ -1,3 +1,4 @@
+import { EventAttendanceState } from "../types/types";
 import supabase from "./supabase";
 
 export async function getEventsByDayId(dayId: number) {
@@ -26,4 +27,16 @@ export async function createEvent(newEvent: {
   }
 
   return data;
+}
+
+export async function getEventAttendanceById(eventId: number) {
+  const { data, error } = await supabase
+    .from("eventsAttendance")
+    .select("*")
+    .eq("event_id", eventId);
+  if (error) {
+    console.error(error);
+    throw new Error("Events could not be loaded");
+  }
+  return data as EventAttendanceState[];
 }

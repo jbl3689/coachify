@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useBreakpoint } from "use-breakpoint";
 
-import { BREAKPOINTS, DayState } from "../types/types";
+import { BREAKPOINTS, DayState, WeekState } from "../types/types";
 import { addDays } from "../utils/calendarLogic";
 import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
 import { updateWeek } from "../services/apiWeeks";

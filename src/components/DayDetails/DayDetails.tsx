@@ -5,11 +5,11 @@ import { format, parse } from "date-fns";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
-interface EventInfoProps {
+interface DayDetailsProps {
   selectedDay: DayState;
 }
 
-function EventInfo({ selectedDay }: EventInfoProps) {
+function DayDetails({ selectedDay }: DayDetailsProps) {
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
@@ -21,6 +21,8 @@ function EventInfo({ selectedDay }: EventInfoProps) {
   useEffect(() => {
     if (selectedDayEvents) setDisplayedEvent(selectedDayEvents.at(0));
   }, [selectedDayEvents]);
+
+  console.log(displayedEvent);
 
   const startTime = displayedEvent?.event_start_time
     ? parse(displayedEvent.event_start_time, "HH:mm:ss", new Date())
@@ -68,4 +70,4 @@ function EventInfo({ selectedDay }: EventInfoProps) {
   );
 }
 
-export default EventInfo;
+export default DayDetails;

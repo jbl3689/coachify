@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createEvent, getEventsByDayId } from "../services/apiEvents";
+import {
+  createEvent,
+  getEventAttendanceById,
+  getEventsByDayId,
+} from "../services/apiEvents";
 import toast from "react-hot-toast";
 
 export function useEvents(dayId: number) {
@@ -34,4 +38,18 @@ export function useAddEvent(dayId: number) {
   });
 
   return { mutate, isPending };
+}
+
+export function useEventAttendance(eventId: number) {
+  const {
+    data: eventAttendance,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["eventsAttendance", eventId],
+    queryFn: () => getEventAttendanceById(eventId),
+  });
+
+  return { eventAttendance, isLoading, error, refetch };
 }

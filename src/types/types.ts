@@ -38,7 +38,17 @@ export type ReduxDayState = {
   date: string;
   week_id: number;
   day: string;
-  events: EventState[];
+  events: ReduxEventState[];
+};
+
+export type ReduxEventState = {
+  id: number;
+  event_start_time: string;
+  event_end_time: string;
+  event_type: string;
+  day_id: number;
+  is_morning: boolean;
+  eventAttendance: EventAttendanceState[];
 };
 
 export const daysOfWeek = [
@@ -73,4 +83,11 @@ export type EventState = {
   event_type: string;
   day_id: number;
   is_morning: boolean;
+};
+
+export type EventAttendanceState = {
+  id: number;
+  isAttending: boolean;
+  event_id: number;
+  user_id: number;
 };

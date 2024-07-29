@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { setDayEvents } from "../../context/calendarSlice";
 import { useEvents } from "../../hooks/useEvents";
-import { BREAKPOINTS, DayState, EventState } from "../../types/types";
+import { BREAKPOINTS, DayState } from "../../types/types";
 
 import TickButton from "../../ui/TickButton";
 import FadeInContainer from "../../ui/FadeInContainer";

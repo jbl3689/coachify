@@ -8,11 +8,10 @@ import { addDays, startOfWeek } from "../utils/calendarLogic";
 import WeekView from "./WeekView";
 import Loader from "../ui/Loader";
 import WeekNavigator from "./WeekNavigator";
-import CalendarDayPreview from "./CalendarDayPreview";
 import { DayState, WeekState } from "../types/types";
 import { useDispatch } from "react-redux";
 import { moveWeeks, setWeekDate } from "../context/calendarSlice";
-import EventInfo from "./EventInfo/EventInfo";
+import DayDetails from "./DayDetails/DayDetails";
 
 function Calendar() {
   const dispatch = useDispatch();
@@ -67,10 +66,7 @@ function Calendar() {
   const handleNavigateToToday = async () => {
     setSelectedWeek(startOfWeek());
     await refetch();
-    // const currentWeek = await loadCurrentWeek(today);
-    // setWeekData(currentWeek);
-    // if (currentWeek) dispatch(setWeekDate(currentWeek));
-    // setSelectedDay(null);
+    dispatch(setWeekDate(startOfWeek()));
   };
 
   const handleDayClick = (day: DayState) => {
@@ -100,7 +96,7 @@ function Calendar() {
       )}
 
       <div className="w-5/6 px-4 py-3 mx-auto mt-6 transition-all ">
-        {selectedDay ? <EventInfo selectedDay={selectedDay} /> : null}
+        {selectedDay ? <DayDetails selectedDay={selectedDay} /> : null}
       </div>
     </>
   );
