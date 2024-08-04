@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-import { format } from "date-fns";
-import { useDispatch } from "react-redux";
+import { format } from 'date-fns';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { setDayEvents } from "../../context/calendarSlice";
-import { useEvents } from "../../hooks/useEvents";
-import { DayState } from "../../types/types";
-
-import FadeInContainer from "../../ui/FadeInContainer";
-import EventBox from "../EventBox";
+import { setDayEvents } from '../../context/calendarSlice';
+import { useEvents } from '../../hooks/useEvents';
+import { DayState } from '../../types/types';
+import FadeInContainer from '../../ui/FadeInContainer';
+import EventBox from '../EventBox';
 
 interface CalendarDayProps {
   day: DayState;

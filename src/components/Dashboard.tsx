@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { IoMdArrowDropdownCircle as DropdownArrow } from "react-icons/io";
-import { IoMdArrowDropupCircle as DropupArrow } from "react-icons/io";
+import { useState } from 'react';
+import {
+    IoMdArrowDropdownCircle as DropdownArrow, IoMdArrowDropupCircle as DropupArrow
+} from 'react-icons/io';
 
-import ClubDetails from "./ClubDetails";
-import Heading from "../ui/Heading";
-import AddUserForm from "./AddUserForm";
-import UserList from "./UserList";
+import Heading from '../ui/Heading';
+import AddUserForm from './AddUserForm';
+import ClubDetails from './ClubDetails';
+import UserList from './UserList';
 
 function Dashboard() {
   const [formShown, setFormShown] = useState<boolean>(true);

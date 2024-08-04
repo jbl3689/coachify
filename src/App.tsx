@@ -8,7 +8,6 @@ import Calendar from "./components/Calendar/Calendar";
 import AppLayout from "./ui/AppLayout";
 import Dashboard from "./components/Dashboard";
 import { Toaster } from "react-hot-toast";
-import CreateEvent from "./components/EventForm";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
       {
         path: "/calendar",
         element: <Calendar />,
-      },
-      {
-        path: "/event/create?",
-        element: <CreateEvent />,
       },
       {
         path: "/user",

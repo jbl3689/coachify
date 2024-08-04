@@ -1,5 +1,5 @@
-import React from "react";
-import SoccerLineUp from "react-soccer-lineup";
+import React from 'react';
+import SoccerLineUp from 'react-soccer-lineup';
 
 const home = {
   name: "POR",

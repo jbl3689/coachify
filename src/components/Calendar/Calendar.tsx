@@ -1,11 +1,10 @@
-import { useRef } from "react";
+import { useRef } from 'react';
 
-import WeekView from "../WeekView/WeekView";
-import Loader from "../../ui/Loader";
-import WeekNavigator from "../WeekNavigator";
-
-import DayDetails from "../DayDetails/DayDetails";
-import useLoadCalendar from "./hooks/useLoadCalendar";
+import Loader from '../../ui/Loader';
+import DayDetails from '../DayDetails/DayDetails';
+import WeekNavigator from '../WeekNavigator';
+import WeekView from '../WeekView/WeekView';
+import useLoadCalendar from './hooks/useLoadCalendar';
 
 function Calendar() {
   const eventDetailsRef = useRef<HTMLDivElement>(null);

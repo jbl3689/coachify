@@ -1,10 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {
-  ReduxAppState,
-  DayState,
-  ReduxDayState,
-  WeekState,
-} from "../types/types";
+import { createSlice } from '@reduxjs/toolkit';
+
+import { DayState, ReduxAppState, ReduxDayState, WeekState } from '../types/types';
 
 export type CalendarState = {
   prevWeek: {

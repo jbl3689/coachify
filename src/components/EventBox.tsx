@@ -1,7 +1,7 @@
-import React from "react";
-import { EventState } from "../types/types";
-import { useEventAttendance } from "../hooks/useEvents";
-import { format, parse } from "date-fns";
+import { format, parse } from 'date-fns';
+
+import { useEventAttendance } from '../hooks/useEvents';
+import { EventState } from '../types/types';
 
 interface EventBoxProps {
   event: EventState;

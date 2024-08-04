@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
-import { DayState, EventState, ReduxAppState } from "../../types/types";
-import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
-import { format, parse, set } from "date-fns";
-import { useEffect, useState } from "react";
-import Button from "../../ui/Button";
-import EventForm from "../EventForm";
+import { format, parse } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
+import { DayState, EventState, ReduxAppState } from '../../types/types';
+import Button from '../../ui/Button';
+import EventForm from '../EventForm';
 
 interface DayDetailsProps {
   selectedDay: DayState;

@@ -1,6 +1,7 @@
-import { useState } from "react";
-import TrainingActivitySlot from "./TrainingActivitySlot";
-import TraningActivity from "./TrainingActivity";
+import { useState } from 'react';
+
+import TraningActivity from './TrainingActivity';
+import TrainingActivitySlot from './TrainingActivitySlot';
 
 const activitiesList = [
   { id: 1, name: "Warm-up", duration: 5 },

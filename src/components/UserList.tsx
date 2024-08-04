@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import UserListRow from "./UserListRow";
-import { getUsers } from "../services/apiUsers";
+import { useQuery } from '@tanstack/react-query';
+
+import { getUsers } from '../services/apiUsers';
+import UserListRow from './UserListRow';
 
 function UserList() {
   const {

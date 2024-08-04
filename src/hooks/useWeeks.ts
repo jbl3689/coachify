@@ -1,15 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
-import {
-  UpdateWeekParams,
-  addWeek,
-  getWeeksByTeamId,
-  updateWeek,
-} from "../services/apiWeeks";
-import { getSelectedTeam } from "../context/teamSlice";
-import { WeekState } from "../features/calendar/types";
-import toast from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { getSelectedTeam } from '../context/teamSlice';
+import { addWeek, getWeeksByTeamId, updateWeek, UpdateWeekParams } from '../services/apiWeeks';
+import { WeekState } from '../types/types';
 
 export function useWeeks() {
   const teamId = useSelector(getSelectedTeam());

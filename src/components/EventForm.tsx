@@ -1,8 +1,9 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAddEvent } from "../hooks/useEvents";
-import { DayState } from "../types/types";
-import TimeSelect from "../ui/TimeSelect";
-import Input from "../ui/Input";
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { useAddEvent } from '../hooks/useEvents';
+import { DayState } from '../types/types';
+import Input from '../ui/Input';
+import TimeSelect from '../ui/TimeSelect';
 
 interface EventFormProps {
   selectedDay: DayState;

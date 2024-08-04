@@ -1,7 +1,6 @@
-import React from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
-import { EventFormInputs } from "../components/EventForm";
-import { ErrorMessage } from "@hookform/error-message";
+import { UseFormRegister } from 'react-hook-form';
+
+import { EventFormInputs } from '../components/EventForm';
 
 // Custom Time Select Component
 const generateTimeOptions = (interval: number, startTime?: number) => {

@@ -1,16 +1,12 @@
-import { useBreakpoint } from "use-breakpoint";
+import { useBreakpoint } from 'use-breakpoint';
 
-import { BREAKPOINTS, DayState, WeekState } from "../../types/types";
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import CalendarDay from "../CalendarDay/CalendarDay";
-import Loader from "../../ui/Loader";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import useLoadWeekView from "./hooks/useLoadWeekView";
+import { BREAKPOINTS, DayState, WeekState } from '../../types/types';
+import Loader from '../../ui/Loader';
+import CalendarDay from '../CalendarDay/CalendarDay';
+import useLoadWeekView from './hooks/useLoadWeekView';
 
 interface WeekViewProps {
   weekData: WeekState;
