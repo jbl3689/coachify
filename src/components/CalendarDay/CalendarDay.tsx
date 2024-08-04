@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { format } from "date-fns";
 import { useDispatch } from "react-redux";
 
 import { setDayEvents } from "../../context/calendarSlice";
 import { useEvents } from "../../hooks/useEvents";
-import { BREAKPOINTS, DayState } from "../../types/types";
+import { DayState } from "../../types/types";
 
-import TickButton from "../../ui/TickButton";
 import FadeInContainer from "../../ui/FadeInContainer";
 import EventBox from "../EventBox";
-import { useBreakpoint } from "use-breakpoint";
 
 interface CalendarDayProps {
   day: DayState;
@@ -19,8 +17,6 @@ interface CalendarDayProps {
 
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const dispatch = useDispatch();
-  const [totalGoing, setTotalGoing] = useState<number>(14);
-  const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
   const { events, isLoading, error, refetch } = useEvents(day.id || 0);
 

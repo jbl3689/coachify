@@ -70,7 +70,9 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
   };
 
   const handleDayClick = (day: DayState) => {
-    setSelectedDay(day);
+    if (selectedDay?.id === day.id) {
+      setSelectedDay(null);
+    } else setSelectedDay(day);
   };
 
   return {

@@ -1,46 +1,62 @@
 import React from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { EventFormInputs } from "../components/EventForm";
+import { ErrorMessage } from "@hookform/error-message";
 
-const generateTimeOptions = (interval: number) => {
+// Custom Time Select Component
+const generateTimeOptions = (interval: number, startTime?: number) => {
   const times = [];
-  // Start at midnight
   const date = new Date();
-  date.setHours(0, 0, 0, 0); // Reset to midnight
+  console.log(startTime);
 
-  // Calculate total minutes in a day
-  const totalMinutesInDay = 24 * 60;
-  let minutesSinceMidnight = 0;
-
-  // Loop to generate times
-  while (minutesSinceMidnight < totalMinutesInDay) {
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    times.push(`${hours}:${minutes}`);
-    date.setMinutes(date.getMinutes() + interval); // Increment by interval
-    minutesSinceMidnight += interval; // Update minutes since midnight
+  if (startTime) {
+    // If startTime is provided, set date to that time
+    date.setTime(startTime);
+    // Calculate end time as 3 hours after start time
+    const endTime = new Date(date.getTime() + 3 * 60 * 60 * 1000);
+    // Loop to generate times until 3 hours after start time
+    while (date <= endTime) {
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      times.push(`${hours}:${minutes}`);
+      date.setMinutes(date.getMinutes() + interval); // Increment by interval
+    }
+  } else {
+    // Otherwise, start at midnight
+    date.setHours(0, 0, 0, 0);
+    // Set end time to the end of the day
+    const endTime = new Date(date);
+    endTime.setHours(23, 59, 59, 999);
+    // Loop to generate times for the whole day
+    while (date <= endTime) {
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      times.push(`${hours}:${minutes}`);
+      date.setMinutes(date.getMinutes() + interval); // Increment by interval
+    }
   }
 
   return times;
 };
 
-// Custom Time Select Component
 interface TimeSelectProps {
-  id: string;
+  id: "event_start_time" | "event_end_time";
   label: string;
-  value: string;
   register: UseFormRegister<EventFormInputs>;
+  startTime?: number;
   isRequired: boolean;
-  interval?: number; // Optional prop to customize interval
+  isDisabled?: boolean;
+  interval?: number;
 }
 
 const TimeSelect = ({
   id,
   label,
-  value,
   register,
   isRequired,
-  interval = 15, // Default to 15-minute intervals
+  startTime,
+  isDisabled = false,
+  interval = 30,
 }: TimeSelectProps) => {
   const timeOptions = generateTimeOptions(interval);
   console.log(timeOptions[timeOptions.length / 2]);
@@ -51,13 +67,12 @@ const TimeSelect = ({
         {label}
         <select
           id={id}
-          value={value}
-          // onChange={(e) => onChange(e.target.value)}
           className="block w-full mt-1 text-black rounded-md form-select"
           {...register(
             id,
             isRequired ? { required: "This field is required" } : {}
           )}
+          disabled={isDisabled}
         >
           {timeOptions.map((time) => (
             <option key={time} value={time}>

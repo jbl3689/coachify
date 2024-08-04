@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { DayState, EventState, ReduxAppState } from "../../types/types";
 import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
-import { format, parse } from "date-fns";
+import { format, parse, set } from "date-fns";
 import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import EventForm from "../EventForm";
@@ -11,7 +11,7 @@ interface DayDetailsProps {
 }
 
 function DayDetails({ selectedDay }: DayDetailsProps) {
-  const [isFormDisplayed, setIsFormDisplayed] = useState<boolean>(false);
+  const [formEventType, setFormEventType] = useState<string | null>(null);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
@@ -26,7 +26,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
   }, [selectedDayEvents]);
 
   useEffect(() => {
-    setIsFormDisplayed(false);
+    setFormEventType(null);
   }, [selectedDay]);
 
   console.log(displayedEvent);
@@ -40,7 +40,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
 
   return (
     <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-accentBase grid-rows-[auto_1fr]">
-      {!isFormDisplayed ? (
+      {!formEventType ? (
         <>
           <div className="flex flex-row justify-between px-1 space-x-2 text-3xl tracking-wide text-left text-textBase">
             <div>
@@ -74,17 +74,17 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
               </div>
             ) : (
               <div className="flex flex-col w-1/2 gap-12 mx-auto">
-                {!isFormDisplayed && (
+                {!formEventType && (
                   <>
                     <Button
                       type="accent"
-                      onClick={() => setIsFormDisplayed(true)}
+                      onClick={() => setFormEventType("Training")}
                     >
                       Add a Training
                     </Button>
                     <Button
                       type="accent"
-                      to={`/event/create?eventType=game&date=${selectedDay.date}`}
+                      onClick={() => setFormEventType("Game")}
                     >
                       Add a Game
                     </Button>
@@ -95,7 +95,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
           </div>
         </>
       ) : (
-        <EventForm selectedDay={selectedDay} eventType="training" />
+        <EventForm selectedDay={selectedDay} eventType={formEventType ?? ""} />
       )}
     </div>
   );
