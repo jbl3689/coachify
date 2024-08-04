@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 
-import { getCurrentWeek, useAddWeek, useWeeks } from "../hooks/useWeeks";
+import { getCurrentWeek, useAddWeek, useWeeks } from "../../hooks/useWeeks";
 
-import { addDays, startOfWeek } from "../utils/calendarLogic";
+import { addDays, startOfWeek } from "../../utils/calendarLogic";
 
-import WeekView from "./WeekView";
-import Loader from "../ui/Loader";
-import WeekNavigator from "./WeekNavigator";
-import { DayState, WeekState } from "../types/types";
+import WeekView from "../WeekView";
+import Loader from "../../ui/Loader";
+import WeekNavigator from "../WeekNavigator";
+import { DayState, WeekState } from "../../types/types";
 import { useDispatch } from "react-redux";
-import { moveWeeks, setWeekDate } from "../context/calendarSlice";
-import DayDetails from "./DayDetails/DayDetails";
+import { moveWeeks, setWeekDate } from "../../context/calendarSlice";
+import DayDetails from "../DayDetails/DayDetails";
 
 function Calendar() {
   const dispatch = useDispatch();

@@ -25,6 +25,10 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
     if (selectedDayEvents) setDisplayedEvent(selectedDayEvents.at(0));
   }, [selectedDayEvents]);
 
+  useEffect(() => {
+    setIsFormDisplayed(false);
+  }, [selectedDay]);
+
   console.log(displayedEvent);
 
   const startTime = displayedEvent?.event_start_time
@@ -35,7 +39,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
     : null;
 
   return (
-    <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-dangerBase grid-rows-[auto_1fr]">
+    <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-accentBase grid-rows-[auto_1fr]">
       {!isFormDisplayed ? (
         <>
           <div className="flex flex-row justify-between px-1 space-x-2 text-3xl tracking-wide text-left text-textBase">

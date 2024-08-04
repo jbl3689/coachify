@@ -38,7 +38,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   return (
     <div
       onClick={onClick}
-      className="grid h-[400px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border-amber-100 text-stone-200 hover:font-semibold bg-secondaryBase w-11/12 mx-auto cursor-pointer"
+      className={`grid h-[600px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} text-stone-200 hover:font-semibold w-11/12 mx-auto cursor-pointer`}
     >
       <div className="text-left">
         <div className="w-full">{day.day}</div>

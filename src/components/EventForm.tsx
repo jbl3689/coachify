@@ -36,43 +36,45 @@ function EventForm({ selectedDay, eventType, isCreating }: EventFormProps) {
     mutate(data);
   };
 
-  const baseInputStyles = "w-full h-14 p-2 text-xl border rounded text-bgDark";
+  const baseInputStyles = "w-5/6 h-14 p-2 text-xl border rounded text-bgDark";
 
   return (
     <div className="grid justify-between">
-      <div className="flex items-center justify-center col-span-2 gap-6 mx-auto rounded-lg shadow-md ">
+      <div className="flex items-center justify-center col-span-2 gap-6 p-4 mx-auto rounded-lg bg-bgTertiary">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-          <h2 className="mb-6 text-3xl font-semibold text-center text-textAlt">
+          <h2 className="mb-6 text-3xl font-semibold text-center text-textPrimary">
             Add a New {eventLabel} for {new Date(date!).toDateString()}
           </h2>
 
-          <div className="">
-            <label className="block mb-2 ">
-              Select start time
-              <input
-                type="time"
-                value={startTime}
-                className={baseInputStyles}
-                id="event_start_time"
-                {...register("event_start_time", {
-                  required: "This field is required",
-                })}
-              />
-            </label>
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2 ">
-              Select end time
-              <input
-                type="time"
-                value={endTime}
-                className={baseInputStyles}
-                id="event_end_time"
-                {...register("event_end_time", {
-                  required: "This field is required",
-                })}
-              />
-            </label>
+          <div className="flex flex-row">
+            <div className="">
+              <label className="block mb-2 ">
+                Select start time
+                <input
+                  type="time"
+                  value={startTime}
+                  className={baseInputStyles}
+                  id="event_start_time"
+                  {...register("event_start_time", {
+                    required: "This field is required",
+                  })}
+                />
+              </label>
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 ">
+                Select end time
+                <input
+                  type="time"
+                  value={endTime}
+                  className={baseInputStyles}
+                  id="event_end_time"
+                  {...register("event_end_time", {
+                    required: "This field is required",
+                  })}
+                />
+              </label>
+            </div>
           </div>
 
           <div

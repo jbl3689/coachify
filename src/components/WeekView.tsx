@@ -134,10 +134,10 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       return;
 
     const newVisibleRange = visibleRange.map((i) => i + (isNext ? 1 : -1));
-    console.log(newVisibleRange);
     setVisibleDays(weekDaysData.slice(newVisibleRange[0], newVisibleRange[1]));
     setVisibleRange(newVisibleRange);
   };
+  console.log(breakpoint);
 
   return (
     <div className="flex flex-row">
@@ -151,7 +151,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       )}
 
       <div
-        className={`grid grid-cols-${visibleDays.length} gap-2 py-4 rounded-xl mx-auto w-full`}
+        className={`grid grid-rows-${visibleDays.length} grid-flow-col gap-2 py-4 rounded-xl mx-auto w-full`}
       >
         {weekDaysLoaded ? (
           visibleDays.map((day) => (
