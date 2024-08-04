@@ -41,3 +41,7 @@
   --color-danger-base: #f11658;
   --color-danger-light: #d5577d;
 }
+
+input {
+  color: black;
+}

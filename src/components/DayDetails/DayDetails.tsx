@@ -73,7 +73,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
                 <div className="flex-1 p-2">Col-2</div>
               </div>
             ) : (
-              <div className="flex flex-col w-4/6 gap-12 mx-auto">
+              <div className="flex flex-col w-1/2 gap-12 mx-auto">
                 {!isFormDisplayed && (
                   <>
                     <Button
@@ -95,9 +95,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
           </div>
         </>
       ) : (
-        <div className="mt-4">
-          <EventForm selectedDay={selectedDay} eventType="training" />
-        </div>
+        <EventForm selectedDay={selectedDay} eventType="training" />
       )}
     </div>
   );

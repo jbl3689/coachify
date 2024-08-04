@@ -1,38 +1,26 @@
-import { useEffect, useState } from "react";
-import { useBreakpoint } from "use-breakpoint";
-
-import { BREAKPOINTS, DayState, WeekState } from "../types/types";
-import { addDays } from "../utils/calendarLogic";
-import { getDayObject, useAddDay, useDays } from "../hooks/useDays";
-import { updateWeek } from "../services/apiWeeks";
-
-import CalendarDay from "./CalendarDay/CalendarDay";
-import Loader from "../ui/Loader";
+import { useState, useEffect } from "react";
+import { getDayObject, useAddDay, useDays } from "../../../hooks/useDays";
+import { BREAKPOINTS, DayState, WeekState } from "../../../types/types";
 import { useDispatch } from "react-redux";
-import { setWeekDays } from "../context/calendarSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { useBreakpoint } from "use-breakpoint";
+import { addDays } from "../../../utils/calendarLogic";
+import { updateWeek } from "../../../services/apiWeeks";
+import { setWeekDays } from "../../../context/calendarSlice";
 
-interface WeekViewProps {
+interface LoadWeekViewProps {
   weekData: WeekState;
-  selectedDay: number;
-  handleDayClick: (day: DayState) => void;
 }
 
-function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
+const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
   const dispatch = useDispatch();
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
-  const [isPending, setIsPending] = useState(false);
-  const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
-  const weekDaysLoaded = !weekDaysData.some((day) => day === undefined);
-
-  const [visibleDays, setVisibleDays] = useState<DayState[]>([]);
-  const [visibleRange, setVisibleRange] = useState<number[]>([0, 6]);
 
   const { createDay, isCreatingDay } = useAddDay();
+  const [visibleDays, setVisibleDays] = useState<DayState[]>([]);
+  const [visibleRange, setVisibleRange] = useState<number[]>([0, 6]);
+  const [isPending, setIsPending] = useState(isCreatingDay || false);
+  const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
+  const weekDaysLoaded = !weekDaysData.some((day) => day === undefined);
 
   const {
     days: daysData,
@@ -137,47 +125,14 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
     setVisibleDays(weekDaysData.slice(newVisibleRange[0], newVisibleRange[1]));
     setVisibleRange(newVisibleRange);
   };
-  console.log(breakpoint);
 
-  return (
-    <div className="flex flex-row">
-      {breakpoint !== "desktop" && (
-        <span
-          className={`text-3xl font-semiBold my-auto mr-1 ${visibleRange[0] === 0 ? "text-stone-600" : "cursor-pointer hover:text-accentLight"}`}
-          onClick={() => handleDayNavigate(false)}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </span>
-      )}
+  return {
+    visibleDays,
+    visibleRange,
+    weekDaysLoaded,
+    isPending,
+    handleDayNavigate,
+  };
+};
 
-      <div
-        className={`grid grid-rows-${visibleDays.length} grid-flow-col gap-2 py-4 rounded-xl mx-auto w-full`}
-      >
-        {weekDaysLoaded ? (
-          visibleDays.map((day) => (
-            <CalendarDay
-              key={day.id}
-              day={day}
-              isSelected={day.id === selectedDay}
-              onClick={() => handleDayClick(day)}
-            />
-          ))
-        ) : (
-          <div className="flex justify-center align-middle">
-            <Loader />
-          </div>
-        )}
-      </div>
-      {breakpoint !== "desktop" && (
-        <span
-          className={`text-3xl font-semiBold my-auto ml-1 ${visibleRange[0] === 7 ? "text-stone-600" : "cursor-pointer hover:text-accentLight"}`}
-          onClick={() => handleDayNavigate(true)}
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </span>
-      )}
-    </div>
-  );
-}
-
-export default WeekView;
+export default useLoadWeekView;
