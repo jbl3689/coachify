@@ -1,4 +1,9 @@
-export const BREAKPOINTS = { mobile: 0, tablet: 768, desktop: 1280 };
+export const BREAKPOINTS = {
+  mobile: 0,
+  mobileLarge: 500,
+  tablet: 768,
+  desktop: 1280,
+};
 
 export interface ReduxAppState {
   calendar: ReduxCalendarState;
@@ -32,6 +37,16 @@ export type dayOfWeek =
   | "Friday"
   | "Saturday"
   | "Sunday";
+
+export const dayOfWeekAbbreviations: { [key in dayOfWeek]: string } = {
+  Monday: "Mon",
+  Tuesday: "Tue",
+  Wednesday: "Wed",
+  Thursday: "Thu",
+  Friday: "Fri",
+  Saturday: "Sat",
+  Sunday: "Sun",
+};
 
 export type ReduxDayState = DayState & { events: ReduxEventState[] };
 export type ReduxEventState = EventState & {

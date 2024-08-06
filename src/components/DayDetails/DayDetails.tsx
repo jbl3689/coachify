@@ -1,9 +1,12 @@
 import { format, parse } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useBreakpoint } from 'use-breakpoint';
 
 import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
-import { DayState, EventState, ReduxAppState } from '../../types/types';
+import {
+    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
+} from '../../types/types';
 import Button from '../../ui/Button';
 import EventForm from '../EventForm';
 
@@ -12,25 +15,43 @@ interface DayDetailsProps {
 }
 
 function DayDetails({ selectedDay }: DayDetailsProps) {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+
   const [formEventType, setFormEventType] = useState<string | null>(null);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
 
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | undefined>(
-    selectedDayEvents?.at(0) ?? undefined
-  );
+  console.log(selectedDayEvents?.at(0));
+
+  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
+  const [isMorning, setIsMorning] = useState<boolean>(true);
 
   useEffect(() => {
-    if (selectedDayEvents) setDisplayedEvent(selectedDayEvents.at(0));
-  }, [selectedDayEvents]);
+    if (selectedDayEvents)
+      setDisplayedEvent(
+        selectedDayEvents.find((event) => event.is_morning === isMorning) ??
+          null
+      );
+  }, [isMorning, selectedDayEvents]);
 
   useEffect(() => {
     setFormEventType(null);
+    setIsMorning(true);
   }, [selectedDay]);
 
-  console.log(displayedEvent);
+  const handleChangeTime = () => {
+    setIsMorning(!isMorning);
+    if (selectedDayEvents) {
+      setDisplayedEvent(
+        selectedDayEvents.find((event) => event.is_morning === isMorning) ??
+          null
+      );
+    }
+  };
+
+  console.log(selectedDayEvents);
 
   const startTime = displayedEvent?.event_start_time
     ? parse(displayedEvent.event_start_time, "HH:mm:ss", new Date())
@@ -43,32 +64,41 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
     <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-accentBase grid-rows-[auto_1fr]">
       {!formEventType ? (
         <>
-          <div className="flex flex-row justify-between px-1 space-x-2 text-3xl tracking-wide text-left text-textBase">
-            <div>
-              <div className="font-semibold">
-                {selectedDay.day} |{" "}
-                {format(new Date(selectedDay.date), "dd-MMM")}
+          <div className="flex flex-row justify-between px-1 space-x-2 tracking-wide text-left text-textBase">
+            <div className="">
+              <div className="text-2xl font-semibold md:text-3xl">
+                {breakpoint === "mobile"
+                  ? dayOfWeekAbbreviations[selectedDay.day as dayOfWeek]
+                  : selectedDay.day}{" "}
+                | {format(new Date(selectedDay.date), "dd-MMM")}
               </div>
               {displayedEvent && (
-                <>
-                  <div className="text-2xl text-textAlt">
+                <div className="text-xl md:text-2xl">
+                  <div className="text-textAlt">
                     {displayedEvent?.event_type} |{" "}
                     {startTime ? format(startTime, "h:mma") : ""} to{" "}
                     {endTime ? format(endTime, "h:mma") : ""}
                   </div>
-                  <div className="text-2xl text-textAlt">
-                    Michael's Ave Reserve
-                  </div>
-                </>
+                  <div className="text-textAlt">Michael's Ave Reserve</div>
+                </div>
               )}
             </div>
-            <div className="text-2xl text-textAlt">
-              {displayedEvent?.is_morning ? "Morning Event" : "Evening Event"}
+            <div className="text-textAlt ">
+              <button
+                className="px-8 py-2 rounded-tl-md rounded-bl-md rounded-br-md text-accentBase bg-primaryBase hover:bg-primaryLight"
+                onClick={handleChangeTime}
+              >
+                {isMorning ? "Go to Evening" : "Go to Morning"}
+              </button>
             </div>
           </div>
 
-          <div className="flex flex-col justify-center flex-grow py-2">
-            {selectedDayEvents && selectedDayEvents?.length > 0 ? (
+          <div
+            className={`${
+              breakpoint === "mobile" ? "flex-row" : "flex-col"
+            } flex justify-center flex-grow py-2`}
+          >
+            {displayedEvent ? (
               <div className="flex justify-between">
                 <div className="flex-1 p-2">Col-1</div>
                 <div className="flex-1 p-2">Col-2</div>

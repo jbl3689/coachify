@@ -104,6 +104,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
           setVisibleRange([1, 6]);
           break;
         case "mobile":
+        case "mobileLarge":
           setVisibleDays(weekDaysData.slice(2, 5));
           setVisibleRange([2, 5]);
           break;

@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { setDayEvents } from '../../context/calendarSlice';
 import { useEvents } from '../../hooks/useEvents';
-import { DayState } from '../../types/types';
-import FadeInContainer from '../../ui/FadeInContainer';
+import { dayOfWeek, dayOfWeekAbbreviations, DayState } from '../../types/types';
 import EventBox from '../EventBox';
 
 interface CalendarDayProps {
@@ -19,12 +18,21 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
 
   const { events, isLoading, error, refetch } = useEvents(day.id || 0);
 
+  const eventDate = new Date(day.date);
+  const currentDate = new Date();
+
+  // Resetting hours, minutes, seconds, and milliseconds for accurate comparison
+  eventDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+
+  const isToday = eventDate.getTime() === currentDate.getTime();
+
   useEffect(() => {
     if (events && events?.length > 0) {
       dispatch(
         setDayEvents({
           dayDate: day.date,
-          events: events[0],
+          events: events,
         })
       );
     }
@@ -33,54 +41,49 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   return (
     <div
       onClick={onClick}
-      className={`grid h-[600px] grid-rows-4 p-2 text-2xl transition-all rounded-md shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} text-stone-200 hover:font-semibold w-11/12 mx-auto cursor-pointer`}
+      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-4 p-2 text-2xl transition-all rounded-md shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} text-stone-200 hover:font-semibold w-11/12 mx-auto cursor-pointer`}
     >
       <div className="text-left">
-        <div className="w-full">{day.day}</div>
-        <div className="w-full text-lg font-light text-textAlt">
+        <div
+          className={`w-full ${isToday ? "text-accentLight" : "text-textBase"} text-3xl font-semibold`}
+        >
+          {dayOfWeekAbbreviations[day.day as dayOfWeek]}
+        </div>
+        <div className="text-lg font-light text-textAlt">
           {format(new Date(day.date), "dd-MMM")}
         </div>
+        <div className="mt-1 mr-16 border-b-2 border-textAlt border-spacing-8"></div>
       </div>
 
-      <FadeInContainer key={day.id}>
-        <div className={`flex flex-col justify-between w-full gap-2`}>
-          <div className="grid grid-rows-subgrid">
-            <div className="w-full row-start-2 py-2 mx-auto min-h-24">
-              {events
-                ?.filter((event) => event.is_morning)
+      {events && (
+        <div className="flex flex-col gap-12 justify-normal">
+          <div className="min-h-28">
+            {events?.filter((event) => event.is_morning).length > 0 ? (
+              events
+                .filter((event) => event.is_morning)
                 .map((event) => (
                   <EventBox key={event.id} event={event} onClick={onClick} />
-                ))}
-            </div>
+                ))
+            ) : (
+              <p>No morning</p>
+            )}
+          </div>
 
-            {/* <div className="row-start-3 border-b-2"></div> */}
+          <div className="text-sm text-left text-textAlt">- 12pm -</div>
 
-            <div className="w-full row-start-4 mx-auto min-h-24">
-              {events
-                ?.filter((event) => !event.is_morning)
+          <div className="min-h-28">
+            {events?.filter((event) => !event.is_morning).length > 0 ? (
+              events
+                .filter((event) => !event.is_morning)
                 .map((event) => (
                   <EventBox key={event.id} event={event} onClick={onClick} />
-                ))}
-            </div>
-            {/* <p className="text-xl">{totalGoing} / 22 going</p> */}
-
-            <div className="flex items-stretch row-start-5 justify-stretch">
-              {/* {isSelected && (
-                <div className="flex items-end justify-center flex-grow ">
-                  <TickButton
-                    onClick={() => setTotalGoing(totalGoing + 1)}
-                    type="success"
-                  />
-                  <TickButton
-                    onClick={() => setTotalGoing(totalGoing - 1)}
-                    type="fail"
-                  />
-                </div>
-              )} */}
-            </div>
+                ))
+            ) : (
+              <p>No evening</p>
+            )}
           </div>
         </div>
-      </FadeInContainer>
+      )}
     </div>
   );
 }
