@@ -1,14 +1,20 @@
-import { format, parse } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useBreakpoint } from 'use-breakpoint';
+import { format, parse } from "date-fns";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useBreakpoint } from "use-breakpoint";
 
-import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
+import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
 import {
-    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
-} from '../../types/types';
-import Button from '../../ui/Button';
-import EventForm from '../EventForm';
+  BREAKPOINTS,
+  dayOfWeek,
+  dayOfWeekAbbreviations,
+  DayState,
+  EventState,
+  ReduxAppState,
+} from "../../types/types";
+import Button from "../../ui/Button";
+import EventForm from "../EventForm";
+import { useEventAttendance } from "../../hooks/useEvents";
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -18,15 +24,14 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
   const [formEventType, setFormEventType] = useState<string | null>(null);
+  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
+  const [isMorning, setIsMorning] = useState<boolean>(true);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
 
-  console.log(selectedDayEvents?.at(0));
-
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
-  const [isMorning, setIsMorning] = useState<boolean>(true);
+  const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
 
   useEffect(() => {
     if (selectedDayEvents)
@@ -50,8 +55,6 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
       );
     }
   };
-
-  console.log(selectedDayEvents);
 
   const startTime = displayedEvent?.event_start_time
     ? parse(displayedEvent.event_start_time, "HH:mm:ss", new Date())
@@ -100,7 +103,12 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
           >
             {displayedEvent ? (
               <div className="flex justify-between">
-                <div className="flex-1 p-2">Col-1</div>
+                <div className="flex-1 p-2">
+                  <div>Attendes:</div>
+                  <div>
+                    {eventAttendance?.map((user) => <div>{user.id}</div>)}
+                  </div>
+                </div>
                 <div className="flex-1 p-2">Col-2</div>
               </div>
             ) : (
@@ -126,7 +134,11 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
           </div>
         </>
       ) : (
-        <EventForm selectedDay={selectedDay} eventType={formEventType ?? ""} />
+        <EventForm
+          selectedDay={selectedDay}
+          eventType={formEventType ?? ""}
+          setFormEventType={setFormEventType}
+        />
       )}
     </div>
   );

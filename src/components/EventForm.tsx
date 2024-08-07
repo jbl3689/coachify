@@ -1,13 +1,15 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import { useAddEvent } from '../hooks/useEvents';
-import { DayState } from '../types/types';
-import Input from '../ui/Input';
-import TimeSelect from '../ui/TimeSelect';
+import { useAddEvent } from "../hooks/useEvents";
+import { DayState } from "../types/types";
+import Input from "../ui/Input";
+import TimeSelect from "../ui/TimeSelect";
+import { Dispatch, SetStateAction } from "react";
 
 interface EventFormProps {
   selectedDay: DayState;
   eventType: string;
+  setFormEventType: Dispatch<SetStateAction<string | null>>;
   isCreating?: boolean;
 }
 
@@ -17,7 +19,11 @@ export type EventFormInputs = {
   location: string;
 };
 
-function EventForm({ selectedDay, eventType }: EventFormProps) {
+function EventForm({
+  selectedDay,
+  eventType,
+  setFormEventType,
+}: EventFormProps) {
   const date = selectedDay.date;
 
   const { mutate } = useAddEvent(0);
@@ -65,14 +71,15 @@ function EventForm({ selectedDay, eventType }: EventFormProps) {
     });
   };
 
-  const baseInputStyles = "w-5/6 h-14 p-2 text-xl border rounded text-bgDark";
-
   return (
     <div className="grid justify-between">
       <div className="flex items-center justify-center col-span-2 gap-6 p-4 mx-auto rounded-lg ">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="mb-6 text-3xl font-semibold text-center text-textPrimary">
-            Add a New {eventType} for {new Date(date!).toDateString()}
+            Add a new {eventType} for{" "}
+            <span className="text-accentLight">
+              {new Date(date!).toDateString()}
+            </span>
           </h2>
 
           <div className="flex flex-row justify-evenly">
@@ -94,10 +101,10 @@ function EventForm({ selectedDay, eventType }: EventFormProps) {
 
           <div className={"mb-4 transition-all duration-[1.5s] opacity-100"}>
             <label className="block mb-2 ">
-              Select location
+              Enter location
               <Input
                 type="text"
-                className={baseInputStyles}
+                className="w-5/6"
                 id="location"
                 {...register("location", {
                   required: "This field is required",
@@ -112,26 +119,23 @@ function EventForm({ selectedDay, eventType }: EventFormProps) {
             {errors.location && <p>Location is required!</p>}
           </div>
 
-          <button
-            className="w-4/6 p-2 mt-4 text-white rounded-md bg-bgTertiary hover:bg-blue-600"
-            type="submit"
-          >
-            Submit
-          </button>
+          <div className="flex flex-row gap-4 w-5/6 mx-auto">
+            <button
+              className="w-2/6 p-2 mt-4 mx-auto text-white rounded-md bg-dangerBase hover:bg-accentBase"
+              type="button"
+              onClick={() => setFormEventType(null)}
+            >
+              Back
+            </button>
+            <button
+              className="w-4/6 mx-auto p-2 mt-4 text-white rounded-md bg-bgTertiary hover:bg-accentBase"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
-      {/* <div className="col-span-3">
-        {eventType === "training" ? (
-          <Training
-            isDisabled={startTime === "" && endTime === "" && location === ""}
-            startTime={eventData.startTime}
-            endTime={eventData.endTime}
-            location={eventData.location}
-          />
-        ) : (
-          <Game />
-        )}
-      </div> */}
     </div>
   );
 }

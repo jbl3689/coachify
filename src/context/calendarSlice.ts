@@ -1,6 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-import { DayState, ReduxAppState, ReduxDayState, WeekState } from '../types/types';
+import {
+  DayState,
+  ReduxAppState,
+  ReduxDayState,
+  WeekState,
+} from "../types/types";
 
 export type CalendarState = {
   prevWeek: {
@@ -58,7 +63,7 @@ const calendarSlice = createSlice({
       );
       if (dayIndex !== -1) {
         // Update the events for the found day.
-        state.currWeek.days[dayIndex].events.push(events);
+        state.currWeek.days[dayIndex].events = events;
       }
     },
     moveWeeks: (state, action) => {

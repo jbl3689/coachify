@@ -1,7 +1,7 @@
-import { format, parse } from 'date-fns';
+import { format, parse } from "date-fns";
 
-import { useEventAttendance } from '../hooks/useEvents';
-import { EventState } from '../types/types';
+import { useEventAttendance } from "../hooks/useEvents";
+import { EventState } from "../types/types";
 
 interface EventBoxProps {
   event: EventState;
@@ -20,7 +20,7 @@ function EventBox({ event, onClick }: EventBoxProps) {
 
   return (
     <div
-      className="flex flex-col justify-between w-11/12 h-28 px-2 py-1 mx-auto font-normal text-left rounded-md hover:px-1.5 hover:py-0.5 bg-bgTertiary hover:cursor-pointer"
+      className="flex flex-col justify-between w-11/12 h-28 px-2 py-1 mx-auto font-normal text-left rounded-md hover:px-1.5 hover:py-0.5 bg-secondaryLight border-textBase border-4 border-double hover:cursor-pointer"
       onClick={onClick}
     >
       <div className="flex flex-row items-center justify-between">
