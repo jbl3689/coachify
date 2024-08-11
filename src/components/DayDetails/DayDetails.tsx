@@ -1,20 +1,15 @@
-import { format, parse } from "date-fns";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useBreakpoint } from "use-breakpoint";
+import { format, parse } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useBreakpoint } from 'use-breakpoint';
 
-import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
+import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
+import { useEventAttendance } from '../../hooks/useEvents';
 import {
-  BREAKPOINTS,
-  dayOfWeek,
-  dayOfWeekAbbreviations,
-  DayState,
-  EventState,
-  ReduxAppState,
-} from "../../types/types";
-import Button from "../../ui/Button";
-import EventForm from "../EventForm";
-import { useEventAttendance } from "../../hooks/useEvents";
+    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
+} from '../../types/types';
+import Button from '../../ui/Button';
+import EventForm from '../EventForm';
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -24,12 +19,18 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
   const [formEventType, setFormEventType] = useState<string | null>(null);
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
-  const [isMorning, setIsMorning] = useState<boolean>(true);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
+  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(
+    selectedDayEvents?.[0] ?? null
+  );
+  const [isMorning, setIsMorning] = useState<boolean>(
+    displayedEvent?.is_morning ?? true
+  );
+
+  console.log("initial selectedDayEvents", selectedDayEvents);
 
   const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
 
@@ -91,7 +92,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
                 className="px-8 py-2 rounded-tl-md rounded-bl-md rounded-br-md text-accentBase bg-primaryBase hover:bg-primaryLight"
                 onClick={handleChangeTime}
               >
-                {isMorning ? "Go to Evening" : "Go to Morning"}
+                Event {isMorning ? "1" : "2"} of 2
               </button>
             </div>
           </div>
