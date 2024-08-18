@@ -1,7 +1,7 @@
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Button from './ui/ButtonBeta';
+import { Button } from './ui/button';
 import FadeInContainer from './ui/FadeInContainer';
 
 interface WeekNavigatorProps {
@@ -29,7 +29,7 @@ function WeekNavigator({
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
-        <Button type="primary" onClick={handleNavigateToToday}>
+        <Button type="button" variant="default" onClick={handleNavigateToToday}>
           Today
         </Button>
         <span

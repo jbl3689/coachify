@@ -49,7 +49,7 @@ const TimeSelect = ({
   const timeOptions = generateTimeOptions(interval);
 
   return (
-    <div className="w-48 mb-4">
+    <div>
       <select
         title="Time Select"
         id={id}

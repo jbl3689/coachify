@@ -1,11 +1,12 @@
-import { format } from "date-fns";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { format } from 'date-fns';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { setDayEvents } from "../../context/calendarSlice";
-import { useEvents } from "../../hooks/useEvents";
-import { dayOfWeek, dayOfWeekAbbreviations, DayState } from "../../types/types";
-import EventBox from "../EventBox";
+import { setDayEvents } from '../../context/calendarSlice';
+import { useEvents } from '../../hooks/useEvents';
+import { dayOfWeek, dayOfWeekAbbreviations, DayState } from '../../types/types';
+import EventBox from '../EventBox';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 
 interface CalendarDayProps {
   day: DayState;
@@ -16,7 +17,7 @@ interface CalendarDayProps {
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const dispatch = useDispatch();
 
-  const { events, isLoading, error, refetch } = useEvents(day.id || 0);
+  const { events } = useEvents(day.id || 0);
 
   const eventDate = new Date(day.date);
   const currentDate = new Date();
@@ -39,51 +40,53 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   }, [day.date, dispatch, events]);
 
   return (
-    <div
+    <Card
       onClick={onClick}
-      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-4 p-2 text-2xl transition-all rounded-md shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} text-stone-200 hover:font-semibold w-11/12 mx-auto cursor-pointer`}
+      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-4 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto cursor-pointer`}
     >
-      <div className="text-left">
-        <div
+      <CardHeader className="text-left">
+        <CardTitle
           className={`w-full ${isToday ? "text-accentLight" : "text-textBase"} text-3xl font-semibold`}
         >
-          {dayOfWeekAbbreviations[day.day as dayOfWeek]}
-        </div>
-        <div className="text-lg font-light text-textAlt">
-          {format(new Date(day.date), "dd-MMM")}
-        </div>
-      </div>
+          <div>{dayOfWeekAbbreviations[day.day as dayOfWeek]}</div>
+        </CardTitle>
+        <CardDescription className="text-lg font-light">
+          <div>{format(new Date(day.date), "dd-MMM")}</div>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {events && (
+          <div className="flex flex-col gap-12 justify-normal">
+            <div className="flex items-center justify-center min-h-28">
+              {events?.filter((event) => event.is_morning).length > 0 ? (
+                events
+                  .filter((event) => event.is_morning)
+                  .map((event) => (
+                    <EventBox key={event.id} event={event} onClick={onClick} />
+                  ))
+              ) : (
+                <p className="text-3xl text-textAlt"></p>
+              )}
+            </div>
 
-      {events && (
-        <div className="flex flex-col gap-12 justify-normal">
-          <div className="min-h-28 flex justify-center items-center">
-            {events?.filter((event) => event.is_morning).length > 0 ? (
-              events
-                .filter((event) => event.is_morning)
-                .map((event) => (
-                  <EventBox key={event.id} event={event} onClick={onClick} />
-                ))
-            ) : (
-              <p className="text-3xl text-textAlt"></p>
-            )}
+            {/* <div className="text-sm text-left text-textAlt">- 12pm -</div> */}
+
+            <div className="flex items-center justify-center min-h-28">
+              {events?.filter((event) => !event.is_morning).length > 0 ? (
+                events
+                  .filter((event) => !event.is_morning)
+                  .map((event) => (
+                    <EventBox key={event.id} event={event} onClick={onClick} />
+                  ))
+              ) : (
+                <p className="text-3xl text-textAlt"></p>
+              )}
+            </div>
           </div>
-
-          {/* <div className="text-sm text-left text-textAlt">- 12pm -</div> */}
-
-          <div className="min-h-28 flex justify-center items-center">
-            {events?.filter((event) => !event.is_morning).length > 0 ? (
-              events
-                .filter((event) => !event.is_morning)
-                .map((event) => (
-                  <EventBox key={event.id} event={event} onClick={onClick} />
-                ))
-            ) : (
-              <p className="text-3xl text-textAlt"></p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </CardContent>
+      <CardFooter></CardFooter>
+    </Card>
   );
 }
 
