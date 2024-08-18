@@ -1,25 +1,36 @@
 import React, { ReactElement } from 'react';
 
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import {
+    Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle
+} from '../ui/dialog';
 
 interface FormDialogProps {
-  Heading: ReactElement;
+  Title: ReactElement;
+  Description?: ReactElement;
   children: React.ReactNode;
+  isOpen: boolean;
   onClose: () => void;
 }
 
-function FormDialog({ Heading, children, onClose }: FormDialogProps) {
+function FormDialog({
+  Title,
+  Description,
+  children,
+  isOpen,
+  onClose,
+}: FormDialogProps) {
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{Heading}</DialogTitle>
+          <DialogTitle>{Title}</DialogTitle>
+          <DialogDescription>{Description}</DialogDescription>
         </DialogHeader>
 
         {children}
 
-        <DialogClose asChild className="w-2/6 mx-auto">
+        <DialogClose asChild className="px-10 ml-auto">
           <Button type="button" variant="destructive" onClick={onClose}>
             Close
           </Button>

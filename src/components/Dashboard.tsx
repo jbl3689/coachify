@@ -3,7 +3,6 @@ import {
     IoMdArrowDropdownCircle as DropdownArrow, IoMdArrowDropupCircle as DropupArrow
 } from 'react-icons/io';
 
-import AddUserForm from './AddUserForm';
 import ClubDetails from './ClubDetails';
 import Heading from './ui/Heading';
 import UserList from './UserList';
@@ -47,7 +46,7 @@ function Dashboard() {
                     <DropupArrow />
                   </span>
                 </div>
-                <AddUserForm />
+                {/* <AddUserForm /> */}
               </>
             ) : (
               <div className="flex flex-col justify-evenly gap-14">

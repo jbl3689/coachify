@@ -53,8 +53,9 @@
   }
 
   .dark {
+    --backgroundMain: 216 18.07% 16.27%;
     --background: var(--color-bg-primary);
-    --foreground: var(--color-text-base);
+    --foreground: 0 0% 100%;
     --card: var(--jb-secondary);
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;

@@ -1,9 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useAddEvent } from '../hooks/useEvents';
 import { DayState } from '../types/types';
-import Input from './ui/Input';
+import { Button } from './ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/Form';
+import { Input } from './ui/Input';
 import TimeSelect from './ui/TimeSelect';
 
 interface EventFormProps {
@@ -12,6 +17,13 @@ interface EventFormProps {
   setFormEventType: Dispatch<SetStateAction<string | null>>;
   isCreating?: boolean;
 }
+
+// Define the form schema using zod
+const eventFormSchema = z.object({
+  event_start_time: z.string().min(1),
+  event_end_time: z.string(),
+  location: z.string(),
+});
 
 export type EventFormInputs = {
   event_start_time: string;
@@ -24,17 +36,12 @@ function EventForm({
   eventType,
   setFormEventType,
 }: EventFormProps) {
-  const date = selectedDay.date;
-
   const { mutate } = useAddEvent(0);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm<EventFormInputs>({
+  // zodResolver will link the form validation to the schema
+  // anytime the data changes, the form will be revalidated based on the form schema
+  const form = useForm<z.infer<typeof eventFormSchema>>({
+    resolver: zodResolver(eventFormSchema),
     defaultValues: {
       event_start_time: "18:00",
       event_end_time: "21:00",
@@ -42,11 +49,13 @@ function EventForm({
     },
   });
 
-  const currentStartTime = watch("event_start_time");
+  const currentStartTime = form.watch("event_start_time");
 
-  const onSubmit: SubmitHandler<EventFormInputs> = (data) => {
+  const handleSubmit = (values: z.infer<typeof eventFormSchema>) => {
+    console.log(values);
+
     // Extracting form data
-    const { event_start_time, event_end_time, location } = data;
+    const { event_start_time, event_end_time, location } = values;
 
     // Prepare the event data object. Adjust keys as necessary for your backend/API.
     const eventData = {
@@ -61,8 +70,9 @@ function EventForm({
     mutate(eventData, {
       onSuccess: () => {
         // Handle success, e.g., reset the form, show a success message
-        reset();
+        form.reset();
         console.log("Event added successfully");
+        setFormEventType(null);
       },
       onError: (error) => {
         // Handle error, e.g., show an error message
@@ -72,56 +82,118 @@ function EventForm({
   };
 
   return (
-    <div className="grid justify-between">
-      <div className="flex items-center justify-center col-span-2 gap-6 p-4 mx-auto rounded-lg ">
-        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-row justify-evenly">
-            <TimeSelect
-              id="event_start_time"
-              label="Select start time"
-              register={register}
-              isRequired={true}
-            />
-            <TimeSelect
-              id="event_end_time"
-              label="Select end time"
-              register={register}
-              startTime={parseInt(currentStartTime)}
-              isRequired={true}
-              isDisabled={currentStartTime === ""}
-            />
-          </div>
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="flex flex-col w-full gap-4"
+        >
+          {/* form.control is used to validate that the name is correct/register the field */}
+          <FormField
+            control={form.control}
+            name="event_start_time"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel htmlFor="event_start_time">
+                    Enter start time
+                  </FormLabel>
+                  <FormControl>
+                    <TimeSelect id="event_start_time" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="event_end_time"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel htmlFor="event_end_time">Enter end time</FormLabel>
 
-          <div className={"mb-4 transition-all duration-[1.5s] opacity-100"}>
-            <label className="block mb-2 ">
-              Enter location
-              <Input
-                type="text"
-                className="w-5/6"
-                id="location"
-                {...register("location", {
-                  required: "This field is required",
-                })}
+                  <FormControl>
+                    <TimeSelect
+                      id="event_end_time"
+                      startTime={parseInt(currentStartTime)}
+                      isDisabled={currentStartTime === ""}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="location"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel htmlFor="location">Enter location</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      id="location"
+                      {...field}
+                      placeholder="Enter location"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          {/* <div className="flex flex-row justify-evenly">
+              <TimeSelect
+                id="event_start_time"
+                label="Select start time"
+                register={register}
+                isRequired={true}
               />
-            </label>
-          </div>
+              <TimeSelect
+                id="event_end_time"
+                label="Select end time"
+                register={register}
+                startTime={parseInt(currentStartTime)}
+                isRequired={true}
+                isDisabled={currentStartTime === ""}
+              />
+            </div>
 
-          <div className="font-semibold text-dangerBase">
-            {errors.event_start_time && <p>Start time is required!</p>}
-            {errors.event_end_time && <p>End time is required!</p>}
-            {errors.location && <p>Location is required!</p>}
-          </div>
+            <div className={"mb-4 transition-all duration-[1.5s] opacity-100"}>
+              <label className="block mb-2 ">
+                Enter location
+                <Input
+                  type="text"
+                  className="w-5/6"
+                  id="location"
+                  {...register("location", {
+                    required: "This field is required",
+                  })}
+                />
+              </label>
+            </div>
 
-          <div className="flex flex-row w-5/6 gap-4 mx-auto">
-            <button
-              className="w-5/6 p-2 mx-auto text-white rounded-md bg-bgTertiary hover:bg-accentBase"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
+            <div className="font-semibold text-dangerBase">
+              {errors.event_start_time && <p>Start time is required!</p>}
+              {errors.event_end_time && <p>End time is required!</p>}
+              {errors.location && <p>Location is required!</p>}
+            </div> */}
+
+          <Button
+            className="px-12 mt-8 ml-auto"
+            variant="default"
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
-      </div>
+      </Form>
     </div>
   );
 }

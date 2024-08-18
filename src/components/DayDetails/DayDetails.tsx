@@ -13,6 +13,7 @@ import {
 import EventForm from '../EventForm';
 import FormDialog from '../FormDialog/FormDialog';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
+import { Label } from '../ui/label';
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -66,8 +67,8 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
     : null;
 
   return (
-    <Card className="grid mx-auto border-4 h-96 border-accentBase ">
-      <>
+    <>
+      <Card className="grid mx-auto border-4 h-96 border-accentBase ">
         <CardHeader>
           <div className="flex flex-row justify-between space-x-2 tracking-wide text-left ">
             <div>
@@ -100,63 +101,75 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
         </CardHeader>
 
         <CardContent>
-          <div
-          // className={`${
-          //   breakpoint === "mobile" ? "flex-row" : "flex-col"
-          // } flex justify-center flex-grow py-2`}
-          >
-            {displayedEvent && (
-              <div className="flex flex-row">
-                <div className="flex-1 p-2">
-                  <div>Attendes:</div>
-                  <div>
-                    {eventAttendance?.map((user) => <div>{user.id}</div>)}
-                  </div>
+          {/* <div
+          className={`${
+            breakpoint === "mobile" ? "flex-row" : "flex-col"
+          } flex justify-center flex-grow py-2`}
+          > */}
+          {displayedEvent ? (
+            <div className="flex flex-row">
+              <div className="flex-1 p-2">
+                <div>Attendes:</div>
+                <div>
+                  {eventAttendance?.map((user) => <div>{user.id}</div>)}
                 </div>
-                <div className="flex-1 p-2">Col-2</div>
               </div>
-            )}
-          </div>
+              <div className="flex-1 p-2">Col-2</div>
+            </div>
+          ) : (
+            <Label className="text-4xl text-textAlt">
+              No events for this day
+            </Label>
+          )}
+          {/* </div> */}
         </CardContent>
 
-        <CardFooter>
-          <div className="flex justify-between ">
-            {!formEventType && (
-              <>
-                <Button onClick={() => setFormEventType("Training")} size="lg">
-                  Add a Training
-                </Button>
-                <Button
-                  onClick={() => setFormEventType("Game")}
-                  size="lg"
-                  variant="secondary"
-                >
-                  Add a Game
-                </Button>
-              </>
-            )}
-          </div>
+        <CardFooter className="flex gap-4 justify-evenly">
+          {!displayedEvent && (
+            <>
+              <Button
+                onClick={() => setFormEventType("Training")}
+                size="lg"
+                className="px-24"
+              >
+                Add a Training
+              </Button>
+              <Button
+                onClick={() => setFormEventType("Game")}
+                size="lg"
+                variant="destructive"
+                className="px-24"
+              >
+                Add a Game
+              </Button>
+            </>
+          )}
         </CardFooter>
-      </>
+      </Card>
 
-      <FormDialog
-        Heading={
-          <h2 className="mb-6 text-3xl font-semibold text-center text-textPrimary">
-            Add a new {formEventType} for{" "}
-            <span className="text-accentLight">
-              {new Date(selectedDay.date!).toDateString()}
-            </span>
-          </h2>
-        }
-        onClose={() => setFormEventType(null)}
-      >
-        <EventForm
-          selectedDay={selectedDay}
-          eventType={formEventType ?? ""}
-          setFormEventType={setFormEventType}
-        />
-      </FormDialog>
-    </Card>
+      {formEventType && (
+        <FormDialog
+          Title={
+            <div>
+              <h2 className="mb-6 ">
+                Add a new {formEventType} for{" "}
+                <span className="text-textAlt">
+                  {new Date(selectedDay.date!).toDateString()}
+                </span>
+              </h2>
+            </div>
+          }
+          isOpen={formEventType !== null}
+          onClose={() => setFormEventType(null)}
+        >
+          <EventForm
+            selectedDay={selectedDay}
+            eventType={formEventType ?? ""}
+            setFormEventType={setFormEventType}
+          />
+        </FormDialog>
+      )}
+    </>
   );
 }
 

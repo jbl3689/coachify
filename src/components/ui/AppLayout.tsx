@@ -4,7 +4,7 @@ import Header from './Header';
 
 function AppLayout() {
   return (
-    <div className="flex flex-col h-screen bg-bgPrimary">
+    <div className="flex flex-col h-screen bg-backgroundMain">
       <Header />
       <div className="flex-grow overflow-y-scroll">
         <main className="w-11/12 mx-auto my-10 text-xl text-center text-textBase">
