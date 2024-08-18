@@ -1,8 +1,8 @@
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Button from '../ui/Button';
-import FadeInContainer from '../ui/FadeInContainer';
+import Button from './ui/ButtonBeta';
+import FadeInContainer from './ui/FadeInContainer';
 
 interface WeekNavigatorProps {
   selectedWeek: Date;

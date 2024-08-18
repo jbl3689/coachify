@@ -1,21 +1,18 @@
-import { format, parse } from "date-fns";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useBreakpoint } from "use-breakpoint";
+import { format, parse } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useBreakpoint } from 'use-breakpoint';
 
-import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
+import { Button } from '@/components/ui/button';
+
+import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
+import { useEventAttendance } from '../../hooks/useEvents';
 import {
-  BREAKPOINTS,
-  dayOfWeek,
-  dayOfWeekAbbreviations,
-  DayState,
-  EventState,
-  ReduxAppState,
-} from "../../types/types";
-import Button from "../../ui/Button";
-import EventForm from "../EventForm";
-import { useEventAttendance } from "../../hooks/useEvents";
-import Modal from "../../ui/Modal";
+    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
+} from '../../types/types';
+import EventForm from '../EventForm';
+import FormDialog from '../FormDialog/FormDialog';
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -24,14 +21,16 @@ interface DayDetailsProps {
 function DayDetails({ selectedDay }: DayDetailsProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
-
   const [formEventType, setFormEventType] = useState<string | null>(null);
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
-  const [isMorning, setIsMorning] = useState<boolean>(true);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
+  );
+  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(
+    selectedDayEvents?.[0] ?? null
+  );
+  const [isMorning, setIsMorning] = useState<boolean>(
+    displayedEvent?.is_morning ?? true
   );
 
   const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
@@ -67,11 +66,11 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
     : null;
 
   return (
-    <div className="grid p-2 h-96 mx-auto border-4 rounded-md bg-secondaryBase border-accentBase grid-rows-[auto_1fr]">
-      {!formEventType ? (
-        <>
-          <div className="flex flex-row justify-between px-1 space-x-2 tracking-wide text-left text-textBase">
-            <div className="">
+    <Card className="grid mx-auto border-4 h-96 border-accentBase ">
+      <>
+        <CardHeader>
+          <div className="flex flex-row justify-between space-x-2 tracking-wide text-left ">
+            <div>
               <div className="text-2xl font-semibold md:text-3xl">
                 {breakpoint === "mobile"
                   ? dayOfWeekAbbreviations[selectedDay.day as dayOfWeek]
@@ -98,14 +97,16 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
               </button>
             </div>
           </div>
+        </CardHeader>
 
+        <CardContent>
           <div
-            className={`${
-              breakpoint === "mobile" ? "flex-row" : "flex-col"
-            } flex justify-center flex-grow py-2`}
+          // className={`${
+          //   breakpoint === "mobile" ? "flex-row" : "flex-col"
+          // } flex justify-center flex-grow py-2`}
           >
-            {displayedEvent ? (
-              <div className="flex justify-between">
+            {displayedEvent && (
+              <div className="flex flex-row">
                 <div className="flex-1 p-2">
                   <div>Attendes:</div>
                   <div>
@@ -114,46 +115,48 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
                 </div>
                 <div className="flex-1 p-2">Col-2</div>
               </div>
-            ) : (
-              <div className="flex flex-col w-1/2 gap-12 mx-auto">
-                {!formEventType && (
-                  <>
-                    <Button
-                      type="accent"
-                      onClick={() => {
-                        setFormEventType("Training");
-                        setIsOpenModal(true);
-                      }}
-                    >
-                      Add a Training
-                    </Button>
-                    <Button
-                      type="accent"
-                      onClick={() => {
-                        setFormEventType("Game");
-                        setIsOpenModal(true);
-                      }}
-                    >
-                      Add a Game
-                    </Button>
-                  </>
-                )}
-              </div>
             )}
           </div>
-        </>
-      ) : (
-        isOpenModal && (
-          <Modal onClose={setIsOpenModal}>
-            <EventForm
-              selectedDay={selectedDay}
-              eventType={formEventType ?? ""}
-              setFormEventType={setFormEventType}
-            />
-          </Modal>
-        )
-      )}
-    </div>
+        </CardContent>
+
+        <CardFooter>
+          <div className="flex justify-between ">
+            {!formEventType && (
+              <>
+                <Button onClick={() => setFormEventType("Training")} size="lg">
+                  Add a Training
+                </Button>
+                <Button
+                  onClick={() => setFormEventType("Game")}
+                  size="lg"
+                  variant="secondary"
+                >
+                  Add a Game
+                </Button>
+              </>
+            )}
+          </div>
+        </CardFooter>
+      </>
+
+      <FormDialog
+        Heading={
+          <h2 className="mb-6 text-3xl font-semibold text-center text-textPrimary">
+            Add a new {formEventType} for{" "}
+            <span className="text-accentLight">
+              {new Date(selectedDay.date!).toDateString()}
+            </span>
+          </h2>
+        }
+        onClose={() => setFormEventType(null)}
+      >
+        <EventForm
+          selectedDay={selectedDay}
+          eventType={formEventType ?? ""}
+          setFormEventType={setFormEventType}
+        />
+      </FormDialog>
+    </Card>
   );
 }
 

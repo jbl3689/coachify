@@ -3,9 +3,9 @@ import {
     IoMdArrowDropdownCircle as DropdownArrow, IoMdArrowDropupCircle as DropupArrow
 } from 'react-icons/io';
 
-import Heading from '../ui/Heading';
 import AddUserForm from './AddUserForm';
 import ClubDetails from './ClubDetails';
+import Heading from './ui/Heading';
 import UserList from './UserList';
 
 function Dashboard() {

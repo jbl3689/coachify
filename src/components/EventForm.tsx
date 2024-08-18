@@ -1,10 +1,10 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Dispatch, SetStateAction } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useAddEvent } from "../hooks/useEvents";
-import { DayState } from "../types/types";
-import Input from "../ui/Input";
-import TimeSelect from "../ui/TimeSelect";
-import { Dispatch, SetStateAction } from "react";
+import { useAddEvent } from '../hooks/useEvents';
+import { DayState } from '../types/types';
+import Input from './ui/Input';
+import TimeSelect from './ui/TimeSelect';
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -75,13 +75,6 @@ function EventForm({
     <div className="grid justify-between">
       <div className="flex items-center justify-center col-span-2 gap-6 p-4 mx-auto rounded-lg ">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="mb-6 text-3xl font-semibold text-center text-textPrimary">
-            Add a new {eventType} for{" "}
-            <span className="text-accentLight">
-              {new Date(date!).toDateString()}
-            </span>
-          </h2>
-
           <div className="flex flex-row justify-evenly">
             <TimeSelect
               id="event_start_time"
@@ -119,16 +112,9 @@ function EventForm({
             {errors.location && <p>Location is required!</p>}
           </div>
 
-          <div className="flex flex-row gap-4 w-5/6 mx-auto">
+          <div className="flex flex-row w-5/6 gap-4 mx-auto">
             <button
-              className="w-2/6 p-2 mt-4 mx-auto text-white rounded-md bg-dangerBase hover:bg-accentBase"
-              type="button"
-              onClick={() => setFormEventType(null)}
-            >
-              Back
-            </button>
-            <button
-              className="w-4/6 mx-auto p-2 mt-4 text-white rounded-md bg-bgTertiary hover:bg-accentBase"
+              className="w-5/6 p-2 mx-auto text-white rounded-md bg-bgTertiary hover:bg-accentBase"
               type="submit"
             >
               Submit

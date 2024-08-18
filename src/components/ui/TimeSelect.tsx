@@ -1,6 +1,6 @@
 import { UseFormRegister } from 'react-hook-form';
 
-import { EventFormInputs } from '../components/EventForm';
+import { EventFormInputs } from '../EventForm';
 
 // Custom Time Select Component
 const generateTimeOptions = (interval: number, startTime?: number) => {

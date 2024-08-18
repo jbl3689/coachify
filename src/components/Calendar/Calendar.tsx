@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
-import Loader from '../../ui/Loader';
 import DayDetails from '../DayDetails/DayDetails';
+import Loader from '../ui/Loader';
 import WeekNavigator from '../WeekNavigator';
 import WeekView from '../WeekView/WeekView';
 import useLoadCalendar from './hooks/useLoadCalendar';
