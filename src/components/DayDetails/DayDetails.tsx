@@ -1,15 +1,21 @@
-import { format, parse } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useBreakpoint } from 'use-breakpoint';
+import { format, parse } from "date-fns";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useBreakpoint } from "use-breakpoint";
 
-import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
-import { useEventAttendance } from '../../hooks/useEvents';
+import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
 import {
-    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
-} from '../../types/types';
-import Button from '../../ui/Button';
-import EventForm from '../EventForm';
+  BREAKPOINTS,
+  dayOfWeek,
+  dayOfWeekAbbreviations,
+  DayState,
+  EventState,
+  ReduxAppState,
+} from "../../types/types";
+import Button from "../../ui/Button";
+import EventForm from "../EventForm";
+import { useEventAttendance } from "../../hooks/useEvents";
+import Modal from "../../ui/Modal";
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -18,19 +24,15 @@ interface DayDetailsProps {
 function DayDetails({ selectedDay }: DayDetailsProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const [formEventType, setFormEventType] = useState<string | null>(null);
+  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(null);
+  const [isMorning, setIsMorning] = useState<boolean>(true);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
     selectCurrentWeekDayEvents(state, selectedDay.date)
   );
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(
-    selectedDayEvents?.[0] ?? null
-  );
-  const [isMorning, setIsMorning] = useState<boolean>(
-    displayedEvent?.is_morning ?? true
-  );
-
-  console.log("initial selectedDayEvents", selectedDayEvents);
 
   const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
 
@@ -118,13 +120,19 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
                   <>
                     <Button
                       type="accent"
-                      onClick={() => setFormEventType("Training")}
+                      onClick={() => {
+                        setFormEventType("Training");
+                        setIsOpenModal(true);
+                      }}
                     >
                       Add a Training
                     </Button>
                     <Button
                       type="accent"
-                      onClick={() => setFormEventType("Game")}
+                      onClick={() => {
+                        setFormEventType("Game");
+                        setIsOpenModal(true);
+                      }}
                     >
                       Add a Game
                     </Button>
@@ -135,11 +143,15 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
           </div>
         </>
       ) : (
-        <EventForm
-          selectedDay={selectedDay}
-          eventType={formEventType ?? ""}
-          setFormEventType={setFormEventType}
-        />
+        isOpenModal && (
+          <Modal onClose={setIsOpenModal}>
+            <EventForm
+              selectedDay={selectedDay}
+              eventType={formEventType ?? ""}
+              setFormEventType={setFormEventType}
+            />
+          </Modal>
+        )
       )}
     </div>
   );
