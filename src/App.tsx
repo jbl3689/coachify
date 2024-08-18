@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import Calendar from './components/Calendar/Calendar';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
 import AppLayout from './components/ui/AppLayout';
 import { ThemeProvider } from './context/themeProvider';
 

@@ -1,0 +1,80 @@
+import { useState } from 'react';
+import {
+    IoMdArrowDropdownCircle as DropdownArrow, IoMdArrowDropupCircle as DropupArrow
+} from 'react-icons/io';
+
+import ClubDetails from '../ClubDetails';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import Heading from '../ui/Heading';
+import UserList from '../UserList';
+import DashboardCard from './DashboardCard';
+
+function Dashboard() {
+  const [formShown, setFormShown] = useState<boolean>(true);
+
+  const boxStyles =
+    "border border-8 h-64 p-4 flex items-center justify-center rounded shadow";
+
+  return (
+    <>
+      <div>
+        <h1 className="mb-8 text-4xl font-semibold text-center sm:text-3xl text-accentLight">
+          Admin Dashboard
+        </h1>
+      </div>
+      <div className="flex gap-12">
+        {/* Club Details + Next Event*/}
+        <div className="grid w-8/12 grid-cols-2 gap-8">
+          <DashboardCard
+            Title={
+              <div className="text-2xl text-amber-300">
+                Ellerslie AFC Diamonds
+              </div>
+            }
+          >
+            <div className="flex gap-4">
+              <img
+                src="/logo.png"
+                alt="team logo"
+                height="300"
+                width="150"
+                className="rounded-xl"
+              ></img>
+              <div className="flex flex-col text-xl justify-evenly text-secondaryLightColor">
+                <span>Michaels Ave</span>
+                <span>NRF Division 1</span>
+                <span>Football ⚽️</span>
+              </div>
+            </div>
+          </DashboardCard>
+
+          <DashboardCard Title={<span>Next Event</span>}></DashboardCard>
+
+          <div className="col-span-2">
+            <DashboardCard Title={<span> Add a Player</span>}>
+              <div className="flex justify-center gap-16 pt-2"></div>
+              {/* <AddUserForm /> */}
+            </DashboardCard>
+          </div>
+        </div>
+
+        {/* Team List */}
+        <div className="w-4/12">
+          <DashboardCard
+            Title={
+              <h1 className="text-3xl font-semibold text-dangerLight">
+                Team List
+              </h1>
+            }
+          >
+            <div className="w-full align-center">
+              <UserList />
+            </div>
+          </DashboardCard>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Dashboard;
