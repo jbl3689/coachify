@@ -1,3 +1,5 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
+
 // Custom Time Select Component
 const generateTimeOptions = (interval: number, startTime?: number) => {
   const times = [];
@@ -49,19 +51,19 @@ const TimeSelect = ({
   const timeOptions = generateTimeOptions(interval);
 
   return (
-    <div>
-      <select
-        title="Time Select"
-        id={id}
-        className="block w-full mt-1 text-black rounded-md form-select"
-        disabled={isDisabled}
-      >
-        {timeOptions.map((time) => (
-          <option key={time} value={time}>
-            {time}
-          </option>
-        ))}
-      </select>
+    <div className='className="block w-full mt-1 text-black rounded-md form-select"'>
+      <Select disabled={isDisabled}>
+        <SelectTrigger>
+          <SelectValue placeholder="select a time" />
+        </SelectTrigger>
+        <SelectContent>
+          {timeOptions.map((time) => (
+            <SelectItem key={time} value={time}>
+              {time}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };

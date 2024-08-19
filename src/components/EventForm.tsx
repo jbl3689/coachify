@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAddEvent } from '../hooks/useEvents';
 import { DayState } from '../types/types';
 import { Button } from './ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/Form';
-import { Input } from './ui/Input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
+import { Input } from './ui/input';
 import TimeSelect from './ui/TimeSelect';
 
 interface EventFormProps {
@@ -88,52 +88,56 @@ function EventForm({
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col w-full gap-4"
         >
-          {/* form.control is used to validate that the name is correct/register the field */}
-          <FormField
-            control={form.control}
-            name="event_start_time"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel htmlFor="event_start_time">
-                    Enter start time
-                  </FormLabel>
-                  <FormControl>
-                    <TimeSelect id="event_start_time" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="event_end_time"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel htmlFor="event_end_time">Enter end time</FormLabel>
+          <div className="flex flex-row gap-4 justify-evenly">
+            {/* form.control is used to validate that the name is correct/register the field */}
+            <FormField
+              control={form.control}
+              name="event_start_time"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel htmlFor="event_start_time">
+                      Enter start time
+                    </FormLabel>
+                    <FormControl>
+                      <TimeSelect id="event_start_time" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="event_end_time"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel htmlFor="event_end_time">
+                      Enter end time
+                    </FormLabel>
 
-                  <FormControl>
-                    <TimeSelect
-                      id="event_end_time"
-                      startTime={parseInt(currentStartTime)}
-                      isDisabled={currentStartTime === ""}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+                    <FormControl>
+                      <TimeSelect
+                        id="event_end_time"
+                        startTime={parseInt(currentStartTime)}
+                        isDisabled={currentStartTime === ""}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
 
           <FormField
             control={form.control}
             name="location"
             render={({ field }) => {
               return (
-                <FormItem>
+                <FormItem className="text-2xl">
                   <FormLabel htmlFor="location">Enter location</FormLabel>
                   <FormControl>
                     <Input
@@ -148,45 +152,9 @@ function EventForm({
               );
             }}
           />
-          {/* <div className="flex flex-row justify-evenly">
-              <TimeSelect
-                id="event_start_time"
-                label="Select start time"
-                register={register}
-                isRequired={true}
-              />
-              <TimeSelect
-                id="event_end_time"
-                label="Select end time"
-                register={register}
-                startTime={parseInt(currentStartTime)}
-                isRequired={true}
-                isDisabled={currentStartTime === ""}
-              />
-            </div>
-
-            <div className={"mb-4 transition-all duration-[1.5s] opacity-100"}>
-              <label className="block mb-2 ">
-                Enter location
-                <Input
-                  type="text"
-                  className="w-5/6"
-                  id="location"
-                  {...register("location", {
-                    required: "This field is required",
-                  })}
-                />
-              </label>
-            </div>
-
-            <div className="font-semibold text-dangerBase">
-              {errors.event_start_time && <p>Start time is required!</p>}
-              {errors.event_end_time && <p>End time is required!</p>}
-              {errors.location && <p>Location is required!</p>}
-            </div> */}
 
           <Button
-            className="px-12 mt-8 ml-auto"
+            className="px-24 mx-auto mt-8"
             variant="default"
             type="submit"
           >

@@ -1,18 +1,11 @@
-import { format, parse } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useBreakpoint } from 'use-breakpoint';
-
-import { Button } from '@/components/ui/button';
 
 import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
-import { useEventAttendance } from '../../hooks/useEvents';
-import {
-    BREAKPOINTS, dayOfWeek, dayOfWeekAbbreviations, DayState, EventState, ReduxAppState
-} from '../../types/types';
+import { DayState, EventState, ReduxAppState } from '../../types/types';
 import EventForm from '../EventForm';
 import FormDialog from '../FormDialog/FormDialog';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Label } from '../ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import EventCardHeader from './EventCardHeader/EventCardHeader';
@@ -22,8 +15,6 @@ interface DayDetailsProps {
 }
 
 function DayDetails({ selectedDay }: DayDetailsProps) {
-  const { breakpoint } = useBreakpoint(BREAKPOINTS);
-
   const [formEventType, setFormEventType] = useState<string | null>(null);
 
   const selectedDayEvents = useSelector((state: ReduxAppState) =>
@@ -36,40 +27,29 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
   const [eveningEvent, setEveningEvent] = useState<EventState | null>(
     selectedDayEvents?.[1] ?? null
   );
-  const [displayedEvent, setDisplayedEvent] = useState<EventState | null>(
-    selectedDayEvents?.[0] ?? null
-  );
-  const [isMorning, setIsMorning] = useState<boolean>(true);
 
-  const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
+  const eventAttendance = [
+    {
+      id: 1,
+      name: "James Blake",
+    },
+  ];
+  // const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
 
   useEffect(() => {
-    if (selectedDayEvents)
-      if (selectedDayEvents.length === 1) {
-        setDisplayedEvent(selectedDayEvents[0]);
-        setIsMorning(selectedDayEvents[0].is_morning);
-      } else {
-        setDisplayedEvent(
-          selectedDayEvents.find((event) => event.is_morning === isMorning) ??
-            null
-        );
-      }
+    if (selectedDayEvents) {
+      setMorningEvent(
+        selectedDayEvents.find((event) => event.is_morning) ?? null
+      );
+      setEveningEvent(
+        selectedDayEvents.find((event) => !event.is_morning) ?? null
+      );
+    }
   }, [selectedDayEvents]);
 
   useEffect(() => {
     setFormEventType(null);
-    setIsMorning(true);
   }, [selectedDay]);
-
-  const handleChangeTime = () => {
-    setIsMorning(!isMorning);
-    if (selectedDayEvents) {
-      setDisplayedEvent(
-        selectedDayEvents.find((event) => event.is_morning === isMorning) ??
-          null
-      );
-    }
-  };
 
   return (
     <>
@@ -98,7 +78,7 @@ function DayDetails({ selectedDay }: DayDetailsProps) {
                   <div className="flex-1 p-2">
                     <div>Attendes:</div>
                     <div>
-                      {eventAttendance?.map((user) => <div>{user.id}</div>)}
+                      {eventAttendance?.map((user) => <div>{user.name}</div>)}
                     </div>
                   </div>
                   <div className="flex-1 p-2">Col-2</div>

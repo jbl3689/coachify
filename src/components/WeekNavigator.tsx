@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Button } from './ui/button';
 import FadeInContainer from './ui/FadeInContainer';
+import { Label } from './ui/label';
 
 interface WeekNavigatorProps {
   selectedWeek: Date;
@@ -18,9 +19,9 @@ function WeekNavigator({
   return (
     <div className="flex items-center justify-between gap-8 px-4 pb-8">
       <FadeInContainer>
-        <p className="text-4xl font-semibold text-center">
+        <Label className="text-4xl font-semibold">
           Week of {selectedWeek.toDateString()}
-        </p>
+        </Label>
       </FadeInContainer>
       <div className="flex items-center justify-center gap-4">
         <span

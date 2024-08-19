@@ -30,7 +30,7 @@ function FormDialog({
 
         {children}
 
-        <DialogClose asChild className="px-10 ml-auto">
+        <DialogClose asChild className="px-10 mx-auto">
           <Button type="button" variant="destructive" onClick={onClose}>
             Close
           </Button>
