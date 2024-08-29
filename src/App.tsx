@@ -1,15 +1,17 @@
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Toaster } from 'react-hot-toast';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Toaster } from "react-hot-toast";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import Calendar from './components/Calendar/Calendar';
-import Dashboard from './components/Dashboard/Dashboard';
-import AppLayout from './components/ui/AppLayout';
-import { ThemeProvider } from './context/themeProvider';
+import Calendar from "./components/Calendar/Calendar";
+import Dashboard from "./components/Dashboard/Dashboard";
+import AppLayout from "./components/ui/AppLayout";
+import { ThemeProvider } from "./context/themeProvider";
+import ProtectedRoute from "./components/ui/ProtectedRoute";
+import Login from "./components/Login/Login";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,7 +23,11 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
@@ -34,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <h1>Welcome, %NAME%</h1>,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },

@@ -1,15 +1,22 @@
-import { Dispatch, SetStateAction } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { Dispatch, SetStateAction } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useAddEvent } from '../hooks/useEvents';
-import { DayState } from '../types/types';
-import { Button } from './ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
-import { Input } from './ui/input';
-import TimeSelect from './ui/TimeSelect';
+import { useAddEvent } from "../hooks/useEvents";
+import { DayState } from "../types/types";
+import { Button } from "./ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/Form";
+import { Input } from "../components/ui/Input";
+import TimeSelect from "./ui/TimeSelect";
 
 interface EventFormProps {
   selectedDay: DayState;
