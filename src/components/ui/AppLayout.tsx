@@ -1,17 +1,31 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
-import Header from './Header';
+import Header from "./Header";
+import styled from "styled-components";
+
+const StyledAppLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--background);
+`;
+
+const StyledMainWrapper = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow: none;
+`;
 
 function AppLayout() {
   return (
-    <div className="flex flex-col h-screen bg-backgroundMain">
+    <StyledAppLayout>
       <Header />
-      <div className="flex-grow overflow-y-scroll">
+      <StyledMainWrapper>
         <main className="w-11/12 mx-auto my-10 text-xl text-center text-textBase">
           <Outlet />
         </main>
-      </div>
-    </div>
+      </StyledMainWrapper>
+    </StyledAppLayout>
   );
 }
 

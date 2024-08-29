@@ -1,20 +1,7 @@
-import { useState } from 'react';
-import {
-    IoMdArrowDropdownCircle as DropdownArrow, IoMdArrowDropupCircle as DropupArrow
-} from 'react-icons/io';
+import UserList from "../UserList";
+import DashboardCard from "./DashboardCard";
 
-import ClubDetails from '../ClubDetails';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import Heading from '../ui/Heading';
-import UserList from '../UserList';
-import DashboardCard from './DashboardCard';
-
-function Dashboard() {
-  const [formShown, setFormShown] = useState<boolean>(true);
-
-  const boxStyles =
-    "border border-8 h-64 p-4 flex items-center justify-center rounded shadow";
-
+function AdminDashboard() {
   return (
     <>
       <div>
@@ -77,4 +64,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default AdminDashboard;

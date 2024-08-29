@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react';
+import { render } from "@testing-library/react";
 
-import Calendar from './Calendar';
+import Calendar from "./CalendarWeek";
 
 describe(Calendar, () => {
   it("renders without crashing", () => {

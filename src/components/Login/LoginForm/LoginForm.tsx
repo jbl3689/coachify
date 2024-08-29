@@ -1,9 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAddEvent } from "@/hooks/useEvents";
 import {
   Form,
   FormControl,
@@ -12,43 +10,29 @@ import {
   FormLabel,
   FormMessage,
 } from "../../ui/Form";
-import TimeSelect from "../../ui/TimeSelect";
 import { Input } from "../../ui/Input";
 import { Button } from "../../ui/button";
-import { DayState } from "@/types/types";
-
-interface LoginFormProps {
-  selectedDay: DayState;
-  eventType: string;
-  setFormEventType: Dispatch<SetStateAction<string | null>>;
-  isCreating?: boolean;
-}
+import { useLogin } from "../hooks/useLogin";
 
 // Define the form schema using zod
 const loginFormSchema = z.object({
-  first_name: z.string().min(1),
-  last_name: z.string(),
-  email: z.string(),
-  password: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8),
 });
 
 export type LoginFormInputs = {
-  first_name: string;
-  last_name: string;
   email: string;
   password: string;
 };
 
 function LoginForm() {
-  const { mutate } = useAddEvent(0);
+  const { isPending, login } = useLogin();
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
       email: "",
       password: "",
     },
@@ -58,7 +42,9 @@ function LoginForm() {
     console.log(values);
 
     // Extracting form data
-    const { first_name, last_name, email, password } = values;
+    const { email, password } = values;
+
+    login({ email, password });
   };
 
   return (
@@ -78,7 +64,12 @@ function LoginForm() {
                 <FormItem className="w-full">
                   <FormLabel htmlFor="email">Enter email</FormLabel>
                   <FormControl>
-                    <Input type="email" id="email" {...field} />
+                    <Input
+                      type="email"
+                      id="email"
+                      {...field}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,7 +83,12 @@ function LoginForm() {
                 <FormItem className="w-full">
                   <FormLabel htmlFor="password">Enter password</FormLabel>
                   <FormControl>
-                    <Input type="password" id="password" {...field} />
+                    <Input
+                      type="password"
+                      id="password"
+                      {...field}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,6 +100,7 @@ function LoginForm() {
             className="px-24 mx-auto mt-8"
             variant="default"
             type="submit"
+            disabled={isPending}
           >
             Submit
           </Button>

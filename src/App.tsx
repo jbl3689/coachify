@@ -6,12 +6,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import Calendar from "./components/Calendar/Calendar";
-import Dashboard from "./components/Dashboard/Dashboard";
 import AppLayout from "./components/ui/AppLayout";
 import { ThemeProvider } from "./context/themeProvider";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
-import Login from "./components/Login/Login";
+import Dashboard from "./pages/Dashboard";
+import Calendar from "./pages/Calendar";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,23 +23,31 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    element: (
-      <ProtectedRoute>
-        <AppLayout />
-      </ProtectedRoute>
-    ),
+    element: <AppLayout />,
     children: [
       {
         path: "/",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/calendar",
-        element: <Calendar />,
+        element: (
+          <ProtectedRoute>
+            <Calendar />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/user",
-        element: <h1>Welcome, %NAME%</h1>,
+        element: (
+          <ProtectedRoute>
+            <h1>Welcome, %NAME%</h1>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",
