@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
-import Header from "./Header";
 import styled from "styled-components";
+import Navbar from "../Navbar/Navbar";
 
 const StyledAppLayout = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const StyledMainWrapper = styled.div`
 function AppLayout() {
   return (
     <StyledAppLayout>
-      <Header />
+      <Navbar />
       <StyledMainWrapper>
         <main className="w-11/12 mx-auto my-10 text-xl text-center text-textBase">
           <Outlet />

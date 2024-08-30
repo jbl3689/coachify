@@ -1,8 +1,8 @@
-import { format, parse } from 'date-fns';
+import { format, parse } from "date-fns";
 
-import { useEventAttendance } from '../hooks/useEvents';
-import { EventState } from '../types/types';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { useEventAttendance } from "../hooks/useEvents";
+import { EventState } from "../types/types";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface EventBoxProps {
   event: EventState;
@@ -27,7 +27,7 @@ function EventBox({ event, onClick }: EventBoxProps) {
       <CardHeader className="p-2">
         <CardTitle className="flex flex-row items-center justify-between">
           <div className="text-[20px]">{event.event_type}</div>
-          <div className="text-sm">{eventAttendance?.length} / 32</div>
+          <div className="text-sm">{eventAttendance?.length ?? 0} / 32</div>
         </CardTitle>
       </CardHeader>
 

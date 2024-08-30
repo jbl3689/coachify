@@ -1,9 +1,9 @@
 import Heading from "../components/ui/Heading";
-import LoginForm from "../components/LoginForm/LoginForm";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import SignupForm from "@/components/SignupForm/SignupForm";
 
-export const LoginLayout = styled.main`
+export const SignupLayout = styled.main`
   min-height: 60vh;
   display: grid;
   grid-template-columns: 48rem;
@@ -14,13 +14,13 @@ export const LoginLayout = styled.main`
 
 function Login() {
   return (
-    <LoginLayout>
+    <SignupLayout>
       <div>
-        <Heading as="h1">Log in to your account</Heading>
+        <Heading as="h1">Create an account</Heading>
         <Heading as="h3" className="text-textAlt">
-          or create one{" "}
+          or login{" "}
           <Link
-            to="/signup"
+            to="/login"
             className="text-primary hover:cursor-pointer hover:text-primaryLight"
           >
             here
@@ -28,8 +28,8 @@ function Login() {
         </Heading>
       </div>
 
-      <LoginForm />
-    </LoginLayout>
+      <SignupForm />
+    </SignupLayout>
   );
 }
 

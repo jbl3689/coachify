@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ui/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/user",
+        path: "/account",
         element: (
           <ProtectedRoute>
             <h1>Welcome, %NAME%</h1>
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+      {
+        path: "*",
+        element: <h1>404 Not Found</h1>,
       },
     ],
   },

@@ -9,10 +9,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/Form";
-import { Input } from "../../ui/Input";
-import { Button } from "../../ui/button";
-import { useLogin } from "../hooks/useLogin";
+} from "../ui/Form";
+import { useLogin } from "./hooks/useLogin";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/button";
 
 // Define the form schema using zod
 const loginFormSchema = z.object({
