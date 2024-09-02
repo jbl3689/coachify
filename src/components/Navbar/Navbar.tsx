@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
-import { useLogout } from "./hooks/useLogout";
+import { useLogout } from "@/hooks/auth/useLogout";
 import { useUser } from "@/hooks/useUser";
 import Loader from "../ui/Loader";
 
@@ -39,7 +39,7 @@ function Navbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                Welcome{" "}
+                Account{" "}
                 {user?.user_metadata ? user.user_metadata.full_name : "User"}
               </DropdownMenuTrigger>
               <DropdownMenuContent>

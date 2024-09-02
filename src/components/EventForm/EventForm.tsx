@@ -4,9 +4,8 @@ import * as z from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useAddEvent } from "../hooks/useEvents";
-import { DayState } from "../types/types";
-import { Button } from "./ui/button";
+import { useAddEvent } from "@/hooks/events/useAddEvent";
+import { DayState } from "@/types/types";
 import {
   Form,
   FormControl,
@@ -14,9 +13,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components/ui/Form";
-import { Input } from "../components/ui/Input";
-import TimeSelect from "./ui/TimeSelect";
+} from "../ui/Form";
+import TimeSelect from "../ui/TimeSelect";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/button";
 
 interface EventFormProps {
   selectedDay: DayState;

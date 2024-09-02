@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/Form";
-import { useLogin } from "./hooks/useLogin";
+import { useLogin } from "@/hooks/auth/useLogin";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
 

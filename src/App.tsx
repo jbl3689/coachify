@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Account from "./pages/Account";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         path: "/account",
         element: (
           <ProtectedRoute>
-            <h1>Welcome, %NAME%</h1>
+            <Account />
           </ProtectedRoute>
         ),
       },

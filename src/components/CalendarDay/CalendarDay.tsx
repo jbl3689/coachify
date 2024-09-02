@@ -1,12 +1,19 @@
-import { format } from 'date-fns';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { format } from "date-fns";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import { setDayEvents } from '../../context/calendarSlice';
-import { useEvents } from '../../hooks/useEvents';
-import { dayOfWeek, dayOfWeekAbbreviations, DayState } from '../../types/types';
-import EventBox from '../EventBox';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { setDayEvents } from "../../context/calendarSlice";
+import { useEvents } from "../../hooks/events/useEvents";
+import { dayOfWeek, dayOfWeekAbbreviations, DayState } from "../../types/types";
+import EventBox from "../EventBox";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 interface CalendarDayProps {
   day: DayState;

@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 
-import { moveWeeks, setWeekDate } from '../../../context/calendarSlice';
-import { getCurrentWeek, useAddWeek, useWeeks } from '../../../hooks/useWeeks';
-import { DayState, WeekState } from '../../../types/types';
-import { addDays, startOfWeek } from '../../../utils/calendarLogic';
+import { moveWeeks, setWeekDate } from "../../../context/calendarSlice";
+import { useWeeks } from "../../../hooks/weeks/useWeeks";
+import { DayState, WeekState } from "../../../types/types";
+import { addDays, startOfWeek } from "../../../utils/calendarLogic";
+import { useAddWeek } from "@/hooks/weeks/useAddWeek";
+import { getCurrentWeek } from "../utils/getCurrentWeek";
 
 interface useLoadCalendarProps {
   eventDetailsRef: React.RefObject<HTMLDivElement>;

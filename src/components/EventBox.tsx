@@ -1,6 +1,6 @@
 import { format, parse } from "date-fns";
 
-import { useEventAttendance } from "../hooks/useEvents";
+import { useEventAttendance } from "../hooks/events/useEventAttendance";
 import { EventState } from "../types/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 

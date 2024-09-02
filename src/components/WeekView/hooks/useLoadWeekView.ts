@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useBreakpoint } from 'use-breakpoint';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useBreakpoint } from "use-breakpoint";
 
-import { setWeekDays } from '../../../context/calendarSlice';
-import { getDayObject, useAddDay, useDays } from '../../../hooks/useDays';
-import { updateWeek } from '../../../services/apiWeeks';
-import { BREAKPOINTS, DayState, WeekState } from '../../../types/types';
-import { addDays } from '../../../utils/calendarLogic';
+import { setWeekDays } from "../../../context/calendarSlice";
+import { updateWeek } from "../../../services/apiWeeks";
+import { BREAKPOINTS, DayState, WeekState } from "../../../types/types";
+import { addDays } from "../../../utils/calendarLogic";
+import { useAddDay } from "@/hooks/days/useAddDay";
+import { useDays } from "@/hooks/days/useDays";
+import { getDayObject } from "../utils/getDayObject";
 
 interface LoadWeekViewProps {
   weekData: WeekState;

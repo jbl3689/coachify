@@ -12,7 +12,7 @@ import {
 } from "../ui/Form";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
-import { useSignup } from "./hooks/useSignup";
+import { useSignup } from "@/hooks/auth/useSignup";
 
 // Define the form schema using zod
 const signupFormSchema = z.object({
