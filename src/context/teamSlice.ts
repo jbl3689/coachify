@@ -1,7 +1,7 @@
+import { ReduxAppState, ReduxTeamState } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState, TeamState } from "../types/types";
 
-const initialState: TeamState = {
+const initialState: ReduxTeamState = {
   selectedTeam: 1,
 };
 
@@ -19,6 +19,6 @@ export const { setSelectedTeam } = teamSlice.actions;
 
 export default teamSlice.reducer;
 
-export const getSelectedTeam = () => (state: AppState) => {
+export const getSelectedTeam = () => (state: ReduxAppState) => {
   return state.team.selectedTeam;
 };

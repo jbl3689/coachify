@@ -1,5 +1,5 @@
+import { WeekState } from "@/types/types";
 import supabase from "./supabase";
-import { WeekState } from "../features/calendar/types";
 
 export async function getWeeksByTeamId(teamId: number) {
   if (teamId === 0) {

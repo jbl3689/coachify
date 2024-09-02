@@ -6,7 +6,7 @@ import { DayState, EventState, ReduxAppState } from "../../types/types";
 import EventForm from "../EventForm/EventForm";
 import FormDialog from "../FormDialog/FormDialog";
 import { Card, CardContent } from "../ui/card";
-import { Label } from "../ui/label";
+import { Label } from "../ui/Label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import EventCardHeader from "./EventCardHeader/EventCardHeader";
 
