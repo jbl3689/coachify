@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import supabase from "./supabase.ts";
+import { getSelectedTeam } from "@/context/teamSlice.ts";
 
 export async function getUsers() {
   const { data: users, error } = await supabase.from("users").select("*");
@@ -44,4 +46,36 @@ export async function createUser(newUser: {
   }
 
   return data;
+}
+
+export async function getTeamUsers() {
+  const selectedTeamId = useSelector(getSelectedTeam);
+
+  let { data: userIds, error: userIdsError } = await supabase
+    .from("team_members")
+    .select("user_id")
+    .eq("team_id", selectedTeamId);
+
+  if (userIdsError) {
+    console.error(userIdsError);
+    throw new Error("User ids could not be loaded");
+  }
+
+  // Extract the list of user IDs
+  const userIdList = userIds?.map((item) => item.user_id);
+
+  if (!userIdList || userIdList.length === 0) {
+    return []; // Return an empty array if the team has no associated users
+  }
+
+  // Fetch only the users that have an id in the userIdList
+  let { data: users, error: usersError } =
+    await supabase.auth.admin.listUsers();
+
+  if (usersError) {
+    console.error(usersError);
+    throw new Error("Users could not be loaded");
+  }
+
+  return users.users.filter((user) => userIdList.includes(user.id));
 }

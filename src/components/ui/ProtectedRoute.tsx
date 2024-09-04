@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Loader from "./Loader";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks/user/useUser";
 
 const FullPage = styled.div`
   height: 100vh;

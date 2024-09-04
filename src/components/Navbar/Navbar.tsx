@@ -1,21 +1,38 @@
 import { Link } from "react-router-dom";
+import { HiSelector } from "react-icons/hi";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
 import { useLogout } from "@/hooks/auth/useLogout";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks/user/useUser";
 import Loader from "../ui/Loader";
+import { Button } from "../ui/button";
+
+import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { useDispatch, useSelector } from "react-redux";
+import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 
 function Navbar() {
   const { logout, isPending } = useLogout();
   const { isAuthenticated, isLoading, isFetching, user } = useUser();
+  const { teams } = useUserTeams();
+
+  const selectedTeamId = useSelector(getSelectedTeam());
+  const dispatch = useDispatch();
 
   if (isPending || isLoading || isFetching) return <Loader />;
+
+  function handleUpdateTeam(value: string) {
+    dispatch(setSelectedTeam(parseInt(value)));
+  }
 
   return (
     <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold max-h-28 text-textBase transition-all">
@@ -40,7 +57,7 @@ function Navbar() {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 Account{" "}
-                {user?.user_metadata ? user.user_metadata.full_name : "User"}
+                {/* {user?.user_metadata ? user.user_metadata.full_name : "User"} */}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>

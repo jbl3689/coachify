@@ -62,6 +62,13 @@ export const daysOfWeek = [
   { id: 6, abbreviation: "Sun", label: "Sunday" },
 ];
 
+export type TeamState = {
+  id: number;
+  team_name: string;
+  location: string;
+  logo: string;
+};
+
 export type WeekState = {
   id: number;
   week_start_date: string;

@@ -1,14 +1,16 @@
+import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import UserList from "../UserList";
 import DashboardCard from "./DashboardCard";
+import { useSelector } from "react-redux";
+import { getSelectedTeam } from "@/context/teamSlice";
 
 function AdminDashboard() {
+  const { teams } = useUserTeams();
+
+  const selectedTeamId = useSelector(getSelectedTeam());
+
   return (
     <>
-      <div>
-        <h1 className="mb-8 text-4xl font-semibold text-center sm:text-3xl text-accentLight">
-          Admin Dashboard
-        </h1>
-      </div>
       <div className="flex gap-12">
         {/* Club Details + Next Event*/}
         <div className="grid w-8/12 grid-cols-2 gap-8">

@@ -22,6 +22,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
 
   const { handleDayNavigate, visibleDays, visibleRange, weekDaysLoaded } =
     useLoadWeekView({ weekData });
+  console.log(visibleDays);
 
   return (
     <div className="flex flex-row">
@@ -37,7 +38,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       <div
         className={`grid grid-rows-${visibleDays.length} grid-flow-col gap-2 py-4 rounded-xl mx-auto w-full`}
       >
-        {weekDaysLoaded ? (
+        {weekDaysLoaded && visibleDays ? (
           visibleDays.map((day) => (
             <CalendarDay
               key={day.id}

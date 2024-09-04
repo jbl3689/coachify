@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import AccountDetails from "@/components/AccountDetails/AccountDetails";
 
 const AccountContainer = styled.div`
   display: flex;
@@ -21,30 +22,7 @@ const AccountContainer = styled.div`
 function Account() {
   return (
     <AccountContainer>
-      <Card className="w-full h-full">
-        <CardHeader>Account</CardHeader>
-        <CardContent>
-          <Carousel className="w-full max-w-xs  mx-auto">
-            <CarouselContent>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-1">
-                    <Card>
-                      <CardContent className="flex aspect-square items-center justify-center p-10">
-                        <span className="text-4xl font-semibold">
-                          {index + 1}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </CardContent>
-      </Card>
+      <AccountDetails />
       <Card className="w-full h-full">
         <CardHeader>
           <CardTitle>Update account details</CardTitle>
