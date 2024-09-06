@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
-import { DayState, EventState, ReduxAppState } from "../../types/types";
-import EventForm from "../EventForm/EventForm";
-import FormDialog from "../FormDialog/FormDialog";
-import { Card, CardContent } from "../ui/card";
-import { Label } from "../ui/Label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import EventCardHeader from "./EventCardHeader/EventCardHeader";
+import { selectCurrentWeekDayEvents } from '../../context/calendarSlice';
+import { DayState, EventState, ReduxAppState } from '../../types/types';
+import EventForm from '../EventForm/EventForm';
+import FormDialog from '../FormDialog/FormDialog';
+import { Card, CardContent } from '../ui/card';
+import { Label } from '../ui/Label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import EventCardHeader from './EventCardHeader/EventCardHeader';
 
 interface DayDetailsProps {
   selectedDay: DayState;
