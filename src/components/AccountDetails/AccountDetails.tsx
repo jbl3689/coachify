@@ -7,10 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useUser } from "@/hooks/user/useUser";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
 
 function AccountDetails() {
-  const { user } = useUser();
+  const { user } = useAuthUser();
   const { teams } = useUserTeams();
   console.log(teams);
   return (
@@ -26,7 +26,7 @@ function AccountDetails() {
                 <CarouselItem key={index}>
                   <div className="">
                     <Card>
-                      <CardContent className="flex mt-2 flex-col aspect-square items-center gap-4 justify-center ">
+                      <CardContent className="flex flex-col items-center justify-center gap-4 mt-2 aspect-square ">
                         {/* <div>{team.team_name}</div> */}
                         <img
                           src={team.logo}

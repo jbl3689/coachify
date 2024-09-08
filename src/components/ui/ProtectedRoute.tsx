@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Loader from "./Loader";
-import { useUser } from "@/hooks/user/useUser";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -14,7 +14,7 @@ const FullPage = styled.div`
 `;
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, isFetching } = useUser();
+  const { isAuthenticated, isLoading, isFetching } = useAuthUser();
   // const isLoading = false;
   // const isFetching = false;
 

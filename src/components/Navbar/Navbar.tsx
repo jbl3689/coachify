@@ -12,9 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
 import { useLogout } from "@/hooks/auth/useLogout";
-import { useUser } from "@/hooks/user/useUser";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import Loader from "../ui/Loader";
-import { Button } from "../ui/button";
 
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +21,7 @@ import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 
 function Navbar() {
   const { logout, isPending } = useLogout();
-  const { isAuthenticated, isLoading, isFetching, user } = useUser();
+  const { isAuthenticated, isLoading, isFetching, user } = useAuthUser();
   const { teams } = useUserTeams();
 
   const selectedTeamId = useSelector(getSelectedTeam());
@@ -35,7 +34,7 @@ function Navbar() {
   }
 
   return (
-    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold max-h-28 text-textBase transition-all">
+    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28 text-textBase">
       <Link to="/" className="text-4xl text-accentBase">
         Coachify
       </Link>
