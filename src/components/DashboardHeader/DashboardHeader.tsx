@@ -19,6 +19,7 @@ import {
 } from "../ui/DropdownMenu";
 import { FlexBox } from "../ui/FlexBox";
 import Heading from "../ui/Heading";
+import Uploader from "@/data/Uploader";
 
 function DashboardHeader() {
   const { teams } = useUserTeams();
@@ -98,6 +99,8 @@ function DashboardHeader() {
               <Button variant="default">Add a Player</Button>
               <Button variant="default">Add a Coach</Button>
               <Button variant="default">Add a Manager</Button>
+
+              <Uploader />
             </FlexBox>
           </FlexBox>
         </DashboardCard>

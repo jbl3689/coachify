@@ -52,6 +52,7 @@ export type ReduxDayState = DayState & { events: ReduxEventState[] };
 export type ReduxEventState = EventState & {
   eventAttendance: EventAttendanceState[];
 };
+
 export const daysOfWeek = [
   { id: 0, abbreviation: "Mon", label: "Monday" },
   { id: 1, abbreviation: "Tue", label: "Tuesday" },
