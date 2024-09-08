@@ -20,9 +20,10 @@ import {
 import { FlexBox } from "../ui/FlexBox";
 import Heading from "../ui/Heading";
 import Uploader from "@/data/Uploader";
+import Loader from "../ui/Loader";
 
 function DashboardHeader() {
-  const { teams } = useUserTeams();
+  const { teams, isLoading, isFetching } = useUserTeams();
   // const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
@@ -33,13 +34,18 @@ function DashboardHeader() {
     dispatch(setSelectedTeam(parseInt(value)));
   }
 
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
   return (
     <FlexBox container flexDirection="column" gap="30px">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="default" className="py-8 mx-auto w-96">
-            {teams &&
-              teams.find((team) => team.id === selectedTeamId)?.team_name}
+            {teams && teams.length > 0
+              ? teams.find((team) => team.id === selectedTeamId)?.team_name
+              : "Assign yourself to a team"}
             <span>
               <HiSelector />
             </span>
@@ -65,47 +71,51 @@ function DashboardHeader() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <div className="grid grid-cols-4 gap-4">
-        <DashboardCard>24km ran this week</DashboardCard>
-        <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
-        <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
-        <DashboardCard>Manager: James Blake </DashboardCard>
-      </div>
+      {teams && teams.length > 0 ? (
+        <>
+          <div className="grid grid-cols-4 gap-4">
+            <DashboardCard>24km ran this week</DashboardCard>
+            <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
+            <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
+            <DashboardCard>Manager: James Blake </DashboardCard>
+          </div>
 
-      <div className="grid grid-cols-3 gap-8">
-        <DashboardCard>
-          <img
-            className="rounded-2xl"
-            src={selectedTeam?.logo}
-            alt={selectedTeam?.team_name}
-          ></img>
-        </DashboardCard>
-        <DashboardCard>
-          <FlexBox
-            container
-            flexDirection="column"
-            justifyContent="space-between"
-            height="auto"
-          >
-            <Heading as="h3">Admin Tools</Heading>
-            <FlexBox
-              container
-              flexDirection="column"
-              justifyContent="space-between"
-              gap="16px"
-              width="80%"
-              margin="15px auto"
-            >
-              <Button variant="default">Add a Player</Button>
-              <Button variant="default">Add a Coach</Button>
-              <Button variant="default">Add a Manager</Button>
+          <div className="grid grid-cols-3 gap-8">
+            <DashboardCard>
+              <img
+                className="rounded-2xl"
+                src={selectedTeam?.logo}
+                alt={selectedTeam?.team_name}
+              ></img>
+            </DashboardCard>
+            <DashboardCard>
+              <FlexBox
+                container
+                flexDirection="column"
+                justifyContent="space-between"
+                height="auto"
+              >
+                <Heading as="h3">Admin Tools</Heading>
+                <FlexBox
+                  container
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  gap="16px"
+                  width="80%"
+                  margin="15px auto"
+                >
+                  <Button variant="default">Add a Player</Button>
+                  <Button variant="default">Add a Coach</Button>
+                  <Button variant="default">Add a Manager</Button>
 
-              <Uploader />
-            </FlexBox>
-          </FlexBox>
-        </DashboardCard>
-        <DashboardCard>ABC</DashboardCard>
-      </div>
+                  <Uploader />
+                </FlexBox>
+              </FlexBox>
+            </DashboardCard>
+            <DashboardCard>ABC</DashboardCard>
+          </div>
+        </>
+      ) : null}
     </FlexBox>
   );
 }

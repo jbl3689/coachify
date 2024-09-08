@@ -1,6 +1,40 @@
-import { TeamState, WeekState, DayState, EventState } from "../types/types";
+import {
+  TeamState,
+  WeekState,
+  DayState,
+  EventState,
+  UserState,
+} from "../types/types";
 
 const imageUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/team-logos/`;
+
+const users = [
+  { full_name: "John Doe", email: "john.doe@example.com" },
+  { full_name: "Jane Smith", email: "jane.smith@example.com" },
+  { full_name: "Alice Johnson", email: "alice.johnson@example.com" },
+  { full_name: "Bob Brown", email: "bob.brown@example.com" },
+  { full_name: "Charlie Davis", email: "charlie.davis@example.com" },
+  { full_name: "David Evans", email: "david.evans@example.com" },
+  { full_name: "Eve Foster", email: "eve.foster@example.com" },
+  { full_name: "Frank Green", email: "frank.green@example.com" },
+  { full_name: "Grace Harris", email: "grace.harris@example.com" },
+  { full_name: "Hank Irving", email: "hank.irving@example.com" },
+  { full_name: "Ivy Johnson", email: "ivy.johnson@example.com" },
+  { full_name: "Jack King", email: "jack.king@example.com" },
+  { full_name: "Karen Lee", email: "karen.lee@example.com" },
+  { full_name: "Larry Moore", email: "larry.moore@example.com" },
+  { full_name: "Mona Nelson", email: "mona.nelson@example.com" },
+  { full_name: "Nina Owens", email: "nina.owens@example.com" },
+  { full_name: "Oscar Perry", email: "oscar.perry@example.com" },
+  { full_name: "Paul Quinn", email: "paul.quinn@example.com" },
+  { full_name: "Quincy Roberts", email: "quincy.roberts@example.com" },
+  { full_name: "Rachel Scott", email: "rachel.scott@example.com" },
+  { full_name: "Steve Turner", email: "steve.turner@example.com" },
+  { full_name: "Tina Underwood", email: "tina.underwood@example.com" },
+  { full_name: "Uma Vance", email: "uma.vance@example.com" },
+  { full_name: "Victor White", email: "victor.white@example.com" },
+  { full_name: "Wendy Xander", email: "wendy.xander@example.com" },
+];
 
 const teams: TeamState[] = [
   {
@@ -117,4 +151,4 @@ const events: EventState[] = [
 ];
 
 // Export the dummy data
-export { teams, weeks, days, events };
+export { teams, weeks, days, events, users };

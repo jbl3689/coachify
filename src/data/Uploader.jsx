@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { isFuture, isPast, isToday } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { users } from "./data";
+import { signup } from "@/services/apiAuth";
+import { useSignup } from "@/hooks/auth/useSignup";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -29,10 +32,16 @@ async function deleteEvents() {
   if (error) console.log(error.message);
 }
 
-// async function createGuests() {
-//   const { error } = await supabase.from("guests").insert(guests);
-//   if (error) console.log(error.message);
-// }
+async function createUsers() {
+  users.forEach(async (user) => {
+    const { error } = signup({
+      full_name: user.fullName,
+      email: user.email,
+      password: "12341234",
+    });
+    if (error) console.log(error.message);
+  });
+}
 
 // async function createCabins() {
 //   const { error } = await supabase.from("cabins").insert(cabins);
@@ -138,7 +147,8 @@ function Uploader() {
     >
       <h3>SAMPLE DATA</h3>
 
-      <Button>Upload ALL</Button>
+      <Button onClick={createUsers}>Sign up users</Button>
+      <Button onClick={createUsers}>Delete all users</Button>
 
       {/* <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
