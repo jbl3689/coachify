@@ -101,3 +101,11 @@ export type EventAttendanceState = {
   event_id: number;
   user_id: number;
 };
+
+export type UserState = {
+  id: number;
+  auth_user_id: string;
+  full_name: string;
+  email: string;
+  role: string;
+};
