@@ -1,4 +1,12 @@
-import { FlexBox } from "../ui/FlexBox";
+import { HiSelector } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
+import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { useTeamUsers } from "@/hooks/user/useTeamUsers";
+
+import DashboardCard from "../AdminDashboard/DashboardCard";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,20 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
-import { Button } from "../ui/button";
-import { useUserTeams } from "@/hooks/teams/useUserTeams";
-import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { HiSelector } from "react-icons/hi";
-import DashboardCard from "../AdminDashboard/DashboardCard";
-import { useTeamUsers } from "@/hooks/user/useTeamUsers";
+import { FlexBox } from "../ui/FlexBox";
+import Heading from "../ui/Heading";
 
 function DashboardHeader() {
   const { teams } = useUserTeams();
-  const { users } = useTeamUsers();
-
-  // THIS IS GIVING TEAMS * 2, SECOND SHOULD BE USERS
-  console.log(teams, users);
+  // const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
   const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
@@ -33,10 +33,10 @@ function DashboardHeader() {
   }
 
   return (
-    <FlexBox container flexDirection="column" className="gap-10">
+    <FlexBox container flexDirection="column" gap="30px">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="default" className="w-96 mx-auto py-8">
+          <Button variant="default" className="py-8 mx-auto w-96">
             {teams &&
               teams.find((team) => team.id === selectedTeamId)?.team_name}
             <span>
@@ -55,6 +55,7 @@ function DashboardHeader() {
               <DropdownMenuRadioItem
                 value={team.id.toString()}
                 className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red text-textBase"}`}
+                key={team.id}
               >
                 {team.team_name}
               </DropdownMenuRadioItem>
@@ -67,7 +68,7 @@ function DashboardHeader() {
         <DashboardCard>24km ran this week</DashboardCard>
         <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
         <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
-        <DashboardCard>32 Members </DashboardCard>
+        <DashboardCard>Manager: James Blake </DashboardCard>
       </div>
 
       <div className="grid grid-cols-3 gap-8">
@@ -78,7 +79,28 @@ function DashboardHeader() {
             alt={selectedTeam?.team_name}
           ></img>
         </DashboardCard>
-        <DashboardCard>ABC</DashboardCard>
+        <DashboardCard>
+          <FlexBox
+            container
+            flexDirection="column"
+            justifyContent="space-between"
+            height="auto"
+          >
+            <Heading as="h3">Admin Tools</Heading>
+            <FlexBox
+              container
+              flexDirection="column"
+              justifyContent="space-between"
+              gap="16px"
+              width="80%"
+              margin="15px auto"
+            >
+              <Button variant="default">Add a Player</Button>
+              <Button variant="default">Add a Coach</Button>
+              <Button variant="default">Add a Manager</Button>
+            </FlexBox>
+          </FlexBox>
+        </DashboardCard>
         <DashboardCard>ABC</DashboardCard>
       </div>
     </FlexBox>

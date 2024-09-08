@@ -1,8 +1,10 @@
+import { useSelector } from "react-redux";
+
+import { getSelectedTeam } from "@/context/teamSlice";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
+
 import UserList from "../UserList";
 import DashboardCard from "./DashboardCard";
-import { useSelector } from "react-redux";
-import { getSelectedTeam } from "@/context/teamSlice";
 
 function AdminDashboard() {
   const { teams } = useUserTeams();

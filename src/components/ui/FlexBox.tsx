@@ -34,6 +34,7 @@ interface FlexProps {
   height?: string;
   maxWidth?: string;
   maxHeight?: string;
+  mxAuto?: boolean;
 }
 
 export const FlexBox = (props: FlexProps) => (

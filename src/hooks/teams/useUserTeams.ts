@@ -8,7 +8,7 @@ export const useUserTeams = () => {
     error,
     isFetching,
   } = useQuery({
-    queryKey: ["team_members"],
+    queryKey: ["team_members_teams"],
     queryFn: getUserTeams,
   });
 

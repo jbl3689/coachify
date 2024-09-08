@@ -1,15 +1,19 @@
+import { getSelectedTeam } from "@/context/teamSlice";
 import { getTeamUsers } from "@/services/apiUsers";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
 export const useTeamUsers = () => {
+  const selectedTeamId = useSelector(getSelectedTeam());
+
   const {
     isLoading,
     data: users,
     error,
     isFetching,
   } = useQuery({
-    queryKey: ["team_members"],
-    queryFn: getTeamUsers,
+    queryKey: ["team_members_users"],
+    queryFn: () => getTeamUsers(selectedTeamId),
   });
 
   return { isLoading, users, error, isFetching };

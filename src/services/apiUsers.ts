@@ -48,9 +48,7 @@ export async function createUser(newUser: {
   return data;
 }
 
-export async function getTeamUsers() {
-  const selectedTeamId = useSelector(getSelectedTeam);
-
+export async function getTeamUsers(selectedTeamId: number) {
   let { data: userIds, error: userIdsError } = await supabase
     .from("team_members")
     .select("user_id")
@@ -60,6 +58,8 @@ export async function getTeamUsers() {
     console.error(userIdsError);
     throw new Error("User ids could not be loaded");
   }
+
+  console.log(userIds);
 
   // Extract the list of user IDs
   const userIdList = userIds?.map((item) => item.user_id);
@@ -76,6 +76,6 @@ export async function getTeamUsers() {
     console.error(usersError);
     throw new Error("Users could not be loaded");
   }
-
+  console.log(users);
   return users.users.filter((user) => userIdList.includes(user.id));
 }
