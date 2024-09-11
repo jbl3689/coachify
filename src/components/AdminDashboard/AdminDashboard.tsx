@@ -1,70 +1,140 @@
-import { useSelector } from "react-redux";
+import { HiSelector } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getSelectedTeam } from "@/context/teamSlice";
+import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { useTeamUsers } from "@/hooks/user/useTeamUsers";
 
-import UserList from "../UserList";
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../ui/DashboardCard";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/DropdownMenu";
+import { FlexBox } from "@/components/ui/FlexBox";
+import Heading from "../ui/Heading";
+import Uploader from "@/data/Uploader";
+import Loader from "../ui/Loader";
+import UserListTable from "../UserListTable/UserListTable";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 function AdminDashboard() {
-  const { teams } = useUserTeams();
+  const { teams, isLoading, isFetching } = useUserTeams();
+  // const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
+  const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
+  const dispatch = useDispatch();
+
+  function handleUpdateTeam(value: string) {
+    dispatch(setSelectedTeam(parseInt(value)));
+  }
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
 
   return (
-    <>
-      <div className="flex gap-12">
-        {/* Club Details + Next Event*/}
-        <div className="grid w-8/12 grid-cols-2 gap-8">
-          <DashboardCard
-            Title={
-              <div className="text-2xl text-amber-300">
-                Ellerslie AFC Diamonds
-              </div>
-            }
+    <FlexBox container flexDirection="column" gap="30px">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="default" className="py-8 mx-auto w-96">
+            {teams && teams.length > 0
+              ? teams.find((team) => team.id === selectedTeamId)?.team_name
+              : "Assign yourself to a team"}
+            <span>
+              <HiSelector />
+            </span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Selected Team</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup
+            value={selectedTeamId.toString()}
+            onValueChange={handleUpdateTeam}
           >
-            <div className="flex gap-4">
-              <img
-                src="/logo.png"
-                alt="team logo"
-                height="300"
-                width="150"
-                className="rounded-xl"
-              ></img>
-              <div className="flex flex-col text-xl justify-evenly text-secondaryLightColor">
-                <span>Michaels Ave</span>
-                <span>NRF Division 1</span>
-                <span>Football ⚽️</span>
-              </div>
-            </div>
-          </DashboardCard>
+            {teams?.map((team) => (
+              <DropdownMenuRadioItem
+                value={team.id.toString()}
+                className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red text-textBase"}`}
+                key={team.id}
+              >
+                {team.team_name}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-          <DashboardCard Title={<span>Next Event</span>}></DashboardCard>
-
-          <div className="col-span-2">
-            <DashboardCard Title={<span> Add a Player</span>}>
-              <div className="flex justify-center gap-16 pt-2"></div>
-              {/* <AddUserForm /> */}
-            </DashboardCard>
+      {teams && teams.length > 0 ? (
+        <>
+          <div className="grid grid-cols-4 gap-4">
+            <DashboardCard>24km ran this week</DashboardCard>
+            <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
+            <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
+            <DashboardCard>Manager: James Blake </DashboardCard>
           </div>
-        </div>
 
-        {/* Team List */}
-        <div className="w-4/12">
-          <DashboardCard
-            Title={
-              <h1 className="text-3xl font-semibold text-dangerLight">
-                Team List
-              </h1>
-            }
-          >
-            <div className="w-full align-center">
-              <UserList />
-            </div>
-          </DashboardCard>
-        </div>
-      </div>
-    </>
+          <div className="grid grid-cols-3 gap-8">
+            {/* <DashboardCard>
+              <img
+                className="rounded-2xl"
+                src={selectedTeam?.logo}
+                alt={selectedTeam?.team_name}
+              ></img>
+            </DashboardCard> */}
+            <DashboardCard>
+              <FlexBox
+                container
+                flexDirection="column"
+                justifyContent="space-between"
+                height="auto"
+              >
+                <Heading as="h3">Admin Tools</Heading>
+                <FlexBox
+                  container
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  gap="16px"
+                  width="80%"
+                  margin="15px auto"
+                >
+                  <Button variant="default">Add a Player</Button>
+                  <Button variant="default">Add a Coach</Button>
+                  <Button variant="default">Add a Manager</Button>
+
+                  <Uploader />
+                </FlexBox>
+              </FlexBox>
+            </DashboardCard>
+            <Card className="col-span-2">
+              {/* <CardHeader>
+                <CardTitle>
+                  <Heading as="h3" className="text-left">
+                    Player List
+                  </Heading>
+                </CardTitle>
+              </CardHeader> */}
+              <CardContent>
+                <UserListTable />
+              </CardContent>
+            </Card>
+          </div>
+        </>
+      ) : null}
+    </FlexBox>
   );
 }
 

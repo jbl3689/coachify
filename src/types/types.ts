@@ -108,3 +108,20 @@ export type UserState = {
   full_name: string;
   email: string;
 };
+
+export type PositionAcronym =
+  | "GK"
+  | "CB"
+  | "LB"
+  | "RB"
+  | "LWB"
+  | "RWB"
+  | "CDM"
+  | "CM"
+  | "CAM"
+  | "LM"
+  | "RM"
+  | "LW"
+  | "RW"
+  | "CF"
+  | "ST";
