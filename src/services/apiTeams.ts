@@ -1,14 +1,11 @@
 import { TeamState } from "@/types/types";
 import supabase from "./supabase";
 
-export async function getUserTeams() {
-  const currUser = await supabase.auth.getUser();
-  const currUserId = currUser.data.user?.id;
-
+export async function getUserTeams(userId: number) {
   let { data: teamIds, error: teamIdsError } = await supabase
     .from("team_members")
     .select("team_id")
-    .eq("user_id", currUserId);
+    .eq("user_id", userId);
 
   if (teamIdsError) {
     console.error(teamIdsError);
@@ -18,7 +15,7 @@ export async function getUserTeams() {
   // Extract the list of team IDs
   const teamIdList = teamIds?.map((item) => item.team_id);
 
-  if (!teamIdList || teamIdList.length === 0) {
+  if (teamIdList === undefined || (teamIdList && teamIdList.length === 0)) {
     return []; // Return an empty array if the user has no associated teams
   }
 

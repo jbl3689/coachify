@@ -34,23 +34,26 @@ function AdminDashboard() {
   // const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
-  const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
+  // const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
   const dispatch = useDispatch();
 
   function handleUpdateTeam(value: string) {
     dispatch(setSelectedTeam(parseInt(value)));
   }
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching || teams === undefined || teams === null) {
     return <Loader />;
   }
+
+  const isTeamListEmpty = teams && teams.length === 0;
+  console.log(isTeamListEmpty);
 
   return (
     <FlexBox container flexDirection="column" gap="30px">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="default" className="py-8 mx-auto w-96">
-            {teams && teams.length > 0
+            {isTeamListEmpty
               ? teams.find((team) => team.id === selectedTeamId)?.team_name
               : "Assign yourself to a team"}
             <span>
@@ -78,7 +81,7 @@ function AdminDashboard() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {teams && teams.length > 0 ? (
+      {isTeamListEmpty ? (
         <>
           <div className="grid grid-cols-4 gap-4">
             <DashboardCard>24km ran this week</DashboardCard>

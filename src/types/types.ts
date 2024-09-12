@@ -1,3 +1,5 @@
+import { ReduxUserState } from "@/context/userSlice";
+
 export const BREAKPOINTS = {
   mobile: 0,
   mobileLarge: 500,
@@ -8,6 +10,7 @@ export const BREAKPOINTS = {
 export interface ReduxAppState {
   calendar: ReduxCalendarState;
   team: ReduxTeamState;
+  user: ReduxUserState;
 }
 
 export type ReduxTeamState = {

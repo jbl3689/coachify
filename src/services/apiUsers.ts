@@ -1,6 +1,32 @@
-import { useSelector } from "react-redux";
 import supabase from "./supabase.ts";
-import { getSelectedTeam } from "@/context/teamSlice.ts";
+
+export async function getUser() {
+  const { data: userAccount, error: userAccountError } =
+    await supabase.auth.getUser();
+
+  if (userAccountError) {
+    console.error(userAccountError);
+    throw new Error("Authenticated user could not be loaded");
+  }
+  console.log("Fetched userAccount:", userAccount);
+
+  let { data: user, error: userTableError } = await supabase
+    .from("users")
+    .select("*")
+    .eq("auth_user_id", userAccount.user.id)
+    .single();
+
+  if (userTableError) {
+    console.error(userTableError);
+    throw new Error("A matching user could not be found with your user id!");
+  }
+
+  if (user === undefined || user === null) {
+    throw new Error("User data is undefined");
+  }
+
+  return user;
+}
 
 export async function getUsers() {
   const { data: users, error } = await supabase.from("users").select("*");
