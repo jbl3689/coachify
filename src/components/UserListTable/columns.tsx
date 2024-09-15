@@ -1,18 +1,10 @@
-import { PositionAcronym } from "@/types/types";
+import { UserState } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/Checkbox";
 
-export type Player = {
-  id: string;
-  fullName: string;
-  primaryPosition: PositionAcronym;
-  secondaryPosition: PositionAcronym;
-  email: string;
-};
-
-export const columns: ColumnDef<Player>[] = [
+export const columns: ColumnDef<UserState>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -36,7 +28,7 @@ export const columns: ColumnDef<Player>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "fullName",
+    accessorKey: "full_name",
     header: ({ column }) => {
       return (
         <Button
@@ -50,11 +42,11 @@ export const columns: ColumnDef<Player>[] = [
     },
   },
   {
-    accessorKey: "primaryPosition",
+    accessorKey: "pos_primary",
     header: "Primary Pos",
   },
   {
-    accessorKey: "secondaryPosition",
+    accessorKey: "pos_secondary",
     header: "Secondary Pos",
   },
   {

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
-import { useTeamUsers } from "@/hooks/user/useTeamUsers";
 
 import DashboardCard from "../ui/DashboardCard";
 import { Button } from "../ui/button";
@@ -21,15 +20,7 @@ import Heading from "../ui/Heading";
 import Uploader from "@/data/Uploader";
 import Loader from "../ui/Loader";
 import UserListTable from "../UserListTable/UserListTable";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { ReduxTeamState } from "@/types/types";
-import { useUser } from "@/hooks/user/useUser";
+import { Card, CardContent } from "../ui/card";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();

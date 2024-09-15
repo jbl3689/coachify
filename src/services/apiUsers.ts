@@ -85,8 +85,6 @@ export async function getTeamUsers(selectedTeamId: number) {
     throw new Error("User ids could not be loaded");
   }
 
-  console.log(userIds);
-
   // Extract the list of user IDs
   const userIdList = userIds?.map((item) => item.user_id);
 
@@ -95,13 +93,15 @@ export async function getTeamUsers(selectedTeamId: number) {
   }
 
   // Fetch only the users that have an id in the userIdList
-  let { data: users, error: usersError } =
-    await supabase.auth.admin.listUsers();
+  let { data: users, error: usersError } = await supabase
+    .from("users")
+    .select("*")
+    .in("id", userIdList);
 
   if (usersError) {
     console.error(usersError);
     throw new Error("Users could not be loaded");
   }
-  console.log(users);
-  return users.users.filter((user) => userIdList.includes(user.id));
+
+  return users as UserState[];
 }

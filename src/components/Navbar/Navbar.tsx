@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom";
-import { HiSelector } from "react-icons/hi";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
@@ -16,24 +12,12 @@ import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import Loader from "../ui/Loader";
 
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
-import { useDispatch, useSelector } from "react-redux";
-import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
-import { getCurrentReduxUser } from "@/context/userSlice";
 
 function Navbar() {
   const { logout, isPending } = useLogout();
   const { isAuthenticated, isLoading, isFetching, user } = useAuthUser();
 
-  const { teams } = useUserTeams();
-
-  const selectedTeamId = useSelector(getSelectedTeam());
-  const dispatch = useDispatch();
-
   if (isPending || isLoading || isFetching) return <Loader />;
-
-  function handleUpdateTeam(value: string) {
-    dispatch(setSelectedTeam(parseInt(value)));
-  }
 
   return (
     <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28 text-textBase">

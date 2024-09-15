@@ -110,6 +110,8 @@ export type UserState = {
   auth_user_id: string;
   full_name: string;
   email: string;
+  pos_primary?: PositionAcronym;
+  pos_secondary?: PositionAcronym;
 };
 
 export type PositionAcronym =
