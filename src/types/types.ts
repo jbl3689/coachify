@@ -112,6 +112,7 @@ export type UserState = {
   email: string;
   pos_primary?: PositionAcronym;
   pos_secondary?: PositionAcronym;
+  avatar_url?: string;
 };
 
 export type PositionAcronym =

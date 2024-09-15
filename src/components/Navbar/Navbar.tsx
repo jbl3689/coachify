@@ -11,11 +11,19 @@ import { useLogout } from "@/hooks/auth/useLogout";
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import Loader from "../ui/Loader";
 
-import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
+import { FlexBox } from "../ui/FlexBox";
+import { useUser } from "@/hooks/user/useUser";
 
 function Navbar() {
   const { logout, isPending } = useLogout();
-  const { isAuthenticated, isLoading, isFetching, user } = useAuthUser();
+  const { isAuthenticated, isLoading, isFetching } = useAuthUser();
+  const { user } = useUser();
+  const userInitials = user?.full_name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 
   if (isPending || isLoading || isFetching) return <Loader />;
 
@@ -41,7 +49,15 @@ function Navbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                Account{" "}
+                <FlexBox container alignItems="center" gap="10px">
+                  Account{" "}
+                  <Avatar>
+                    {/* <AvatarImage src={"https://github.com/shadcn.png"} /> */}
+                    <AvatarImage src={user?.avatar_url} />
+                    <AvatarFallback>{userInitials}</AvatarFallback>
+                  </Avatar>
+                </FlexBox>
+
                 {/* {user?.user_metadata ? user.user_metadata.full_name : "User"} */}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
