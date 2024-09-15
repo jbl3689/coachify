@@ -18,10 +18,12 @@ import Loader from "../ui/Loader";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
+import { getCurrentReduxUser } from "@/context/userSlice";
 
 function Navbar() {
   const { logout, isPending } = useLogout();
   const { isAuthenticated, isLoading, isFetching, user } = useAuthUser();
+
   const { teams } = useUserTeams();
 
   const selectedTeamId = useSelector(getSelectedTeam());

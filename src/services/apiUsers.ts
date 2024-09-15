@@ -1,3 +1,4 @@
+import { UserState } from "@/types/types.ts";
 import supabase from "./supabase.ts";
 
 export async function getUser() {
@@ -8,7 +9,6 @@ export async function getUser() {
     console.error(userAccountError);
     throw new Error("Authenticated user could not be loaded");
   }
-  console.log("Fetched userAccount:", userAccount);
 
   let { data: user, error: userTableError } = await supabase
     .from("users")
@@ -25,7 +25,7 @@ export async function getUser() {
     throw new Error("User data is undefined");
   }
 
-  return user;
+  return user as UserState;
 }
 
 export async function getUsers() {

@@ -28,9 +28,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { ReduxTeamState } from "@/types/types";
+import { useUser } from "@/hooks/user/useUser";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
+
   // const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
@@ -45,8 +48,8 @@ function AdminDashboard() {
     return <Loader />;
   }
 
-  const isTeamListEmpty = teams && teams.length === 0;
-  console.log(isTeamListEmpty);
+  const isTeamListEmpty = !teams || teams.length === 0;
+  console.log("teams", isTeamListEmpty);
 
   return (
     <FlexBox container flexDirection="column" gap="30px">
@@ -54,8 +57,8 @@ function AdminDashboard() {
         <DropdownMenuTrigger asChild>
           <Button variant="default" className="py-8 mx-auto w-96">
             {isTeamListEmpty
-              ? teams.find((team) => team.id === selectedTeamId)?.team_name
-              : "Assign yourself to a team"}
+              ? "Assign yourself to a team"
+              : teams?.find((team) => team.id === selectedTeamId)?.team_name}
             <span>
               <HiSelector />
             </span>
@@ -81,7 +84,7 @@ function AdminDashboard() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {isTeamListEmpty ? (
+      {!isTeamListEmpty ? (
         <>
           <div className="grid grid-cols-4 gap-4">
             <DashboardCard>24km ran this week</DashboardCard>

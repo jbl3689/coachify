@@ -1,11 +1,13 @@
 import { TeamState } from "@/types/types";
 import supabase from "./supabase";
+import { useSelector } from "react-redux";
+import { getCurrentReduxUser, ReduxUserState } from "@/context/userSlice";
 
-export async function getUserTeams(userId: number) {
+export async function getUserTeams(reduxUserId: number) {
   let { data: teamIds, error: teamIdsError } = await supabase
     .from("team_members")
     .select("team_id")
-    .eq("user_id", userId);
+    .eq("user_id", reduxUserId);
 
   if (teamIdsError) {
     console.error(teamIdsError);
@@ -30,5 +32,5 @@ export async function getUserTeams(userId: number) {
     throw new Error("Teams could not be loaded");
   }
 
-  return teams as TeamState[];
+  return teams;
 }

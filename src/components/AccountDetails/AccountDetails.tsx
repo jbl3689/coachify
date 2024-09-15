@@ -7,22 +7,33 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import Loader from "../ui/Loader";
+import { useSelector } from "react-redux";
+import { getCurrentReduxUser } from "@/context/userSlice";
+import { useUser } from "@/hooks/user/useUser";
 
 function AccountDetails() {
-  const { user } = useAuthUser();
-  const { teams } = useUserTeams();
-  console.log(teams);
+  const { user } = useUser();
+
+  const {
+    teams,
+    isLoading: isLoadingTeams,
+    isFetching: isFetchingTeams,
+  } = useUserTeams();
+  console.log("acount details teams", teams);
+
   return (
     <Card className="w-full h-full">
       <CardHeader className="font-semibold">
-        {user?.user_metadata.full_name}'s Teams
+        {user?.full_name}'s Teams
       </CardHeader>
-      <CardContent>
-        <Carousel className="w-full max-w-xs mx-auto">
-          <CarouselContent className="border-none">
-            {teams &&
-              teams.map((team, index) => (
+      {isLoadingTeams || isFetchingTeams ? (
+        <Loader />
+      ) : (
+        <CardContent>
+          <Carousel className="w-full max-w-xs mx-auto">
+            <CarouselContent className="border-none">
+              {teams?.map((team, index) => (
                 <CarouselItem key={index}>
                   <div className="">
                     <Card>
@@ -39,11 +50,12 @@ function AccountDetails() {
                   </div>
                 </CarouselItem>
               ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </CardContent>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </CardContent>
+      )}
     </Card>
   );
 }

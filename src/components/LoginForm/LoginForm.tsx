@@ -39,8 +39,6 @@ function LoginForm() {
   });
 
   const handleSubmit = (values: z.infer<typeof loginFormSchema>) => {
-    console.log(values);
-
     // Extracting form data
     const { email, password } = values;
 
@@ -52,7 +50,7 @@ function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 mx-auto gap-4"
+          className="flex flex-col w-4/6 gap-4 mx-auto"
         >
           <div className="flex flex-col gap-4 justify-evenly">
             {/* form.control is used to validate that the name is correct/register the field */}

@@ -17,9 +17,7 @@ export const useUser = () => {
     queryFn: getUser,
   });
 
-  console.log("Fetched user:", user);
-
-  if (user && user.id && user.auth_user_id && user.full_name && user.email) {
+  if (user) {
     dispatch(
       setCurrentUser({
         id: user.id,

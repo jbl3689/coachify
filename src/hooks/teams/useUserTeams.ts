@@ -1,14 +1,10 @@
+import { getCurrentReduxUser } from "@/context/userSlice";
 import { getUserTeams } from "@/services/apiTeams";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { getCurrentUser } from "@/context/userSlice";
 
 export const useUserTeams = () => {
-  const user = useSelector(getCurrentUser());
-
-  if (!user || !user.id) {
-    return { isLoading: true, teams: null, error: null, isFetching: false };
-  }
+  const user = useSelector(getCurrentReduxUser());
 
   const {
     isLoading,
@@ -16,8 +12,9 @@ export const useUserTeams = () => {
     error,
     isFetching,
   } = useQuery({
-    queryKey: ["team_members_teams"],
-    queryFn: () => getUserTeams(user.id ?? 0),
+    queryKey: ["team_members_teams", user.id],
+    queryFn: () => getUserTeams(user.id!),
+    enabled: !!user.id,
   });
 
   return { isLoading, teams, error, isFetching };
