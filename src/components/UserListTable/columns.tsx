@@ -1,5 +1,5 @@
 import { PositionAcronym, UserState } from "@/types/types";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/Checkbox";
@@ -11,11 +11,10 @@ import {
   faSave,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import Heading from "../ui/Heading";
-import { useState } from "react";
-import { Input } from "../ui/Input";
 
-export const columns: ColumnDef<UserState>[] = [
+export const columns = (
+  handleOpenDialog: (row: Row<UserState>) => void
+): ColumnDef<UserState>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -68,9 +67,12 @@ export const columns: ColumnDef<UserState>[] = [
     id: "select",
     header: "Update User",
     cell: ({ row }) => (
-      <Button variant="outline">
-        <FontAwesomeIcon icon={faPenToSquare} />
-      </Button>
+      <>
+        <Button variant="outline" onClick={() => handleOpenDialog(row)}>
+          <FontAwesomeIcon icon={faPenToSquare} />
+        </Button>
+      </>
+
       // <Checkbox
       //   checked={row.getIsSelected()}
       //   onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -83,7 +85,7 @@ export const columns: ColumnDef<UserState>[] = [
   },
 ];
 
-// TRYING TO DO EDITING THING
+// TRYING TO DO IN-LINE EDITING THING
 // export const columns: ColumnDef<UserState>[] = [
 //   {
 //     id: "select",
