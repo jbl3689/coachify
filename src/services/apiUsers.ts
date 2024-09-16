@@ -105,3 +105,30 @@ export async function getTeamUsers(selectedTeamId: number) {
 
   return users as UserState[];
 }
+
+export async function createUpdateUser(
+  updatedUser: UserState,
+  id: number | null
+) {
+  let query: any = supabase.from("users");
+
+  // A) CREATE
+  if (!id) query = query.insert([{ ...updatedUser }]);
+
+  // B) EDIT
+  if (id) query = query.update({ ...updatedUser }).eq("id", id);
+
+  const { data: user, error } = await query.select().single();
+
+  // const { data, error } = await supabase
+  //   .from("users")
+  //   .update(updatedUser)
+  //   .eq("id", updatedUser.id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("User could not be updated");
+  }
+
+  return user;
+}

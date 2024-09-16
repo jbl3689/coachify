@@ -5,15 +5,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "../ui/Form";
-import { useLogin } from "@/hooks/auth/useLogin";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
-import { Select } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { PositionAcronym, positionAcronymArray } from "@/types/types";
+import { useUpdateUser } from "@/hooks/user/useUpdateUser";
 
 // Define the form schema using zod
 const userFormSchema = z.object({
@@ -28,18 +36,34 @@ export type UserFormInputs = {
   password: string;
 };
 
-function UserForm() {
-  const { isPending, login } = useLogin();
+interface UserFormProps {
+  full_name?: string;
+  pos_primary?: string;
+  pos_secondary?: string;
+  email?: string;
+  id?: number;
+  onFormClose: () => void;
+}
+
+function UserForm({
+  full_name,
+  pos_primary,
+  pos_secondary,
+  email,
+  id,
+  onFormClose,
+}: UserFormProps) {
+  const { isPending, updateUser } = useUpdateUser();
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      full_name: "",
-      pos_primary: "",
-      pos_secondary: "",
-      email: "",
+      full_name: full_name ?? "",
+      pos_primary: pos_primary ?? "",
+      pos_secondary: pos_secondary ?? "",
+      email: email ?? "",
     },
   });
 
@@ -47,7 +71,26 @@ function UserForm() {
     // Extracting form data
     const { full_name, pos_primary, pos_secondary, email } = values;
 
-    // login({ email });
+    // Typecasting pos_primary and pos_secondary to PositionAcronym
+    const castedPosPrimary = pos_primary as PositionAcronym;
+    const castedPosSecondary = pos_secondary as PositionAcronym;
+
+    if (id === undefined) {
+      console.log("Adding user");
+    } else {
+      updateUser({
+        newUserData: {
+          id,
+          full_name,
+          pos_primary: castedPosPrimary,
+          pos_secondary: castedPosSecondary,
+          email,
+        },
+        id,
+      });
+    }
+
+    onFormClose();
   };
 
   return (
@@ -62,6 +105,25 @@ function UserForm() {
 
             <FormField
               control={form.control}
+              name="full_name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel htmlFor="full_name">Full Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      id="full_name"
+                      {...field}
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="pos_primary"
               render={({ field }) => {
                 return (
@@ -69,9 +131,63 @@ function UserForm() {
                     <FormLabel htmlFor="pos_primary">
                       Primary Position
                     </FormLabel>
-                    <FormControl>
-                      <Select />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {positionAcronymArray.map((pos) => (
+                          <SelectItem key={pos} value={pos}>
+                            {pos}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the players primary position
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="pos_secondary"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel htmlFor="pos_secondary">
+                      Secondary Position
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {positionAcronymArray.map((pos) => (
+                          <SelectItem key={pos} value={pos}>
+                            {pos}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the players secondary position
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
@@ -83,13 +199,13 @@ function UserForm() {
               name="email"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel htmlFor="email">Enter email</FormLabel>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       id="email"
                       {...field}
-                      disabled={isPending}
+                      disabled={isPending || email !== undefined}
                     />
                   </FormControl>
                   <FormMessage />

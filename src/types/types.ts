@@ -107,7 +107,7 @@ export type EventAttendanceState = {
 
 export type UserState = {
   id: number;
-  auth_user_id: string;
+  auth_user_id?: string;
   full_name: string;
   email: string;
   pos_primary?: PositionAcronym;
@@ -131,3 +131,21 @@ export type PositionAcronym =
   | "RW"
   | "CF"
   | "ST";
+
+export const positionAcronymArray: PositionAcronym[] = [
+  "GK",
+  "CB",
+  "LB",
+  "RB",
+  "LWB",
+  "RWB",
+  "CDM",
+  "CM",
+  "CAM",
+  "LM",
+  "RM",
+  "LW",
+  "RW",
+  "CF",
+  "ST",
+];

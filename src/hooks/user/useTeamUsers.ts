@@ -11,10 +11,11 @@ export const useTeamUsers = () => {
     data: users,
     error,
     isFetching,
+    refetch,
   } = useQuery({
     queryKey: ["team_members_users"],
     queryFn: () => getTeamUsers(selectedTeamId),
   });
 
-  return { isLoading, users, error, isFetching };
+  return { isLoading, users, error, isFetching, refetch };
 };

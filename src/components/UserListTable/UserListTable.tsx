@@ -6,9 +6,10 @@ import FormDialog from "../FormDialog/FormDialog";
 import { useState } from "react";
 import { UserState } from "@/types/types";
 import { Row } from "@tanstack/react-table";
+import UserForm from "../UserForm/UserForm";
 
 function UserListTable() {
-  const { users, isFetching, isLoading } = useTeamUsers();
+  const { users, isFetching, isLoading, refetch } = useTeamUsers();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [selectedRowData, setSelectedRowData] = useState<Row<UserState> | null>(
     null
@@ -22,6 +23,7 @@ function UserListTable() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedRowData(null);
+    refetch();
   };
 
   if (isLoading || isFetching) {
@@ -35,7 +37,6 @@ function UserListTable() {
         data={users!}
         header="User List"
       />
-      ;
       <FormDialog
         Title={
           <div>
@@ -45,12 +46,10 @@ function UserListTable() {
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
       >
-        {selectedRowData?.original.pos_primary}
-        {/* <EventForm
-            selectedDay={selectedDay}
-            eventType={formEventType ?? ""}
-            setFormEventType={setFormEventType}
-          /> */}
+        <UserForm
+          {...selectedRowData?.original}
+          onFormClose={handleCloseDialog}
+        />
       </FormDialog>
     </>
   );

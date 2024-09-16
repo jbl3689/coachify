@@ -21,7 +21,7 @@ export const useUser = () => {
     dispatch(
       setCurrentUser({
         id: user.id,
-        auth_user_id: user.auth_user_id,
+        auth_user_id: user.auth_user_id!,
         full_name: user.full_name,
         email: user.email,
       })
