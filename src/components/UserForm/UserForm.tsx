@@ -42,7 +42,7 @@ interface UserFormProps {
   pos_secondary?: string;
   email?: string;
   id?: number;
-  onFormClose: () => void;
+  onFormClose?: () => void;
 }
 
 function UserForm({
@@ -90,7 +90,7 @@ function UserForm({
       });
     }
 
-    onFormClose();
+    onFormClose?.();
   };
 
   return (

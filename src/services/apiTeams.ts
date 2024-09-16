@@ -1,7 +1,4 @@
-import { TeamState } from "@/types/types";
 import supabase from "./supabase";
-import { useSelector } from "react-redux";
-import { getCurrentReduxUser, ReduxUserState } from "@/context/userSlice";
 
 export async function getUserTeams(reduxUserId: number) {
   let { data: teamIds, error: teamIdsError } = await supabase

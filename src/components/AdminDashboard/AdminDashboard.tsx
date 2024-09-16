@@ -17,18 +17,16 @@ import {
 } from "../ui/DropdownMenu";
 import { FlexBox } from "@/components/ui/FlexBox";
 import Heading from "../ui/Heading";
-import Uploader from "@/data/Uploader";
 import Loader from "../ui/Loader";
 import UserListTable from "../UserListTable/UserListTable";
 import { Card, CardContent } from "../ui/card";
+import AddUserSheet from "../AddUserSheet/AddUserSheet";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
 
-  // const { users } = useTeamUsers();
-
   const selectedTeamId = useSelector(getSelectedTeam());
-  // const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
+  const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
   const dispatch = useDispatch();
 
   function handleUpdateTeam(value: string) {
@@ -43,7 +41,7 @@ function AdminDashboard() {
   console.log("teams", isTeamListEmpty);
 
   return (
-    <FlexBox container flexDirection="column" gap="30px">
+    <FlexBox container flexDirection="column" gap="25px">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="default" className="py-8 mx-auto w-96">
@@ -108,11 +106,9 @@ function AdminDashboard() {
                   width="80%"
                   margin="15px auto"
                 >
-                  <Button variant="default">Add a Player</Button>
-                  <Button variant="default">Add a Coach</Button>
-                  <Button variant="default">Add a Manager</Button>
+                  <AddUserSheet />
 
-                  <Uploader />
+                  {/* <Uploader /> */}
                 </FlexBox>
               </FlexBox>
             </DashboardCard>

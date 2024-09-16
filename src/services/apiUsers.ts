@@ -39,6 +39,38 @@ export async function getUsers() {
   return users;
 }
 
+export async function getUsersNotInTeam(selectedTeamId: number) {
+  let { data: userIds, error: userIdsError } = await supabase
+    .from("team_members")
+    .select("user_id")
+    .eq("team_id", selectedTeamId);
+
+  if (userIdsError) {
+    console.error(userIdsError);
+    throw new Error("User ids could not be loaded");
+  }
+
+  // Extract the list of user IDs
+  const userIdList = userIds?.map((item) => item.user_id);
+
+  if (!userIdList || userIdList.length === 0) {
+    return getUsers(); // Return all users if the team has no associated users
+  }
+
+  // Fetch only the users that are not in the team
+  let { data: users, error: usersError } = await supabase
+    .from("users")
+    .select("*")
+    .not("id", "in", `(${userIdList.join(",")})`);
+
+  if (usersError) {
+    console.error(usersError);
+    throw new Error("Users could not be loaded");
+  }
+
+  return users;
+}
+
 export async function deleteUser(userId: number) {
   const { data, error } = await supabase
     .from("users")
