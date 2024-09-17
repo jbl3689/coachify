@@ -9,12 +9,10 @@ import {
 } from "../ui/DropdownMenu";
 import { useLogout } from "@/hooks/auth/useLogout";
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
-import Loader from "../ui/Loader";
-
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { FlexBox } from "../ui/FlexBox";
 import { useUser } from "@/hooks/user/useUser";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../ui/Skeleton";
 
 function Navbar() {
   const { logout, isPending } = useLogout();

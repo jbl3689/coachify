@@ -31,3 +31,24 @@ export async function getUserTeams(reduxUserId: number) {
 
   return teams;
 }
+
+interface AddPlayerToTeamProps {
+  teamId: number;
+  userId: number;
+}
+
+export async function addPlayerToTeam({
+  teamId,
+  userId,
+}: AddPlayerToTeamProps) {
+  const { data, error } = await supabase
+    .from("team_members")
+    .insert([{ team_id: teamId, user_id: userId }]);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Player could not be added to the team");
+  }
+
+  return data;
+}

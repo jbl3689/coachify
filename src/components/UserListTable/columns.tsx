@@ -64,7 +64,7 @@ export const columns = (
     header: "Email",
   },
   {
-    id: "select",
+    id: "updateUser",
     header: "Update User",
     cell: ({ row }) => (
       <>

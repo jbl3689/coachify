@@ -35,7 +35,7 @@ function UserListTable() {
       <DataTable
         columns={columns(handleOpenDialog)}
         data={users!}
-        header="User List"
+        header="Player List"
       />
       <FormDialog
         Title={

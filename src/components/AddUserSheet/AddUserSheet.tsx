@@ -23,31 +23,49 @@ import {
   SelectValue,
 } from "../ui/select";
 import { FlexBox } from "../ui/FlexBox";
+import { useAddPlayerToTeam } from "@/hooks/teams/useAddPlayerToTeam";
+import { useSelector } from "react-redux";
+import { getSelectedTeam } from "@/context/teamSlice";
+import { useState } from "react";
 
 function AddUserSheet() {
   const { users, isLoading } = useUsersNotInTeam();
+  const { addPlayer, isPending } = useAddPlayerToTeam();
+  const teamId = useSelector(getSelectedTeam());
+
+  const [selectedUserId, setSelectedUserId] = useState<number>(users?.at(0).id);
 
   if (isLoading || users === undefined || users === null) {
     return <Loader />;
   }
 
+  const handleAddPlayer = () => {
+    addPlayer({ teamId, userId: selectedUserId });
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="destructive">Open</Button>
+        <Button variant="destructive">Add Users</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Add user to the team</SheetTitle>
           <SheetDescription>
             Select a user from the dropdown list to add to the team. Can't find
-            the user you're looking for? Click the button below to create a new
-            user.
+            the user you're looking for? Click{" "}
+            <span className="font-semibold text-blue-500 cursor-pointer">
+              here
+            </span>{" "}
+            to register a new user.
           </SheetDescription>
         </SheetHeader>
 
         <FlexBox container flexDirection="column" gap="20px" margin="20px 0">
-          <Select>
+          <Select
+            onValueChange={(value) => setSelectedUserId(Number(value))}
+            value={selectedUserId?.toString()}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select a user" />
             </SelectTrigger>
@@ -62,24 +80,15 @@ function AddUserSheet() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          {/* <div className="grid gap-4 py-4">
-          <div className="grid items-center grid-cols-4 gap-4">
-          <Label htmlFor="name" className="text-right">
-          Name
-          </Label>
-          <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid items-center grid-cols-4 gap-4">
-          <Label htmlFor="username" className="text-right">
-          Username
-          </Label>
-          <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-          </div> */}
+
           <SheetFooter>
-            <SheetClose asChild>
-              <Button type="submit">Add to the team</Button>
-            </SheetClose>
+            <FlexBox container flexDirection="column" gap="8px">
+              <SheetClose asChild>
+                <Button type="submit" onClick={handleAddPlayer}>
+                  Add to the team
+                </Button>
+              </SheetClose>
+            </FlexBox>
           </SheetFooter>
         </FlexBox>
       </SheetContent>

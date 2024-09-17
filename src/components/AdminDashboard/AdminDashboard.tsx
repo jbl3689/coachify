@@ -38,7 +38,6 @@ function AdminDashboard() {
   }
 
   const isTeamListEmpty = !teams || teams.length === 0;
-  console.log("teams", isTeamListEmpty);
 
   return (
     <FlexBox container flexDirection="column" gap="25px">
