@@ -10,10 +10,10 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { Table, TableBody, TableCell, TableRow } from "../ui/Table";
 
 interface CalendarDayProps {
   day: DayState;
@@ -46,6 +46,8 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
+  const sessionNumbers = [1, 2, 3];
+
   return (
     <Card
       onClick={onClick}
@@ -61,38 +63,31 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
           <div>{format(new Date(day.date), "dd-MMM")}</div>
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        {events && (
-          <div className="flex flex-col gap-12 justify-normal">
-            <div className="flex items-center justify-center min-h-28">
-              {events?.filter((event) => event.is_morning).length > 0 ? (
-                events
-                  .filter((event) => event.is_morning)
-                  .map((event) => (
-                    <EventBox key={event.id} event={event} onClick={onClick} />
-                  ))
-              ) : (
-                <p className="text-3xl text-textAlt"></p>
-              )}
-            </div>
+      <CardContent className="h-full p-0">
+        <Table className="h-full">
+          <TableBody className="flex flex-col">
+            {sessionNumbers.map((sessionNumber) => {
+              const event = events?.find(
+                (event) => event.session_number === sessionNumber
+              );
 
-            {/* <div className="text-sm text-left text-textAlt">- 12pm -</div> */}
-
-            <div className="flex items-center justify-center min-h-28">
-              {events?.filter((event) => !event.is_morning).length > 0 ? (
-                events
-                  .filter((event) => !event.is_morning)
-                  .map((event) => (
-                    <EventBox key={event.id} event={event} onClick={onClick} />
-                  ))
-              ) : (
-                <p className="text-3xl text-textAlt"></p>
-              )}
-            </div>
-          </div>
-        )}
+              return (
+                <TableRow key={sessionNumber} className="h-28 max-h-28">
+                  <TableCell className="text-left">
+                    {event && (
+                      <EventBox
+                        key={event.id}
+                        event={event}
+                        onClick={onClick}
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
-      <CardFooter></CardFooter>
     </Card>
   );
 }

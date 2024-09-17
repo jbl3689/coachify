@@ -2,7 +2,8 @@ import { format, parse } from "date-fns";
 
 import { useEventAttendance } from "../hooks/events/useEventAttendance";
 import { EventState } from "../types/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { FlexBox } from "./ui/FlexBox";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 interface EventBoxProps {
   event: EventState;
@@ -20,26 +21,23 @@ function EventBox({ event, onClick }: EventBoxProps) {
     : null;
 
   return (
-    <Card
-      className="flex flex-col justify-between w-11/12 mx-auto font-normal text-left border-4 border-double rounded-md h-28 bg-secondaryLight border-textBase"
-      onClick={onClick}
+    <FlexBox
+      container
+      flexDirection="column"
+      justifyContent="space-between"
+      gap="4px"
     >
-      <CardHeader className="p-2">
-        <CardTitle className="flex flex-row items-center justify-between">
-          <div className="text-[20px]">{event.event_type}</div>
-          <div className="text-sm">{eventAttendance?.length ?? 0} / 32</div>
-        </CardTitle>
-      </CardHeader>
+      <FlexBox container flexDirection="column" justifyContent="space-between">
+        <Label className="text-lg">{event.event_type}</Label>
+        <Label className="text-sm">{eventAttendance?.length ?? 0} / 32</Label>
+      </FlexBox>
 
-      <CardContent className="p-2">
-        <div className="text-sm text-textAlt">
-          {startTime ? format(startTime, "h:mma") : ""} -{" "}
-          {endTime ? format(endTime, "h:mma") : ""}
-          {/* {event.event_start_time} - {event.event_end_time} */}
-        </div>
-        <div className="text-sm text-textAlt">{event.location}</div>
-      </CardContent>
-    </Card>
+      <FlexBox className="text-sm text-textAlt">
+        <Label>{event.location}</Label>
+        {startTime ? format(startTime, "h:mma") : ""} -{" "}
+        {endTime ? format(endTime, "h:mma") : ""}
+      </FlexBox>
+    </FlexBox>
   );
 }
 

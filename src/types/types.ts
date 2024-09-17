@@ -96,6 +96,7 @@ export type EventState = {
   day_id: number;
   location: string;
   is_morning: boolean;
+  session_number: number;
 };
 
 export type EventAttendanceState = {
