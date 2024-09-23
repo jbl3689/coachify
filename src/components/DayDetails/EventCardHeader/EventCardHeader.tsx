@@ -1,22 +1,24 @@
-import { format, parse } from 'date-fns'; // Assuming you're using date-fns for formatting
+import { format, parse } from "date-fns"; // Assuming you're using date-fns for formatting
 // EventCardHeader.tsx
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from "react";
 
-import { Button } from '@/components/ui/button';
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DayState, EventState } from '@/types/types';
+import { Button } from "@/components/ui/button";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DayState, EventState } from "@/types/types";
 
 // Define props based on what you need
 interface EventCardHeaderProps {
   selectedDay: DayState;
-  displayedEvent: EventState | null;
-  setFormEventType: Dispatch<SetStateAction<string | null>>;
+  displayedEvent: EventState | undefined | null;
+  sessionNumber: number;
+  handleOpenDialog: (sessionNumber: number) => void;
 }
 
 const EventCardHeader = ({
   selectedDay,
   displayedEvent,
-  setFormEventType,
+  sessionNumber,
+  handleOpenDialog,
 }: EventCardHeaderProps) => {
   const startTime = displayedEvent?.event_start_time
     ? parse(displayedEvent.event_start_time, "HH:mm:ss", new Date())
@@ -50,19 +52,11 @@ const EventCardHeader = ({
       {!displayedEvent && (
         <div className="flex gap-4 px-4">
           <Button
-            onClick={() => setFormEventType("Training")}
+            onClick={() => handleOpenDialog(sessionNumber)}
             size="lg"
             className="px-12"
           >
-            Add a Training
-          </Button>
-          <Button
-            onClick={() => setFormEventType("Game")}
-            size="lg"
-            variant="destructive"
-            className="px-12"
-          >
-            Add a Game
+            Add an event
           </Button>
         </div>
       )}

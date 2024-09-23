@@ -21,6 +21,8 @@ interface CalendarDayProps {
   onClick: () => void;
 }
 
+export const daySessionNumbers = [1, 2, 3];
+
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const dispatch = useDispatch();
 
@@ -46,8 +48,6 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
-  const sessionNumbers = [1, 2, 3];
-
   return (
     <Card
       onClick={onClick}
@@ -66,7 +66,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
       <CardContent className="h-full p-0">
         <Table className="h-full">
           <TableBody className="flex flex-col">
-            {sessionNumbers.map((sessionNumber) => {
+            {daySessionNumbers.map((sessionNumber) => {
               const event = events?.find(
                 (event) => event.session_number === sessionNumber
               );

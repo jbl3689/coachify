@@ -66,6 +66,14 @@ export const daysOfWeek = [
   { id: 6, abbreviation: "Sun", label: "Sunday" },
 ];
 
+export const eventTypes = [
+  "Training",
+  "Game",
+  "Whiteboard",
+  "Bonding",
+  "Other",
+];
+
 export type TeamState = {
   id: number;
   team_name: string;

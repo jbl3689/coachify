@@ -5,7 +5,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useAddEvent } from "@/hooks/events/useAddEvent";
-import { DayState } from "@/types/types";
+import { DayState, eventTypes } from "@/types/types";
 import {
   Form,
   FormControl,
@@ -17,31 +17,40 @@ import {
 import TimeSelect from "../ui/TimeSelect";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
+import { FlexBox } from "../ui/FlexBox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface EventFormProps {
   selectedDay: DayState;
-  eventType: string;
-  setFormEventType: Dispatch<SetStateAction<string | null>>;
-  isCreating?: boolean;
+  sessionNumber: number;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 // Define the form schema using zod
 const eventFormSchema = z.object({
   event_start_time: z.string().min(1),
-  event_end_time: z.string(),
+  event_end_time: z.string().min(1),
   location: z.string(),
+  event_type: z.string().min(1),
 });
 
 export type EventFormInputs = {
   event_start_time: string;
   event_end_time: string;
   location: string;
+  event_type: string;
 };
 
 function EventForm({
   selectedDay,
-  eventType,
-  setFormEventType,
+  sessionNumber,
+  setIsDialogOpen,
 }: EventFormProps) {
   const { mutate } = useAddEvent(0);
 
@@ -53,36 +62,31 @@ function EventForm({
       event_start_time: "18:00",
       event_end_time: "21:00",
       location: "",
+      event_type: eventTypes[0],
     },
   });
 
   const currentStartTime = form.watch("event_start_time");
 
   const handleSubmit = (values: z.infer<typeof eventFormSchema>) => {
-    console.log(values);
+    const { event_start_time, event_end_time, location, event_type } = values;
 
-    // Extracting form data
-    const { event_start_time, event_end_time, location } = values;
-
-    // Prepare the event data object. Adjust keys as necessary for your backend/API.
     const eventData = {
       event_start_time,
       event_end_time,
       location,
-      event_type: eventType,
+      event_type,
+      session_number: sessionNumber,
       day_id: selectedDay.id,
     };
 
-    // Call the mutate function to submit the event data
     mutate(eventData, {
       onSuccess: () => {
-        // Handle success, e.g., reset the form, show a success message
         form.reset();
         console.log("Event added successfully");
-        setFormEventType(null);
+        setIsDialogOpen(false);
       },
       onError: (error) => {
-        // Handle error, e.g., show an error message
         console.error("Error adding event:", error);
       },
     });
@@ -95,7 +99,12 @@ function EventForm({
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col w-full gap-4"
         >
-          <div className="flex flex-row gap-4 justify-evenly">
+          <FlexBox
+            container
+            flexDirection="row"
+            gap="20px"
+            justifyContent="space-between"
+          >
             {/* form.control is used to validate that the name is correct/register the field */}
             <FormField
               control={form.control}
@@ -103,9 +112,7 @@ function EventForm({
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel htmlFor="event_start_time">
-                      Enter start time
-                    </FormLabel>
+                    <FormLabel htmlFor="event_start_time">Start time</FormLabel>
                     <FormControl>
                       <TimeSelect id="event_start_time" {...field} />
                     </FormControl>
@@ -120,9 +127,7 @@ function EventForm({
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel htmlFor="event_end_time">
-                      Enter end time
-                    </FormLabel>
+                    <FormLabel htmlFor="event_end_time">End time</FormLabel>
 
                     <FormControl>
                       <TimeSelect
@@ -137,28 +142,67 @@ function EventForm({
                 );
               }}
             />
-          </div>
+          </FlexBox>
 
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => {
-              return (
-                <FormItem className="text-2xl">
-                  <FormLabel htmlFor="location">Enter location</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      id="location"
-                      {...field}
-                      placeholder="Enter location"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+          <FlexBox
+            container
+            flexDirection="row"
+            gap="20px"
+            justifyContent="center"
+          >
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel htmlFor="location">Location</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        id="location"
+                        {...field}
+                        placeholder="Enter location"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="event_type"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel htmlFor="location">Event type</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {eventTypes.map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {type}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </FlexBox>
 
           <Button
             className="px-24 mx-auto mt-8"
