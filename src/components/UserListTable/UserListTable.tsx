@@ -20,10 +20,11 @@ function UserListTable() {
     setIsDialogOpen(true);
   };
 
-  const handleCloseDialog = () => {
+  const handleCloseDialog = (dataUpdated: boolean) => {
     setIsDialogOpen(false);
     setSelectedRowData(null);
-    refetch();
+
+    if (dataUpdated) refetch();
   };
 
   if (isLoading || isFetching) {
@@ -44,11 +45,11 @@ function UserListTable() {
           </div>
         }
         isOpen={isDialogOpen}
-        onClose={handleCloseDialog}
+        onClose={() => handleCloseDialog(false)}
       >
         <UserForm
           {...selectedRowData?.original}
-          onFormClose={handleCloseDialog}
+          onFormClose={() => handleCloseDialog(true)}
         />
       </FormDialog>
     </>
