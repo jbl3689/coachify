@@ -22,7 +22,6 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
 
   const { handleDayNavigate, visibleDays, visibleRange, weekDaysLoaded } =
     useLoadWeekView({ weekData });
-  console.log(visibleDays);
 
   return (
     <div className="flex flex-row">

@@ -63,16 +63,16 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
           <div>{format(new Date(day.date), "dd-MMM")}</div>
         </CardDescription>
       </CardHeader>
-      <CardContent className="h-full p-0">
-        <Table className="h-full">
-          <TableBody className="flex flex-col">
+      <CardContent className="h-max p-0">
+        <Table className="">
+          <TableBody className="flex flex-col h-max overflow-hidden">
             {daySessionNumbers.map((sessionNumber) => {
               const event = events?.find(
                 (event) => event.session_number === sessionNumber
               );
 
               return (
-                <TableRow key={sessionNumber} className="h-28 max-h-28">
+                <TableRow key={sessionNumber} className="">
                   <TableCell className="text-left">
                     {event && (
                       <EventBox
