@@ -35,7 +35,10 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       )}
 
       <div
-        className={`grid grid-rows-${visibleDays.length} grid-flow-col gap-2 py-4 rounded-xl mx-auto w-full`}
+        className="grid gap-2 w-full"
+        style={{
+          gridTemplateColumns: `repeat(${visibleDays.length}, minmax(0, 1fr))`,
+        }}
       >
         {weekDaysLoaded && visibleDays ? (
           visibleDays.map((day) => (

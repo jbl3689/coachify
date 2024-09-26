@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { setDayEvents } from "../../context/calendarSlice";
 import { useEvents } from "../../hooks/events/useEvents";
 import { dayOfWeek, dayOfWeekAbbreviations, DayState } from "../../types/types";
-import EventBox from "../EventBox";
 import {
   Card,
   CardContent,
@@ -24,7 +23,7 @@ import {
   TableRow,
 } from "../ui/Table";
 import { FlexBox } from "../ui/FlexBox";
-import { Label } from "../ui/Label";
+import EventDetailsBox from "../EventDetailsBox/EventDetailsBox";
 
 interface CalendarDayProps {
   day: DayState;
@@ -75,7 +74,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
-        <FlexBox container flexDirection="column" height="full">
+        <FlexBox container flexDirection="column">
           <Table>
             {/* <TableCaption>{format(new Date(day.date), "dd-MMM")}</TableCaption> */}
             <TableHeader className="bg-[#305c57]">
@@ -90,14 +89,14 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
                 );
 
                 return (
-                  <TableRow key={number} className="h-full">
-                    <TableCell className="px-2 py-2">
-                      <div className="flex flex-col justify-center h-full min-h-[3rem] text-left">
+                  <TableRow key={number}>
+                    <TableCell className="px-0 py-2">
+                      <div className="h-full min-h-[3rem]">
                         {event && (
-                          <EventBox
+                          <EventDetailsBox
                             key={event.id}
                             event={event}
-                            onClick={onClick}
+                            sessionNumber={number}
                           />
                         )}
                       </div>

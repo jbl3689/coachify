@@ -1,9 +1,11 @@
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Button } from './ui/button';
-import FadeInContainer from './ui/FadeInContainer';
-import { Label } from './ui/Label';
+import { Button } from "./ui/button";
+import FadeInContainer from "./ui/FadeInContainer";
+import { Label } from "./ui/Label";
+import { useBreakpoint } from "use-breakpoint";
+import { BREAKPOINTS } from "@/types/types";
 
 interface WeekNavigatorProps {
   selectedWeek: Date;
@@ -16,10 +18,14 @@ function WeekNavigator({
   onClickWeekNavigate,
   handleNavigateToToday,
 }: WeekNavigatorProps) {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+
   return (
     <div className="flex items-center justify-between gap-8 px-4 pb-8">
       <FadeInContainer>
-        <Label className="text-4xl font-semibold">
+        <Label
+          className={`${breakpoint === "desktop" ? "text-4xl" : "text-3xl"} font-semibold`}
+        >
           Week of {selectedWeek.toDateString()}
         </Label>
       </FadeInContainer>
