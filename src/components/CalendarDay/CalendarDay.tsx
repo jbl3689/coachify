@@ -13,7 +13,18 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Table, TableBody, TableCell, TableRow } from "../ui/Table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/Table";
+import { FlexBox } from "../ui/FlexBox";
+import { Label } from "../ui/Label";
 
 interface CalendarDayProps {
   day: DayState;
@@ -63,30 +74,40 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
           <div>{format(new Date(day.date), "dd-MMM")}</div>
         </CardDescription>
       </CardHeader>
-      <CardContent className="h-max p-0">
-        <Table className="">
-          <TableBody className="flex flex-col h-max overflow-hidden">
-            {daySessionNumbers.map((sessionNumber) => {
-              const event = events?.find(
-                (event) => event.session_number === sessionNumber
-              );
+      <CardContent className="p-0">
+        <FlexBox container flexDirection="column" height="full">
+          <Table>
+            {/* <TableCaption>{format(new Date(day.date), "dd-MMM")}</TableCaption> */}
+            <TableHeader className="bg-[#305c57]">
+              <TableRow>
+                <TableHead>Sessions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {daySessionNumbers.map((number) => {
+                const event = events?.find(
+                  (event) => event.session_number === number
+                );
 
-              return (
-                <TableRow key={sessionNumber} className="">
-                  <TableCell className="text-left">
-                    {event && (
-                      <EventBox
-                        key={event.id}
-                        event={event}
-                        onClick={onClick}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                return (
+                  <TableRow key={number} className="h-full">
+                    <TableCell className="px-2 py-2">
+                      <div className="flex flex-col justify-center h-full min-h-[3rem] text-left">
+                        {event && (
+                          <EventBox
+                            key={event.id}
+                            event={event}
+                            onClick={onClick}
+                          />
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </FlexBox>
       </CardContent>
     </Card>
   );

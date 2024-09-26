@@ -23,19 +23,20 @@ function EventBox({ event, onClick }: EventBoxProps) {
   return (
     <FlexBox
       container
-      flexDirection="column"
+      flexDirection="row"
       justifyContent="space-between"
-      gap="4px"
+      alignItems="center"
     >
-      <FlexBox container flexDirection="column" justifyContent="space-between">
-        <Label className="text-lg">{event.event_type}</Label>
-        <Label className="text-sm">{eventAttendance?.length ?? 0} / 32</Label>
+      <FlexBox container flexDirection="column">
+        <Label className="text-lg">{event.event_type} session</Label>
+        <Label className="text-textAlt">{event.location}</Label>
       </FlexBox>
-
       <FlexBox className="text-sm text-textAlt">
-        <Label>{event.location}</Label>
         {startTime ? format(startTime, "h:mma") : ""} -{" "}
         {endTime ? format(endTime, "h:mma") : ""}
+        <Label className="text-sm text-right">
+          {eventAttendance?.length ?? 0} / 32
+        </Label>
       </FlexBox>
     </FlexBox>
   );
