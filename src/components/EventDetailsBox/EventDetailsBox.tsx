@@ -6,7 +6,6 @@ import { FaClock } from "react-icons/fa";
 import { useEventAttendance } from "../../hooks/events/useEventAttendance";
 import { EventState } from "../../types/types";
 import { FlexBox } from "../ui/FlexBox";
-import { Label } from "../ui/Label";
 import { Badge } from "../ui/Badge";
 
 interface EventBoxProps {
@@ -32,14 +31,14 @@ function EventDetailsBox({ event, sessionNumber }: EventBoxProps) {
       alignItems="center"
       gap="5px"
     >
-      <Badge variant="default" className="flex justify-between w-36">
+      <Badge variant="default" className="flex justify-between w-5/6">
         {event.event_type}
         <FaPersonRunning />
       </Badge>
-      <Badge variant="secondary" className="flex justify-between w-36">
+      <Badge variant="secondary" className="flex justify-between w-5/6">
         {event.location} <HiHome />
       </Badge>
-      <Badge variant="destructive" className="flex justify-between w-36">
+      <Badge variant="destructive" className="flex justify-between w-5/6">
         {startTime ? format(startTime, "h:mma") : ""} -{" "}
         {endTime ? format(endTime, "h:mma") : ""} <FaClock />
       </Badge>

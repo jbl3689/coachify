@@ -14,6 +14,7 @@ function Calendar() {
     weekData,
     selectedDay,
     isPending,
+    selectedSessionNumber,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,
@@ -45,7 +46,12 @@ function Calendar() {
         className="w-4/6 px-4 py-3 mx-auto transition-all"
         ref={eventDetailsRef}
       >
-        {selectedDay ? <DayDetails selectedDay={selectedDay} /> : null}
+        {selectedDay ? (
+          <DayDetails
+            selectedDay={selectedDay}
+            selectedSessionNumber={selectedSessionNumber}
+          />
+        ) : null}
       </div>
     </div>
   );

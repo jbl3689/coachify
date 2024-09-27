@@ -9,6 +9,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -28,7 +29,7 @@ import EventDetailsBox from "../EventDetailsBox/EventDetailsBox";
 interface CalendarDayProps {
   day: DayState;
   isSelected: boolean;
-  onClick: () => void;
+  onClick: (sessionNumber: number) => void;
 }
 
 export const daySessionNumbers = [1, 2, 3];
@@ -60,8 +61,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
 
   return (
     <Card
-      onClick={onClick}
-      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-4 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto cursor-pointer`}
+      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
     >
       <CardHeader className="text-left">
         <CardTitle
@@ -75,7 +75,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
       </CardHeader>
       <CardContent className="p-0">
         <FlexBox container flexDirection="column">
-          <Table>
+          <Table className="overflow-hidden">
             {/* <TableCaption>{format(new Date(day.date), "dd-MMM")}</TableCaption> */}
             <TableHeader className="bg-[#305c57]">
               <TableRow>
@@ -89,9 +89,13 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
                 );
 
                 return (
-                  <TableRow key={number}>
+                  <TableRow
+                    key={number}
+                    onClick={() => onClick(number)}
+                    className="cursor-pointer"
+                  >
                     <TableCell className="px-0 py-2">
-                      <div className="h-full min-h-[3rem]">
+                      <div className="h-full min-h-[5rem]">
                         {event && (
                           <EventDetailsBox
                             key={event.id}
@@ -108,6 +112,9 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
           </Table>
         </FlexBox>
       </CardContent>
+      <CardFooter className="text-textAlt mx-auto text-xs py-1 px-0">
+        click a session to view details
+      </CardFooter>
     </Card>
   );
 }

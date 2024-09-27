@@ -14,7 +14,7 @@ import useLoadWeekView from "./hooks/useLoadWeekView";
 interface WeekViewProps {
   weekData: WeekState;
   selectedDay: number;
-  handleDayClick: (day: DayState) => void;
+  handleDayClick: (day: DayState, sessionNumber: number) => void;
 }
 
 function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
@@ -46,7 +46,9 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
               key={day.id}
               day={day}
               isSelected={day.id === selectedDay}
-              onClick={() => handleDayClick(day)}
+              onClick={(sessionNumber: number) =>
+                handleDayClick(day, sessionNumber)
+              }
             />
           ))
         ) : (
