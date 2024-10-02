@@ -25,6 +25,8 @@ import {
 } from "../ui/Table";
 import { FlexBox } from "../ui/FlexBox";
 import EventDetailsBox from "../EventDetailsBox/EventDetailsBox";
+import Heading from "../ui/Heading";
+import { Label } from "../ui/Label";
 
 interface CalendarDayProps {
   day: DayState;
@@ -112,9 +114,6 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
           </Table>
         </FlexBox>
       </CardContent>
-      <CardFooter className="text-textAlt mx-auto text-xs py-1 px-0">
-        click a session to view details
-      </CardFooter>
     </Card>
   );
 }

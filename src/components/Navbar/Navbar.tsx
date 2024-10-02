@@ -45,7 +45,7 @@ function Navbar() {
         </>
       ) : (
         <>
-          <Link to="/" className="text-4xl text-accentBase">
+          <Link to="/" className="text-4xl text-primary">
             Coachify
           </Link>
           <div className="flex gap-10 text-xl">

@@ -44,8 +44,10 @@
     --color-primary-light: #4e6d69;
     --color-secondary-base: #393e46;
     --color-secondary-light: #525864;
-    --color-accent-base: #00adb5;
-    --color-accent-light: #65c1b1;
+    /* --color-accent-base: #00adb5; */
+    /* --color-accent-light: #65c1b1; */
+    --color-accent-base: #305c57;
+    --color-accent-light: #5c807c;
     --color-success-base: #4fc83b;
     --color-success-light: #74ca65;
     --color-danger-base: #f11658;
@@ -66,7 +68,7 @@
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: var(--jb-accent);
+    --accent: var(--color-accent-base);
     --accent-foreground: 210 40% 98%;
     --destructive: var(--jb-destructive);
     --destructive-foreground: 210 40% 98%;

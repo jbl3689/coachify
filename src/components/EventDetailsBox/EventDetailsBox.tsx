@@ -38,7 +38,7 @@ function EventDetailsBox({ event, sessionNumber }: EventBoxProps) {
       <Badge variant="secondary" className="flex justify-between w-5/6">
         {event.location} <HiHome />
       </Badge>
-      <Badge variant="destructive" className="flex justify-between w-5/6">
+      <Badge variant="secondary" className="flex justify-between w-5/6">
         {startTime ? format(startTime, "h:mma") : ""} -{" "}
         {endTime ? format(endTime, "h:mma") : ""} <FaClock />
       </Badge>
