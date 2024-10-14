@@ -1,10 +1,4 @@
-import {
-  TeamState,
-  WeekState,
-  DayState,
-  EventState,
-  UserState,
-} from "../types/types";
+import { TeamState, WeekState, DayState, EventState } from "../types/types";
 
 const imageUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/team-logos/`;
 
@@ -119,6 +113,7 @@ const events: EventState[] = [
     day_id: 1,
     location: "Conference Room A",
     is_morning: true,
+    session_number: 1,
   },
   {
     id: 2,
@@ -128,6 +123,7 @@ const events: EventState[] = [
     day_id: 2,
     location: "Conference Room B",
     is_morning: true,
+    session_number: 1,
   },
   {
     id: 3,
@@ -137,6 +133,7 @@ const events: EventState[] = [
     day_id: 3,
     location: "Cafeteria",
     is_morning: false,
+    session_number: 2,
   },
   {
     id: 4,
@@ -146,9 +143,8 @@ const events: EventState[] = [
     day_id: 4,
     location: "Conference Room A",
     is_morning: false,
+    session_number: 2,
   },
-  // Add more events for other days as needed
 ];
 
-// Export the dummy data
 export { teams, weeks, days, events, users };

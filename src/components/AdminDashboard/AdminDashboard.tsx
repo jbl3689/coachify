@@ -26,7 +26,7 @@ function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
 
   const selectedTeamId = useSelector(getSelectedTeam());
-  const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
+  // const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
   const dispatch = useDispatch();
 
   function handleUpdateTeam(value: string) {

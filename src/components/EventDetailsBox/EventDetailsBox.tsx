@@ -2,8 +2,6 @@ import { format, parse } from "date-fns";
 import { HiHome } from "react-icons/hi";
 import { FaPersonRunning } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa";
-
-import { useEventAttendance } from "../../hooks/events/useEventAttendance";
 import { EventState } from "../../types/types";
 import { FlexBox } from "../ui/FlexBox";
 import { Badge } from "../ui/Badge";
@@ -14,7 +12,8 @@ interface EventBoxProps {
 }
 
 function EventDetailsBox({ event, sessionNumber }: EventBoxProps) {
-  const { eventAttendance } = useEventAttendance(event.id);
+  console.log(sessionNumber);
+  // const { eventAttendance } = useEventAttendance(event.id);
 
   const startTime = event?.event_start_time
     ? parse(event.event_start_time, "HH:mm:ss", new Date())

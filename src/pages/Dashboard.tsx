@@ -1,5 +1,4 @@
 import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function Dashboard() {
   return (

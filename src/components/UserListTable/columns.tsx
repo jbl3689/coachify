@@ -1,16 +1,10 @@
-import { PositionAcronym, UserState } from "@/types/types";
+import { UserState } from "@/types/types";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/Checkbox";
-import { RiDeleteBin7Fill } from "react-icons/ri";
-import { FaRegEdit } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenToSquare,
-  faSave,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 export const columns = (
   handleOpenDialog: (row: Row<UserState>) => void

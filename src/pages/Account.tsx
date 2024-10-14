@@ -1,8 +1,5 @@
-import SignupForm from "@/components/SignupForm/SignupForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import styled from "styled-components";
 import AccountDetails from "@/components/AccountDetails/AccountDetails";
-import UserForm from "@/components/UserForm/UserForm";
 
 const AccountContainer = styled.div`
   display: flex;

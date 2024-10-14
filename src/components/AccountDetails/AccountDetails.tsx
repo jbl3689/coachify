@@ -8,8 +8,6 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import Loader from "../ui/Loader";
-import { useSelector } from "react-redux";
-import { getCurrentReduxUser } from "@/context/userSlice";
 import { useUser } from "@/hooks/user/useUser";
 import UserForm from "../UserForm/UserForm";
 

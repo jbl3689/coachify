@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import TraningActivity from './TrainingActivity';
-import TrainingActivitySlot from './TrainingActivitySlot';
+import TraningActivity from "./TrainingActivity";
+import TrainingActivitySlot from "./TrainingActivitySlot";
 
 const activitiesList = [
   { id: 1, name: "Warm-up", duration: 5 },
@@ -17,6 +17,7 @@ interface TrainingProps {
 }
 
 function Training({ isDisabled, startTime, endTime, location }: TrainingProps) {
+  console.log(isDisabled, startTime, endTime, location);
   const timeSlots = Array.from({ length: 6 }, (_, i) => i * 10); // 5-minute intervals for 1 hour
   //  const timeSlots = Array.from({ length: 6 }, (_, i) => formatTime(i * 10)); // 10-minute intervals for 1 hour
   const [scheduledActivities, setScheduledActivities] = useState(

@@ -9,24 +9,19 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/Table";
 import { FlexBox } from "../ui/FlexBox";
 import EventDetailsBox from "../EventDetailsBox/EventDetailsBox";
-import Heading from "../ui/Heading";
-import { Label } from "../ui/Label";
 
 interface CalendarDayProps {
   day: DayState;

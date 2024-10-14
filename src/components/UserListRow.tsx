@@ -1,8 +1,8 @@
-import { HiTrash } from 'react-icons/hi2';
+import { HiTrash } from "react-icons/hi2";
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteUser } from '../services/apiUsers';
+import { deleteUser } from "../services/apiUsers";
 
 interface UserListRowProps {
   user: {
@@ -17,7 +17,7 @@ interface UserListRowProps {
 function UserListRow({ user, rowKey }: UserListRowProps) {
   const queryClient = useQueryClient();
 
-  const { isPending: isDeleting, mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
       alert("User deleted");

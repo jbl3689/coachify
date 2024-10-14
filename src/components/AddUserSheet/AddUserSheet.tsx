@@ -8,8 +8,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/Sheet";
-import { Label } from "../ui/Label";
-import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
 import { useUsersNotInTeam } from "@/hooks/user/useUsersNotInTeam";
 import Loader from "../ui/Loader";
@@ -30,7 +28,7 @@ import { useState } from "react";
 
 function AddUserSheet() {
   const { users, isLoading } = useUsersNotInTeam();
-  const { addPlayer, isPending } = useAddPlayerToTeam();
+  const { addPlayer } = useAddPlayerToTeam();
   const teamId = useSelector(getSelectedTeam());
 
   const [selectedUserId, setSelectedUserId] = useState<number>(users?.at(0).id);
