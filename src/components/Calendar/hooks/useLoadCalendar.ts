@@ -21,6 +21,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
   const [selectedSessionNumber, setSelectedSessionNumber] = useState<
     number | null
   >(null);
+  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
 
   const { allWeeks, isLoadingWeeks, error: errorWeeks, refetch } = useWeeks();
   const { createWeek, isCreatingWeek } = useAddWeek();
@@ -75,13 +76,18 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
     dispatch(setWeekDate(startOfWeek()));
   };
 
-  const handleDayClick = (day: DayState, sessionNumber?: number) => {
+  const handleDayClick = (
+    day: DayState,
+    eventId?: number,
+    sessionNumber?: number
+  ) => {
     console.log(sessionNumber);
     // if (selectedDay?.id === day.id) {
     //   setSelectedDay(null);
     // } else
     if (selectedDay?.id !== day.id) setSelectedDay(day);
     setSelectedSessionNumber(sessionNumber ?? null);
+    setSelectedEventId(eventId ?? null);
   };
 
   return {
@@ -90,6 +96,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
     weekData,
     selectedDay,
     selectedSessionNumber,
+    selectedEventId,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,

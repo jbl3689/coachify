@@ -9,24 +9,10 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/Table";
-import { FlexBox } from "../ui/FlexBox";
-import EventDetailsBox from "../EventDetailsBox/EventDetailsBox";
-import Heading from "../ui/Heading";
-import { Label } from "../ui/Label";
+import { EventsTable } from "./EventsTable";
 
 interface CalendarDayProps {
   day: DayState;
@@ -61,6 +47,8 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
+  console.log(events);
+
   return (
     <Card
       className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
@@ -76,9 +64,8 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
-        <FlexBox container flexDirection="column">
-          <Table className="overflow-hidden">
-            {/* <TableCaption>{format(new Date(day.date), "dd-MMM")}</TableCaption> */}
+        <EventsTable events={events} />
+        {/* <Table className="overflow-hidden">
             <TableHeader className="bg-[#305c57]">
               <TableRow>
                 <TableHead>Sessions</TableHead>
@@ -111,8 +98,7 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
                 );
               })}
             </TableBody>
-          </Table>
-        </FlexBox>
+          </Table> */}
       </CardContent>
     </Card>
   );

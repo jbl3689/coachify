@@ -31,7 +31,7 @@ function EventDetailsBox({ event, sessionNumber }: EventBoxProps) {
       alignItems="center"
       gap="5px"
     >
-      <Badge variant="default" className="flex justify-between w-5/6">
+      <Badge variant="default" className="flex justify-between w-5/6 text-xs">
         {event.event_type}
         <FaPersonRunning />
       </Badge>
