@@ -1,4 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 // Custom Time Select Component
 const generateTimeOptions = (interval: number, startTime?: number) => {
@@ -42,12 +48,7 @@ interface TimeSelectProps {
   interval?: number;
 }
 
-const TimeSelect = ({
-  id,
-  startTime,
-  isDisabled = false,
-  interval = 30,
-}: TimeSelectProps) => {
+const TimeSelect = ({ isDisabled = false, interval = 30 }: TimeSelectProps) => {
   const timeOptions = generateTimeOptions(interval);
 
   return (

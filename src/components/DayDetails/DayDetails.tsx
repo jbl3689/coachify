@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectCurrentWeekDayEvents } from "../../context/calendarSlice";
@@ -10,7 +10,6 @@ import { Label } from "../ui/Label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import EventCardHeader from "./EventCardHeader/EventCardHeader";
 import { daySessionNumbers } from "../CalendarDay/CalendarDay";
-import { set } from "date-fns";
 import { useBreakpoint } from "use-breakpoint";
 
 interface DayDetailsProps {

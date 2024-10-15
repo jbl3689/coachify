@@ -1,6 +1,5 @@
-import { format, parse } from "date-fns"; // Assuming you're using date-fns for formatting
-// EventCardHeader.tsx
-import React, { Dispatch, SetStateAction } from "react";
+import { format, parse } from "date-fns";
+import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

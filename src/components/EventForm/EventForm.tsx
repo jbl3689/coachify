@@ -52,7 +52,7 @@ function EventForm({
   sessionNumber,
   setIsDialogOpen,
 }: EventFormProps) {
-  const { mutate } = useAddEvent(0);
+  const { mutate } = useAddEvent();
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema

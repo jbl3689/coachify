@@ -23,7 +23,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
   >(null);
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
 
-  const { allWeeks, isLoadingWeeks, error: errorWeeks, refetch } = useWeeks();
+  const { allWeeks, isLoadingWeeks, refetch } = useWeeks();
   const { createWeek, isCreatingWeek } = useAddWeek();
 
   const isPending = isLoadingWeeks || isCreatingWeek;

@@ -1,14 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
-import { getUsers } from '../services/apiUsers';
-import UserListRow from './UserListRow';
+import { getUsers } from "../services/apiUsers";
+import UserListRow from "./UserListRow";
 
 function UserList() {
-  const {
-    isLoading,
-    data: users,
-    error,
-  } = useQuery({
+  const { isLoading, data: users } = useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
   });
