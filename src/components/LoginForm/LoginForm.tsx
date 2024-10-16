@@ -13,6 +13,7 @@ import {
 import { useLogin } from "@/hooks/auth/useLogin";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
+import { FlexBox } from "../ui/FlexBox";
 
 // Define the form schema using zod
 const loginFormSchema = z.object({
@@ -45,14 +46,26 @@ function LoginForm() {
     login({ email, password });
   };
 
+  const handleReset = () => {
+    form.reset({
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 gap-4 mx-auto"
+          className="flex flex-col w-4/6 max-w-md gap-4 mx-auto"
         >
-          <div className="flex flex-col gap-4 justify-evenly">
+          <FlexBox
+            container
+            flexDirection="column"
+            gap="20px"
+            justifyContent="space-between"
+          >
             {/* form.control is used to validate that the name is correct/register the field */}
 
             <FormField
@@ -92,16 +105,27 @@ function LoginForm() {
                 </FormItem>
               )}
             />
-          </div>
+          </FlexBox>
 
-          <Button
-            className="px-24 mx-auto mt-8"
-            variant="default"
-            type="submit"
-            disabled={isPending}
+          <FlexBox
+            container
+            gap="24px"
+            justifyContent="space-between"
+            alignItems="center"
+            margin="24px 0 0 0"
           >
-            Submit
-          </Button>
+            <Button
+              className="w-full"
+              variant="default"
+              type="submit"
+              disabled={isPending}
+            >
+              Submit
+            </Button>
+            <Button variant="destructive" type="reset" onClick={handleReset}>
+              Clear
+            </Button>
+          </FlexBox>
         </form>
       </Form>
     </div>

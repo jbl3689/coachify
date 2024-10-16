@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "./Table";
 import { Button } from "./button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,6 +25,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import Heading from "./Heading";
+import useBreakpoint from "use-breakpoint";
+import { BREAKPOINTS } from "@/types/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,6 +43,8 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+
   const table = useReactTable({
     data,
     columns,
@@ -56,6 +60,17 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    if (breakpoint === "mobile" || breakpoint === "mobileLarge") {
+      setColumnVisibility({
+        pos_secondary: false,
+        email: false,
+      });
+    } else {
+      setColumnVisibility({});
+    }
+  }, [breakpoint]);
 
   return (
     <div>

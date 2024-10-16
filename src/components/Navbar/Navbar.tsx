@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   DropdownMenu,
@@ -13,8 +13,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { FlexBox } from "../ui/FlexBox";
 import { useUser } from "@/hooks/user/useUser";
 import { Skeleton } from "../ui/Skeleton";
+import useBreakpoint from "use-breakpoint";
+import { BREAKPOINTS } from "@/types/types";
+import { HiMenu } from "react-icons/hi";
 
 function Navbar() {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  const currentUrl = useLocation().pathname;
+
   const { logout, isPending } = useLogout();
   const { isAuthenticated, isLoading, isFetching } = useAuthUser();
   const { user } = useUser();
@@ -32,14 +38,9 @@ function Navbar() {
         <>
           <Skeleton className="w-32 h-10" />
           <div className="flex gap-10 text-xl">
-            <div className="flex flex-col gap-2">
-              <Skeleton className="w-24 h-6" />
-              <Skeleton className="w-24 h-6" />
-              <Skeleton className="w-24 h-6" />
-            </div>
             <div className="flex items-center gap-2">
-              <Skeleton className="w-10 h-10 rounded-full" />
               <Skeleton className="w-20 h-6" />
+              <Skeleton className="w-10 h-10 rounded-full" />
             </div>
           </div>
         </>
@@ -48,27 +49,37 @@ function Navbar() {
           <Link to="/" className="text-4xl text-primary">
             Coachify
           </Link>
-          <div className="flex gap-10 text-xl">
+          <FlexBox
+            container
+            gap={
+              breakpoint === "mobile" || breakpoint === "mobileLarge"
+                ? "8px"
+                : "24px"
+            }
+            className="flex text-xl"
+          >
             {isAuthenticated ? (
               <>
                 <DropdownMenu>
-                  <DropdownMenuTrigger>Calendar</DropdownMenuTrigger>
+                  <DropdownMenuTrigger>
+                    {breakpoint === "mobile" || breakpoint === "mobileLarge" ? (
+                      <HiMenu className="text-5xl" />
+                    ) : (
+                      "Calendar"
+                    )}
+                  </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem>
-                      <Link to="/calendar">Week View</Link>
+                      <Link to="/calendar">Calendar view</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Month View</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Add New Event</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <FlexBox container alignItems="center" gap="10px">
-                      Account{" "}
                       <Avatar>
-                        {/* <AvatarImage src={"https://github.com/shadcn.png"} /> */}
+                        <AvatarImage src={"https://github.com/shadcn.png"} />
                         <AvatarImage src={user?.avatar_url} />
                         <AvatarFallback>{userInitials}</AvatarFallback>
                       </Avatar>
@@ -92,12 +103,24 @@ function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login">Login</Link>
-                {/* <Separator /> */}
-                <Link to="/signup">Create an account</Link>
+                {currentUrl === "/login" ? (
+                  <Link
+                    to="/signup"
+                    className="text-primary hover:cursor-pointer hover:text-primaryLight"
+                  >
+                    signup
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="text-primary hover:cursor-pointer hover:text-primaryLight"
+                  >
+                    login
+                  </Link>
+                )}
               </>
             )}
-          </div>
+          </FlexBox>
         </>
       )}
     </header>

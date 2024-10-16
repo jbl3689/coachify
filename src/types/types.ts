@@ -2,9 +2,15 @@ import { ReduxUserState } from "@/context/userSlice";
 
 export const BREAKPOINTS = {
   mobile: 0,
-  mobileLarge: 500,
+  mobileLarge: 575,
   tablet: 768,
   desktop: 1280,
+};
+
+export const isMobileBreakpoint = (
+  breakpoint: keyof typeof BREAKPOINTS
+): boolean => {
+  return breakpoint === "mobile" || breakpoint === "mobileLarge";
 };
 
 export interface ReduxAppState {

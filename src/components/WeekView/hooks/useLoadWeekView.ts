@@ -105,10 +105,13 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
           setVisibleDays(weekDaysData.slice(1, 6));
           setVisibleRange([1, 6]);
           break;
-        case "mobile":
         case "mobileLarge":
           setVisibleDays(weekDaysData.slice(2, 5));
           setVisibleRange([2, 5]);
+          break;
+        case "mobile":
+          setVisibleDays(weekDaysData.slice(3, 4));
+          setVisibleRange([3, 4]);
           break;
         default:
           setVisibleDays(weekDaysData);
@@ -116,6 +119,8 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
       }
     }
   }, [weekDaysData, breakpoint]);
+
+  console.log(breakpoint);
 
   const handleDayNavigate = (isNext: boolean) => {
     if (

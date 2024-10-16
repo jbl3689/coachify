@@ -74,14 +74,14 @@ function AdminDashboard() {
 
       {!isTeamListEmpty ? (
         <>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <DashboardCard>24km ran this week</DashboardCard>
             <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
             <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
             <DashboardCard>Manager: James Blake </DashboardCard>
           </div>
 
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
             {/* <DashboardCard>
               <img
                 className="rounded-2xl"
@@ -89,7 +89,7 @@ function AdminDashboard() {
                 alt={selectedTeam?.team_name}
               ></img>
             </DashboardCard> */}
-            <DashboardCard>
+            <DashboardCard className="col-span-2 lg:col-span-1">
               <FlexBox
                 container
                 flexDirection="column"
