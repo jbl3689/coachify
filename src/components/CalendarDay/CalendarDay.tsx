@@ -24,6 +24,7 @@ export const daySessionNumbers = [1, 2, 3];
 
 function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   const dispatch = useDispatch();
+  console.log(onClick);
 
   const { events } = useEvents(day.id || 0);
 

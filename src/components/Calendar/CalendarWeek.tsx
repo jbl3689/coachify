@@ -15,7 +15,6 @@ function Calendar() {
     selectedDay,
     isPending,
     selectedSessionNumber,
-    selectedEventId,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,

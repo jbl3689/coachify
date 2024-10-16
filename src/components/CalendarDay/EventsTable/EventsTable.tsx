@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  Row,
   SortingState,
   VisibilityState,
   flexRender,
@@ -14,20 +13,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/Checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
-import { Input } from "@/components/ui/Input";
 import {
   Table,
   TableBody,
@@ -49,22 +34,22 @@ import { FlexBox } from "@/components/ui/FlexBox";
 //   session_number?: number;
 // };
 
-const timeStringToDate = (timeString: string) => {
-  const [hours, minutes, seconds] = timeString.split(":").map(Number);
-  const date = new Date();
-  date.setHours(hours, minutes, seconds, 0);
-  return date;
-};
+// const timeStringToDate = (timeString: string) => {
+//   const [hours, minutes, seconds] = timeString.split(":").map(Number);
+//   const date = new Date();
+//   date.setHours(hours, minutes, seconds, 0);
+//   return date;
+// };
 
-const sortTimes = (
-  rowA: Row<EventState>,
-  rowB: Row<EventState>,
-  columnId: string
-) => {
-  const timeA = timeStringToDate(rowA.getValue(columnId)).getTime();
-  const timeB = timeStringToDate(rowB.getValue(columnId)).getTime();
-  return timeA - timeB;
-};
+// const sortTimes = (
+//   rowA: Row<EventState>,
+//   rowB: Row<EventState>,
+//   columnId: string
+// ) => {
+//   const timeA = timeStringToDate(rowA.getValue(columnId)).getTime();
+//   const timeB = timeStringToDate(rowB.getValue(columnId)).getTime();
+//   return timeA - timeB;
+// };
 
 export const columns: ColumnDef<EventState>[] = [
   {
@@ -98,12 +83,12 @@ interface EventTableProps {
 }
 
 export function EventsTable({ events }: EventTableProps) {
-  const eventTableMapping = events?.map((event) => ({
-    id: event.id.toString(),
-    event_type: event.event_type,
-    start_time: event.event_start_time,
-    session_number: event.session_number,
-  }));
+  // const eventTableMapping = events?.map((event) => ({
+  //   id: event.id.toString(),
+  //   event_type: event.event_type,
+  //   start_time: event.event_start_time,
+  //   session_number: event.session_number,
+  // }));
 
   const [sorting, setSorting] = React.useState<SortingState>([
     initialState.sorting,
