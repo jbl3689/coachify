@@ -54,7 +54,7 @@ function Navbar() {
             gap={
               breakpoint === "mobile" || breakpoint === "mobileLarge"
                 ? "8px"
-                : "32px"
+                : "24px"
             }
             className="flex text-xl"
           >
@@ -63,7 +63,7 @@ function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     {breakpoint === "mobile" || breakpoint === "mobileLarge" ? (
-                      <HiMenu className="text-4xl" />
+                      <HiMenu className="text-5xl" />
                     ) : (
                       "Calendar"
                     )}
@@ -79,7 +79,7 @@ function Navbar() {
                   <DropdownMenuTrigger>
                     <FlexBox container alignItems="center" gap="10px">
                       <Avatar>
-                        {/* <AvatarImage src={"https://github.com/shadcn.png"} /> */}
+                        <AvatarImage src={"https://github.com/shadcn.png"} />
                         <AvatarImage src={user?.avatar_url} />
                         <AvatarFallback>{userInitials}</AvatarFallback>
                       </Avatar>

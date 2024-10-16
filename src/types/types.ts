@@ -7,6 +7,12 @@ export const BREAKPOINTS = {
   desktop: 1280,
 };
 
+export const isMobileBreakpoint = (
+  breakpoint: keyof typeof BREAKPOINTS
+): boolean => {
+  return breakpoint === "mobile" || breakpoint === "mobileLarge";
+};
+
 export interface ReduxAppState {
   calendar: ReduxCalendarState;
   team: ReduxTeamState;

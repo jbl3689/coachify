@@ -13,7 +13,7 @@ const StyledAppLayout = styled.div`
 const StyledMainWrapper = styled.div`
   flex-grow: 1;
   overflow-y: auto;
-  overflow-x: none;
+  overflow-x: hidden;
 `;
 
 function AppLayout() {

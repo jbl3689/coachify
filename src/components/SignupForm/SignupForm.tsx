@@ -13,6 +13,7 @@ import {
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
 import { useSignup } from "@/hooks/auth/useSignup";
+import { FlexBox } from "../ui/FlexBox";
 
 // Define the form schema using zod
 const signupFormSchema = z.object({
@@ -47,12 +48,20 @@ function SignupForm() {
     signup({ full_name, email, password });
   };
 
+  const handleReset = () => {
+    form.reset({
+      full_name: "",
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 gap-4 mx-auto"
+          className="flex flex-col w-4/6 gap-4 mx-auto text-left"
         >
           <div className="flex flex-col gap-4 justify-evenly">
             {/* form.control is used to validate that the name is correct/register the field */}
@@ -115,14 +124,25 @@ function SignupForm() {
             />
           </div>
 
-          <Button
-            className="px-24 mx-auto mt-8"
-            variant="default"
-            type="submit"
-            disabled={isPending}
+          <FlexBox
+            container
+            gap="24px"
+            justifyContent="space-between"
+            alignItems="center"
+            margin="24px 0 0 0"
           >
-            Submit
-          </Button>
+            <Button
+              className="w-full"
+              variant="default"
+              type="submit"
+              disabled={isPending}
+            >
+              Submit
+            </Button>
+            <Button variant="destructive" type="reset" onClick={handleReset}>
+              Clear
+            </Button>
+          </FlexBox>
         </form>
       </Form>
     </div>

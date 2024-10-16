@@ -2,22 +2,31 @@ import Heading from "../components/ui/Heading";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SignupForm from "@/components/SignupForm/SignupForm";
+import { BREAKPOINTS } from "@/types/types";
+import useBreakpoint from "use-breakpoint";
 
-export const SignupLayout = styled.main`
+export const SignupLayout = styled.div`
   min-height: 60vh;
   display: grid;
-  grid-template-columns: 48rem;
+  grid-template-columns: 100%;
   align-content: center;
   justify-content: center;
   gap: 3.2rem;
 `;
 
-function Login() {
+function Signup() {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+
   return (
     <SignupLayout>
       <div>
-        <Heading as="h1">Create an account</Heading>
-        <Heading as="h3" className="text-textAlt">
+        <Heading as={breakpoint === "mobile" ? "h3" : "h2"}>
+          Create an account
+        </Heading>
+        <Heading
+          as={breakpoint === "mobile" ? "h4" : "h3"}
+          className="text-textAlt"
+        >
           or login{" "}
           <Link
             to="/login"
@@ -33,4 +42,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

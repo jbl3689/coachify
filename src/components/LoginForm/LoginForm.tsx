@@ -46,12 +46,19 @@ function LoginForm() {
     login({ email, password });
   };
 
+  const handleReset = () => {
+    form.reset({
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 gap-4 mx-auto max-w-md"
+          className="flex flex-col w-4/6 max-w-md gap-4 mx-auto"
         >
           <FlexBox
             container
@@ -100,14 +107,25 @@ function LoginForm() {
             />
           </FlexBox>
 
-          <Button
-            className="px-24 mx-auto mt-8"
-            variant="default"
-            type="submit"
-            disabled={isPending}
+          <FlexBox
+            container
+            gap="24px"
+            justifyContent="space-between"
+            alignItems="center"
+            margin="24px 0 0 0"
           >
-            Submit
-          </Button>
+            <Button
+              className="w-full"
+              variant="default"
+              type="submit"
+              disabled={isPending}
+            >
+              Submit
+            </Button>
+            <Button variant="destructive" type="reset" onClick={handleReset}>
+              Clear
+            </Button>
+          </FlexBox>
         </form>
       </Form>
     </div>
