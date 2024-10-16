@@ -14,6 +14,7 @@ interface DashboardCardProps {
   Description?: React.ReactNode;
   children?: React.ReactNode;
   Footer?: React.ReactNode;
+  className?: string;
 }
 
 function DashboardCard({
@@ -21,9 +22,10 @@ function DashboardCard({
   Description,
   children,
   Footer,
+  className,
 }: DashboardCardProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle className="text-2xl text-amber-300">{Title}</CardTitle>
         <CardDescription>{Description}</CardDescription>

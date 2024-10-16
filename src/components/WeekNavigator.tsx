@@ -6,6 +6,7 @@ import FadeInContainer from "./ui/FadeInContainer";
 import { Label } from "./ui/Label";
 import { useBreakpoint } from "use-breakpoint";
 import { BREAKPOINTS } from "@/types/types";
+import { FlexBox } from "./ui/FlexBox";
 
 interface WeekNavigatorProps {
   selectedWeek: Date;
@@ -20,13 +21,31 @@ function WeekNavigator({
 }: WeekNavigatorProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
 
+  const formatDate = (date: Date) => {
+    if (breakpoint === "mobile" || breakpoint === "mobileLarge") {
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+    return date.toDateString();
+  };
+
   return (
-    <div className="flex items-center justify-between gap-8 px-4 pb-8">
+    <FlexBox
+      container
+      gap="20px"
+      flexDirection={breakpoint === "mobile" ? "column" : "row"}
+      justifyContent="space-between"
+      alignItems="center"
+      padding="0 16px 32px 16px"
+    >
       <FadeInContainer>
         <Label
           className={`${breakpoint === "desktop" ? "text-4xl" : "text-3xl"} font-semibold`}
         >
-          Week of {selectedWeek.toDateString()}
+          Week of {formatDate(selectedWeek)}
         </Label>
       </FadeInContainer>
       <div className="flex items-center justify-center gap-4">
@@ -46,7 +65,7 @@ function WeekNavigator({
           <FontAwesomeIcon icon={faArrowRight} />
         </span>
       </div>
-    </div>
+    </FlexBox>
   );
 }
 

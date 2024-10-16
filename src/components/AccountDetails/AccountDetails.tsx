@@ -10,8 +10,13 @@ import {
 import Loader from "../ui/Loader";
 import { useUser } from "@/hooks/user/useUser";
 import UserForm from "../UserForm/UserForm";
+import { FlexBox } from "../ui/FlexBox";
+import useBreakpoint from "use-breakpoint";
+import { BREAKPOINTS } from "@/types/types";
 
 function AccountDetails() {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS);
+
   const { user } = useUser();
   const {
     teams,
@@ -20,8 +25,17 @@ function AccountDetails() {
   } = useUserTeams();
 
   return (
-    <>
-      <Card className="w-full h-full">
+    <FlexBox
+      container
+      flexDirection={
+        breakpoint === "mobileLarge" || breakpoint === "mobile"
+          ? "column"
+          : "row"
+      }
+      width="100%"
+      gap="24px"
+    >
+      <Card className="w-full">
         <CardHeader className="font-semibold">
           {user?.full_name}'s Teams
         </CardHeader>
@@ -56,7 +70,7 @@ function AccountDetails() {
         )}
       </Card>
 
-      <Card className="w-full h-full">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Update account details</CardTitle>
         </CardHeader>
@@ -64,7 +78,7 @@ function AccountDetails() {
           <UserForm {...user} />
         </CardContent>
       </Card>
-    </>
+    </FlexBox>
   );
 }
 

@@ -13,6 +13,7 @@ import {
 import { useLogin } from "@/hooks/auth/useLogin";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
+import { FlexBox } from "../ui/FlexBox";
 
 // Define the form schema using zod
 const loginFormSchema = z.object({
@@ -50,9 +51,14 @@ function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 gap-4 mx-auto"
+          className="flex flex-col w-4/6 gap-4 mx-auto max-w-md"
         >
-          <div className="flex flex-col gap-4 justify-evenly">
+          <FlexBox
+            container
+            flexDirection="column"
+            gap="20px"
+            justifyContent="space-between"
+          >
             {/* form.control is used to validate that the name is correct/register the field */}
 
             <FormField
@@ -92,7 +98,7 @@ function LoginForm() {
                 </FormItem>
               )}
             />
-          </div>
+          </FlexBox>
 
           <Button
             className="px-24 mx-auto mt-8"

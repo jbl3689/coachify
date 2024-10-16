@@ -16,7 +16,7 @@ function Login() {
   return (
     <LoginLayout>
       <div>
-        <Heading as="h1">Log in to your account</Heading>
+        <Heading as="h2">Log in to your account</Heading>
         <Heading as="h3" className="text-textAlt">
           or create one{" "}
           <Link
