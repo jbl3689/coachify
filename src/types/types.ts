@@ -100,6 +100,7 @@ export type DayState = {
   date: string;
   week_id: number;
   day: string;
+  num_of_sessions?: number;
 };
 
 export type EventState = {

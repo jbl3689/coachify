@@ -30,3 +30,13 @@ export async function addDay({ date, weekId, day }: AddDayParams) {
   }
   return data;
 }
+
+export async function increaseDaySessionNumber(dayId: number) {
+  const { data, error } = await supabase.rpc("increment", { row_id: dayId });
+
+  if (error) {
+    console.error(error);
+    throw new Error("Day session number could not be incremented");
+  }
+  return data;
+}

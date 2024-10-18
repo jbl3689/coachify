@@ -25,10 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 
 interface EventFormProps {
   selectedDay: DayState;
-  sessionNumber: number;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -47,12 +47,11 @@ export type EventFormInputs = {
   event_type: string;
 };
 
-function EventForm({
-  selectedDay,
-  sessionNumber,
-  setIsDialogOpen,
-}: EventFormProps) {
-  const { mutate } = useAddEvent();
+function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
+  const { mutate, isPending } = useAddEvent();
+  const { increaseDaySession, isIncreasingDaySession } =
+    useIncreaseDaySession();
+  const isLoading = isPending || isIncreasingDaySession;
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
@@ -76,12 +75,13 @@ function EventForm({
       event_end_time,
       location,
       event_type,
-      session_number: sessionNumber,
+      session_number: (selectedDay.num_of_sessions ?? -1) + 1,
       day_id: selectedDay.id,
     };
 
     mutate(eventData, {
       onSuccess: () => {
+        increaseDaySession(selectedDay.id);
         form.reset();
         console.log("Event added successfully");
         setIsDialogOpen(false);
@@ -120,6 +120,7 @@ function EventForm({
                   </FormItem>
                 );
               }}
+              disabled={isLoading}
             />
             <FormField
               control={form.control}
@@ -141,6 +142,7 @@ function EventForm({
                   </FormItem>
                 );
               }}
+              disabled={isLoading}
             />
           </FlexBox>
 
@@ -169,6 +171,7 @@ function EventForm({
                   </FormItem>
                 );
               }}
+              disabled={isLoading}
             />
             <FormField
               control={form.control}
@@ -201,6 +204,7 @@ function EventForm({
                   </FormItem>
                 );
               }}
+              disabled={isLoading}
             />
           </FlexBox>
 
@@ -208,6 +212,7 @@ function EventForm({
             className="px-24 mx-auto mt-8"
             variant="default"
             type="submit"
+            disabled={isLoading}
           >
             Submit
           </Button>

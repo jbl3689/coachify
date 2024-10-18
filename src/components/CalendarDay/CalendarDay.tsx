@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { setDayEvents } from "../../context/calendarSlice";
@@ -13,20 +13,20 @@ import {
   CardTitle,
 } from "../ui/card";
 import { EventsTable } from "./EventsTable";
+import FormDialog from "../FormDialog/FormDialog";
+import EventForm from "../EventForm/EventForm";
 
 interface CalendarDayProps {
   day: DayState;
   isSelected: boolean;
-  onClick: (sessionNumber: number) => void;
+  handleDayClick: (sessionNumber: number) => void;
 }
 
-export const daySessionNumbers = [1, 2, 3];
-
-function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
+function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
   const dispatch = useDispatch();
-  console.log(onClick);
 
   const { events } = useEvents(day.id || 0);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const eventDate = new Date(day.date);
   const currentDate = new Date();
@@ -34,7 +34,6 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
   // Resetting hours, minutes, seconds, and milliseconds for accurate comparison
   eventDate.setHours(0, 0, 0, 0);
   currentDate.setHours(0, 0, 0, 0);
-
   const isToday = eventDate.getTime() === currentDate.getTime();
 
   useEffect(() => {
@@ -48,60 +47,51 @@ function CalendarDay({ day, isSelected, onClick }: CalendarDayProps) {
     }
   }, [day.date, dispatch, events]);
 
-  console.log(events);
+  const handleOpenFormDialog = () => {
+    setIsDialogOpen(true);
+  };
 
   return (
-    <Card
-      className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
-    >
-      <CardHeader className="text-left">
-        <CardTitle
-          className={`w-full ${isToday ? "text-accentLight" : "text-textBase"} text-3xl font-semibold`}
-        >
-          <div>{dayOfWeekAbbreviations[day.day as dayOfWeek]}</div>
-        </CardTitle>
-        <CardDescription className="text-lg font-light">
-          <div>{format(new Date(day.date), "dd-MMM")}</div>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-0">
-        <EventsTable events={events} />
-        {/* <Table className="overflow-hidden">
-            <TableHeader className="bg-[#305c57]">
-              <TableRow>
-                <TableHead>Sessions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {daySessionNumbers.map((number) => {
-                const event = events?.find(
-                  (event) => event.session_number === number
-                );
+    <>
+      <Card
+        className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
+      >
+        <CardHeader className="text-left">
+          <CardTitle
+            className={`w-full ${isToday ? "text-accentLight" : "text-textBase"} text-3xl font-semibold`}
+          >
+            {dayOfWeekAbbreviations[day.day as dayOfWeek]}
+          </CardTitle>
+          <CardDescription className="text-lg font-light">
+            {format(new Date(day.date), "dd-MMM")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <EventsTable
+            events={events}
+            onRowClick={handleDayClick}
+            handleOpenDialog={handleOpenFormDialog}
+          />
+        </CardContent>
+      </Card>
 
-                return (
-                  <TableRow
-                    key={number}
-                    onClick={() => onClick(number)}
-                    className="cursor-pointer"
-                  >
-                    <TableCell className="px-0 py-2">
-                      <div className="h-full min-h-[5rem]">
-                        {event && (
-                          <EventDetailsBox
-                            key={event.id}
-                            event={event}
-                            sessionNumber={number}
-                          />
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table> */}
-      </CardContent>
-    </Card>
+      <FormDialog
+        Title={
+          <div>
+            <h2 className="mb-6 ">
+              Add a new event for{" "}
+              <span className="text-textAlt">
+                {new Date(day.date).toDateString()}{" "}
+              </span>
+            </h2>
+          </div>
+        }
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      >
+        <EventForm selectedDay={day} setIsDialogOpen={setIsDialogOpen} />
+      </FormDialog>
+    </>
   );
 }
 

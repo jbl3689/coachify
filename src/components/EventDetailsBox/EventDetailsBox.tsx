@@ -8,11 +8,9 @@ import { Badge } from "../ui/Badge";
 
 interface EventBoxProps {
   event: EventState;
-  sessionNumber: number;
 }
 
-function EventDetailsBox({ event, sessionNumber }: EventBoxProps) {
-  console.log(sessionNumber);
+function EventDetailsBox({ event }: EventBoxProps) {
   // const { eventAttendance } = useEventAttendance(event.id);
 
   const startTime = event?.event_start_time

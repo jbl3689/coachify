@@ -21,6 +21,7 @@ import Loader from "../ui/Loader";
 import UserListTable from "../UserListTable/UserListTable";
 import { Card, CardContent } from "../ui/card";
 import AddUserSheet from "../AddUserSheet/AddUserSheet";
+import Uploader from "@/data/Uploader";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
@@ -107,7 +108,7 @@ function AdminDashboard() {
                 >
                   <AddUserSheet />
 
-                  {/* <Uploader /> */}
+                  <Uploader />
                 </FlexBox>
               </FlexBox>
             </DashboardCard>

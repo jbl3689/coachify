@@ -55,9 +55,7 @@ export const columns: ColumnDef<EventState>[] = [
   {
     accessorKey: "event_type",
     header: "Events",
-    cell: ({ row }) => (
-      <EventDetailsBox event={row.original} sessionNumber={1} />
-    ),
+    cell: ({ row }) => <EventDetailsBox event={row.original} />,
   },
   {
     accessorKey: "start_time",
@@ -80,9 +78,15 @@ const initialState = {
 
 interface EventTableProps {
   events: EventState[] | undefined;
+  onRowClick: (sessionNumber: number) => void;
+  handleOpenDialog: () => void;
 }
 
-export function EventsTable({ events }: EventTableProps) {
+export function EventsTable({
+  events,
+  onRowClick,
+  handleOpenDialog,
+}: EventTableProps) {
   // const eventTableMapping = events?.map((event) => ({
   //   id: event.id.toString(),
   //   event_type: event.event_type,
@@ -147,6 +151,7 @@ export function EventsTable({ events }: EventTableProps) {
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer"
+                onClick={() => onRowClick(row.original.session_number)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="px-0 py-2">
@@ -163,6 +168,7 @@ export function EventsTable({ events }: EventTableProps) {
                   <FontAwesomeIcon
                     icon={faCirclePlus}
                     className="text-lg cursor-pointer text-successLight hover:text-secondaryLight"
+                    onClick={handleOpenDialog}
                   />
                 </FlexBox>
               </TableCell>

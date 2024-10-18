@@ -1,10 +1,13 @@
 import { useRef } from "react";
 
-import DayDetails from "../DayDetails/DayDetails";
 import Loader from "../ui/Loader";
 import WeekNavigator from "../WeekNavigator";
 import WeekView from "../WeekView/WeekView";
 import useLoadCalendar from "./hooks/useLoadCalendar";
+import EventDetails from "../EventDetails/EventDetails";
+import { useSelector } from "react-redux";
+import { ReduxAppState } from "@/types/types";
+import { selectCurrentWeekDayEvents } from "@/context/calendarSlice";
 
 function Calendar() {
   const eventDetailsRef = useRef<HTMLDivElement>(null);
@@ -19,6 +22,15 @@ function Calendar() {
     handleNavigateToToday,
     handleDayClick,
   } = useLoadCalendar({ eventDetailsRef });
+
+  const selectedDayEvents = useSelector((state: ReduxAppState) =>
+    selectedDay ? selectCurrentWeekDayEvents(state, selectedDay.date) : null
+  );
+
+  const selectedEvent =
+    selectedDayEvents?.find(
+      (event) => event.session_number === selectedSessionNumber
+    ) ?? null;
 
   return (
     <div className="p-4 overflow-y-hidden">
@@ -46,10 +58,10 @@ function Calendar() {
         className="w-4/6 px-4 py-3 mx-auto transition-all"
         ref={eventDetailsRef}
       >
-        {selectedDay ? (
-          <DayDetails
+        {selectedDay && selectedEvent ? (
+          <EventDetails
             selectedDay={selectedDay}
-            selectedSessionNumber={selectedSessionNumber}
+            selectedEvent={selectedEvent}
           />
         ) : null}
       </div>

@@ -40,13 +40,13 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
           gridTemplateColumns: `repeat(${visibleDays.length}, minmax(0, 1fr))`,
         }}
       >
-        {weekDaysLoaded && visibleDays ? (
+        {weekDaysLoaded && !visibleDays.some((day) => day === undefined) ? (
           visibleDays.map((day) => (
             <CalendarDay
               key={day.id}
               day={day}
               isSelected={day.id === selectedDay}
-              onClick={(sessionNumber: number) =>
+              handleDayClick={(sessionNumber: number) =>
                 handleDayClick(day, sessionNumber)
               }
             />

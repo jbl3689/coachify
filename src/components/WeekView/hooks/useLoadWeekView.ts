@@ -23,14 +23,16 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
   const [visibleRange, setVisibleRange] = useState<number[]>([0, 6]);
   const [isPending, setIsPending] = useState(isCreatingDay || false);
   const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
-  const weekDaysLoaded = !weekDaysData.some((day) => day === undefined);
+  const weekDaysLoaded = !weekDaysData.some(
+    (day) => day === undefined || day.id === undefined
+  );
 
   const {
     days: daysData,
     isLoading: isLoadingDays,
     error: errorDays,
     refetch,
-  } = useDays(weekData.id || 0);
+  } = useDays(weekData.id);
 
   async function loadDayData(date: Date) {
     if (daysData) {
@@ -119,8 +121,6 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
       }
     }
   }, [weekDaysData, breakpoint]);
-
-  console.log(breakpoint);
 
   const handleDayNavigate = (isNext: boolean) => {
     if (
