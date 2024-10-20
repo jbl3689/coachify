@@ -1,9 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { moveWeeks, setWeekDate } from "../../../context/calendarSlice";
+import {
+  moveWeeks,
+  selectCurrentWeekDayEvents,
+  setWeekDate,
+} from "../../../context/calendarSlice";
 import { useWeeks } from "../../../hooks/weeks/useWeeks";
-import { DayState, WeekState } from "../../../types/types";
+import {
+  DayState,
+  ReduxAppState,
+  ReduxEventState,
+  WeekState,
+} from "../../../types/types";
 import { addDays, startOfWeek } from "../../../utils/calendarLogic";
 import { useAddWeek } from "@/hooks/weeks/useAddWeek";
 import { getCurrentWeek } from "../utils/getCurrentWeek";
@@ -22,22 +31,26 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
     number | null
   >(null);
 
+  // finding the selected event
+  const selectedDayEvents: ReduxEventState[] | undefined | null = useSelector(
+    (state: ReduxAppState) =>
+      selectedDay ? selectCurrentWeekDayEvents(state, selectedDay.date) : null
+  );
+
+  const selectedEvent = useMemo(() => {
+    return (
+      selectedDayEvents?.find(
+        (event) => event.session_number === selectedSessionNumber
+      ) ?? null
+    );
+  }, [selectedDayEvents, selectedSessionNumber]);
+
+  // database api calls
   const { allWeeks, isLoadingWeeks, refetch } = useWeeks();
   const { createWeek, isCreatingWeek } = useAddWeek();
-
   const isPending = isLoadingWeeks || isCreatingWeek;
 
   const effectRunningRef = useRef(false);
-
-  useEffect(() => {
-    if (selectedWeek) {
-      handleLoadWeek(selectedWeek);
-    }
-  }, [selectedWeek, allWeeks]);
-
-  useEffect(() => {
-    eventDetailsRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [selectedDay]);
 
   async function loadCurrentWeek(date: Date) {
     if (allWeeks) {
@@ -58,6 +71,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
       setWeekData(newWeekData);
       if (newWeekData) dispatch(setWeekDate(newWeekData));
       setSelectedDay(null);
+      setSelectedSessionNumber(0);
       effectRunningRef.current = false;
     }
   }
@@ -76,19 +90,27 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
   };
 
   const handleDayClick = (day: DayState, sessionNumber?: number) => {
-    console.log(day, sessionNumber);
-    if (selectedDay?.id === day.id) {
-      setSelectedDay(null);
-    } else if (selectedDay?.id !== day.id) setSelectedDay(day);
-    setSelectedSessionNumber(sessionNumber ?? null);
+    setSelectedDay(day);
+
+    setSelectedSessionNumber(sessionNumber ?? 0);
   };
+
+  useEffect(() => {
+    if (selectedWeek) {
+      handleLoadWeek(selectedWeek);
+    }
+  }, [selectedWeek, allWeeks]);
+
+  useEffect(() => {
+    eventDetailsRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedDay]);
 
   return {
     isPending,
     selectedWeek,
     weekData,
     selectedDay,
-    selectedSessionNumber,
+    selectedEvent,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,

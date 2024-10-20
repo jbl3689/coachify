@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
+import { useNavigate } from "react-router-dom";
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -48,6 +49,8 @@ export type EventFormInputs = {
 };
 
 function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
+  const navigate = useNavigate();
+
   const { mutate, isPending } = useAddEvent();
   const { increaseDaySession, isIncreasingDaySession } =
     useIncreaseDaySession();
@@ -85,6 +88,7 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
         form.reset();
         console.log("Event added successfully");
         setIsDialogOpen(false);
+        navigate("/calendar");
       },
       onError: (error) => {
         console.error("Error adding event:", error);

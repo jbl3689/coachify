@@ -35,7 +35,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
       )}
 
       <div
-        className="grid gap-2 w-full"
+        className="grid w-full gap-2"
         style={{
           gridTemplateColumns: `repeat(${visibleDays.length}, minmax(0, 1fr))`,
         }}
@@ -45,7 +45,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
             <CalendarDay
               key={day.id}
               day={day}
-              isSelected={day.id === selectedDay}
+              isSelected={false}
               handleDayClick={(sessionNumber: number) =>
                 handleDayClick(day, sessionNumber)
               }

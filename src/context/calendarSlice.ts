@@ -48,7 +48,7 @@ const calendarSlice = createSlice({
       if (!action.payload) return;
       const modifiedPayload = action.payload.map((day: DayState) => ({
         ...day,
-        events: [], // Add an empty events array to each day
+        events: state.currWeek.days?.find((d) => d.date === day.date)?.events,
       }));
       state.currWeek.days = modifiedPayload;
     },

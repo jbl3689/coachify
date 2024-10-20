@@ -161,18 +161,20 @@ export function EventsTable({
               </TableRow>
             ))}
 
-            <TableRow>
-              <TableCell colSpan={columns.length} className="text-center">
-                <FlexBox container flexDirection="column" gap="10px">
-                  Add an event
-                  <FontAwesomeIcon
-                    icon={faCirclePlus}
-                    className="text-lg cursor-pointer text-successLight hover:text-secondaryLight"
-                    onClick={handleOpenDialog}
-                  />
-                </FlexBox>
-              </TableCell>
-            </TableRow>
+            {events && events.length < 3 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="text-center">
+                  <FlexBox container flexDirection="column" gap="10px">
+                    Add an event
+                    <FontAwesomeIcon
+                      icon={faCirclePlus}
+                      className="text-lg cursor-pointer text-successLight hover:text-secondaryLight"
+                      onClick={handleOpenDialog}
+                    />
+                  </FlexBox>
+                </TableCell>
+              </TableRow>
+            ) : null}
           </TableBody>
         </Table>
       </div>

@@ -56,7 +56,7 @@ function WeekNavigator({
           <FontAwesomeIcon icon={faArrowLeft} />
         </span>
         <Button type="button" variant="default" onClick={handleNavigateToToday}>
-          Today
+          Current week
         </Button>
         <span
           className="text-3xl cursor-pointer font-semiBold hover:text-accentLight"

@@ -105,3 +105,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+html {
+  background: var(--background);
+}
+
+body {
+  padding: calc(env(safe-area-inset-top) * 0.8) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}

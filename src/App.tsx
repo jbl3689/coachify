@@ -2,18 +2,20 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import AppLayout from "./components/ui/AppLayout";
 import { ThemeProvider } from "./context/themeProvider";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
-import Dashboard from "./pages/Dashboard";
-import Calendar from "./pages/Calendar";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Account from "./pages/Account";
+import Loader from "./components/ui/Loader";
+
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Calendar = lazy(() => import("./pages/Calendar"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Account = lazy(() => import("./pages/Account"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +27,11 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <AppLayout />
+      </Suspense>
+    ),
     children: [
       {
         path: "/",
