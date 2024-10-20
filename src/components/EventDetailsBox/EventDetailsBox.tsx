@@ -20,6 +20,19 @@ function EventDetailsBox({ event }: EventBoxProps) {
     ? parse(event.event_end_time, "HH:mm:ss", new Date())
     : null;
 
+  const getVariant = (eventType: string) => {
+    switch (eventType) {
+      case "Game":
+        return "bg-emerald-500";
+      case "Whiteboard":
+        return "bg-green-500";
+      case "Bonding":
+        return "bg-lime-500";
+      default:
+        return "bg-cyan-500";
+    }
+  };
+
   return (
     <FlexBox
       container
@@ -28,7 +41,12 @@ function EventDetailsBox({ event }: EventBoxProps) {
       alignItems="center"
       gap="5px"
     >
-      <Badge variant="default" className="flex justify-between w-5/6 text-xs">
+      <Badge
+        // variant={getVariant(event.event_type)}
+        className={
+          "flex justify-between w-5/6 text-xs " + getVariant(event.event_type)
+        }
+      >
         {event.event_type}
         <FaPersonRunning />
       </Badge>

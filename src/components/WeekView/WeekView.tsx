@@ -45,7 +45,7 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
             <CalendarDay
               key={day.id}
               day={day}
-              isSelected={false}
+              isSelected={day.id === selectedDay}
               handleDayClick={(sessionNumber: number) =>
                 handleDayClick(day, sessionNumber)
               }

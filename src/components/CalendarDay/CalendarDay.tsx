@@ -54,7 +54,7 @@ function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
   return (
     <>
       <Card
-        className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase bg-bgPrimary" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
+        className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase border-2" : "bg-secondaryBase"} hover:font-semibold w-11/12 mx-auto`}
       >
         <CardHeader className="text-left">
           <CardTitle
