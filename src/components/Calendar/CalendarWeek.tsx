@@ -43,7 +43,7 @@ function Calendar() {
       )}
 
       <div
-        className="w-4/6 px-4 py-3 mx-auto transition-all"
+        className="w-2/5 px-4 py-2 mx-auto transition-all"
         ref={eventDetailsRef}
       >
         {selectedDay && selectedEvent ? (

@@ -6,6 +6,7 @@ export type ReduxUserState = {
   auth_user_id: string | null;
   full_name: string | null;
   email: string | null;
+  user_role: "player" | "admin";
 };
 
 const initialState: ReduxUserState = {
@@ -13,6 +14,7 @@ const initialState: ReduxUserState = {
   auth_user_id: null,
   full_name: null,
   email: null,
+  user_role: "player",
 };
 
 const userSlice = createSlice({
@@ -24,6 +26,7 @@ const userSlice = createSlice({
       state.auth_user_id = action.payload.auth_user_id;
       state.full_name = action.payload.full_name;
       state.email = action.payload.email;
+      state.user_role = action.payload.user_role;
     },
   },
 });

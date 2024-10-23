@@ -138,6 +138,39 @@ export async function getTeamUsers(selectedTeamId: number) {
   return users as UserState[];
 }
 
+export async function getTeamAdmins(selectedTeamId: number) {
+  let { data: userIds, error: userIdsError } = await supabase
+    .from("team_members")
+    .select("user_id")
+    .eq("team_id", selectedTeamId)
+    .eq("role", "admin");
+
+  if (userIdsError) {
+    console.error(userIdsError);
+    throw new Error("User ids could not be loaded");
+  }
+
+  // Extract the list of user IDs
+  const userIdList = userIds?.map((item) => item.user_id);
+
+  if (!userIdList || userIdList.length === 0) {
+    return []; // Return an empty array if the team has no associated users
+  }
+
+  // Fetch only the users that have an id in the userIdList
+  let { data: users, error: usersError } = await supabase
+    .from("users")
+    .select("*")
+    .in("id", userIdList);
+
+  if (usersError) {
+    console.error(usersError);
+    throw new Error("Users could not be loaded");
+  }
+
+  return users as UserState[];
+}
+
 export async function createUpdateUser(
   updatedUser: UserState,
   id: number | null

@@ -129,6 +129,7 @@ export type UserState = {
   pos_primary?: PositionAcronym;
   pos_secondary?: PositionAcronym;
   avatar_url?: string;
+  user_role: "player" | "admin";
 };
 
 export type PositionAcronym =
