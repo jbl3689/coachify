@@ -13,7 +13,7 @@ export const useTeamUsers = () => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["team_members_users"],
+    queryKey: ["team_members_users", selectedTeamId],
     queryFn: () => getTeamUsers(selectedTeamId),
   });
 

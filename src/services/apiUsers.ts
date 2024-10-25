@@ -143,7 +143,7 @@ export async function getTeamAdmins(selectedTeamId: number) {
     .from("team_members")
     .select("user_id")
     .eq("team_id", selectedTeamId)
-    .eq("role", "admin");
+    .eq("is_admin", true);
 
   if (userIdsError) {
     console.error(userIdsError);

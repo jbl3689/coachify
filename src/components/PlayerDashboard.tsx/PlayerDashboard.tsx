@@ -1,73 +1,46 @@
-import { HiSelector } from "react-icons/hi";
-import { useDispatch, useSelector } from "react-redux";
-
-import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
 
 import DashboardCard from "../ui/DashboardCard";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/DropdownMenu";
 import { FlexBox } from "@/components/ui/FlexBox";
 import Loader from "../ui/Loader";
-import { Card, CardContent } from "../ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/Table";
+import { useTeamUsers } from "@/hooks/user/useTeamUsers";
+import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 
 function PlayerDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
+  const { users } = useTeamUsers();
 
   const selectedTeamId = useSelector(getSelectedTeam());
-  // const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
   const dispatch = useDispatch();
-
-  function handleUpdateTeam(value: string) {
-    dispatch(setSelectedTeam(parseInt(value)));
-  }
 
   if (isLoading || isFetching || teams === undefined || teams === null) {
     return <Loader />;
+  }
+
+  function handleUpdateTeam(value: string) {
+    dispatch(setSelectedTeam(parseInt(value)));
   }
 
   const isTeamListEmpty = !teams || teams.length === 0;
 
   return (
     <FlexBox container flexDirection="column" gap="25px">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="default" className="py-8 mx-auto w-96">
-            {isTeamListEmpty
-              ? "Assign yourself to a team"
-              : teams?.find((team) => team.id === selectedTeamId)?.team_name}
-            <span>
-              <HiSelector />
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Selected Team</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup
-            value={selectedTeamId.toString()}
-            onValueChange={handleUpdateTeam}
-          >
-            {teams?.map((team) => (
-              <DropdownMenuRadioItem
-                value={team.id.toString()}
-                className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red text-textBase"}`}
-                key={team.id}
-              >
-                {team.team_name}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <TeamSelectDropdown
+        teams={teams}
+        selectedTeamId={selectedTeamId}
+        handleUpdateTeam={handleUpdateTeam}
+      />
 
       {!isTeamListEmpty ? (
         <>
@@ -86,7 +59,7 @@ function PlayerDashboard() {
                 alt={selectedTeam?.team_name}
               ></img>
             </DashboardCard> */}
-            <DashboardCard className="col-span-2 lg:col-span-1">
+            <DashboardCard className="col-span-2">
               <FlexBox
                 container
                 flexDirection="column"
@@ -94,9 +67,30 @@ function PlayerDashboard() {
                 height="auto"
               ></FlexBox>
             </DashboardCard>
-            <Card className="col-span-2">
-              <CardContent></CardContent>
-            </Card>
+
+            <Table className="overflow-hidden border-2 border-white ">
+              <TableHeader className="bg-bgPrimary">
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Position(s)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users &&
+                  users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>{user.full_name}</TableCell>
+                      <TableCell>{user.pos_primary ?? "-"}</TableCell>
+                      <TableCell>{user.pos_secondary ?? "-"}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell>Total number of users: {users?.length}</TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
           </div>
         </>
       ) : null}

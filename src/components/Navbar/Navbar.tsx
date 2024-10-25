@@ -60,20 +60,13 @@ function Navbar() {
           >
             {isAuthenticated ? (
               <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    {breakpoint === "mobile" || breakpoint === "mobileLarge" ? (
-                      <HiMenu className="text-5xl" />
-                    ) : (
-                      "Calendar"
-                    )}
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Link to="/calendar">Calendar view</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Link to="/calendar" className="my-auto">
+                  {breakpoint === "mobile" || breakpoint === "mobileLarge" ? (
+                    <HiMenu className="text-5xl" />
+                  ) : (
+                    "Calendar"
+                  )}
+                </Link>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger>
