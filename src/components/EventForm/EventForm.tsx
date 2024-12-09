@@ -5,7 +5,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useAddEvent } from "@/hooks/events/useAddEvent";
-import { DayState, eventTypes } from "@/types/types";
+import { DayState, EventState, eventTypes } from "@/types/types";
 import {
   Form,
   FormControl,
@@ -14,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/Form";
-import TimeSelect from "../ui/TimeSelect";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
 import { FlexBox } from "../ui/FlexBox";
@@ -27,11 +26,11 @@ import {
 } from "../ui/select";
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { getSelectedTeam } from "@/context/teamSlice";
+import { useUpdateEvent } from "@/hooks/events/useUpdateEvent";
 
 interface EventFormProps {
   selectedDay: DayState;
+  selectedEvent?: EventState;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -50,13 +49,21 @@ export type EventFormInputs = {
   event_type: string;
 };
 
-function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
+function EventForm({
+  selectedDay,
+  selectedEvent,
+  setIsDialogOpen,
+}: EventFormProps) {
   const navigate = useNavigate();
 
-  const { mutate, isPending } = useAddEvent();
+  const { mutate: addEvent, isPending: isPendingCreate } = useAddEvent();
+  const { mutate: updateEvent, isPending: isPendingUpdate } = useUpdateEvent();
+
   const { increaseDaySession, isIncreasingDaySession } =
     useIncreaseDaySession();
-  const isLoading = isPending || isIncreasingDaySession;
+
+  const isLoading =
+    isPendingCreate || isPendingUpdate || isIncreasingDaySession;
 
   const [startTime, setStartTime] = useState("");
 
@@ -65,14 +72,12 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      event_start_time: "",
-      event_end_time: "",
-      location: "",
-      event_type: eventTypes[0],
+      event_start_time: selectedEvent?.event_start_time ?? "",
+      event_end_time: selectedEvent?.event_end_time ?? "",
+      location: selectedEvent?.location ?? "",
+      event_type: selectedEvent?.event_type ?? eventTypes[0],
     },
   });
-
-  const currentStartTime = form.watch("event_start_time");
 
   const handleSubmit = (values: z.infer<typeof eventFormSchema>) => {
     const { event_start_time, event_end_time, location, event_type } = values;
@@ -86,18 +91,34 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
       day_id: selectedDay.id,
     };
 
-    mutate(eventData, {
-      onSuccess: () => {
-        increaseDaySession(selectedDay.id);
-        form.reset();
-        console.log("Event added successfully");
-        setIsDialogOpen(false);
-        navigate("/calendar");
-      },
-      onError: (error) => {
-        console.error("Error adding event:", error);
-      },
-    });
+    if (selectedEvent && selectedEvent.id) {
+      updateEvent(
+        { id: selectedEvent.id, newEventData: eventData },
+        {
+          onSuccess: () => {
+            console.log("Event updated successfully");
+            setIsDialogOpen(false);
+            navigate("/calendar");
+          },
+          onError: (error) => {
+            console.error("Error updating event:", error);
+          },
+        }
+      );
+    } else {
+      addEvent(eventData, {
+        onSuccess: () => {
+          increaseDaySession(selectedDay.id);
+          form.reset();
+          console.log("Event added successfully");
+          setIsDialogOpen(false);
+          navigate("/calendar");
+        },
+        onError: (error) => {
+          console.error("Error adding event:", error);
+        },
+      });
+    }
   };
 
   return (
@@ -152,7 +173,7 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
                         type="time"
                         id="event_end_time"
                         {...field}
-                        disabled={!startTime}
+                        disabled={!!selectedEvent ? false : !startTime}
                         min={startTime}
                         maxLength={5}
                         title={
