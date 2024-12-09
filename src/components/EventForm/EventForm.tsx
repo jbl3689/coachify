@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -27,6 +27,8 @@ import {
 } from "../ui/select";
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getSelectedTeam } from "@/context/teamSlice";
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -56,13 +58,15 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
     useIncreaseDaySession();
   const isLoading = isPending || isIncreasingDaySession;
 
+  const [startTime, setStartTime] = useState("");
+
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      event_start_time: "18:00",
-      event_end_time: "21:00",
+      event_start_time: "",
+      event_end_time: "",
       location: "",
       event_type: eventTypes[0],
     },
@@ -118,7 +122,16 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
                   <FormItem className="w-full">
                     <FormLabel htmlFor="event_start_time">Start time</FormLabel>
                     <FormControl>
-                      <TimeSelect id="event_start_time" {...field} />
+                      <Input
+                        type="time"
+                        id="event_start_time"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setStartTime(e.target.value);
+                        }}
+                        step={600}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -135,11 +148,17 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
                     <FormLabel htmlFor="event_end_time">End time</FormLabel>
 
                     <FormControl>
-                      <TimeSelect
+                      <Input
+                        type="time"
                         id="event_end_time"
-                        startTime={parseInt(currentStartTime)}
-                        isDisabled={currentStartTime === ""}
                         {...field}
+                        disabled={!startTime}
+                        min={startTime}
+                        maxLength={5}
+                        title={
+                          startTime ? "You must select a start time first" : ""
+                        }
+                        step={600}
                       />
                     </FormControl>
                     <FormMessage />

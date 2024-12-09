@@ -3,7 +3,7 @@
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
+  Row,
   SortingState,
   VisibilityState,
   flexRender,
@@ -34,22 +34,18 @@ import { FlexBox } from "@/components/ui/FlexBox";
 //   session_number?: number;
 // };
 
-// const timeStringToDate = (timeString: string) => {
-//   const [hours, minutes, seconds] = timeString.split(":").map(Number);
-//   const date = new Date();
-//   date.setHours(hours, minutes, seconds, 0);
-//   return date;
-// };
+const timeStringToDate = (timeString: string) => {
+  const [hours, minutes, seconds] = timeString.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, seconds, 0);
+  return date;
+};
 
-// const sortTimes = (
-//   rowA: Row<EventState>,
-//   rowB: Row<EventState>,
-//   columnId: string
-// ) => {
-//   const timeA = timeStringToDate(rowA.getValue(columnId)).getTime();
-//   const timeB = timeStringToDate(rowB.getValue(columnId)).getTime();
-//   return timeA - timeB;
-// };
+const sortTimes = (rowA: Row<EventState>, rowB: Row<EventState>) => {
+  const timeA = timeStringToDate(rowA.original.event_start_time).getTime();
+  const timeB = timeStringToDate(rowB.original.event_start_time).getTime();
+  return timeA - timeB > 0 ? 1 : -1;
+};
 
 export const columns: ColumnDef<EventState>[] = [
   {
@@ -60,20 +56,21 @@ export const columns: ColumnDef<EventState>[] = [
   {
     accessorKey: "start_time",
     header: "Start time",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("start_time")}</div>
-    ),
+    cell: ({ row }) => <div>{row.original.event_start_time}</div>,
+    sortingFn: sortTimes,
   },
 ];
 
-const initialState = {
+const eventTableState = {
   columnVisibility: {
     start_time: false, // Hide the start_time column by default
   },
-  sorting: {
-    id: "start_time",
-    desc: false,
-  },
+  sorting: [
+    {
+      id: "start_time",
+      desc: false,
+    },
+  ],
 };
 
 interface EventTableProps {
@@ -87,28 +84,18 @@ export function EventsTable({
   onRowClick,
   handleOpenDialog,
 }: EventTableProps) {
-  // const eventTableMapping = events?.map((event) => ({
-  //   id: event.id.toString(),
-  //   event_type: event.event_type,
-  //   start_time: event.event_start_time,
-  //   session_number: event.session_number,
-  // }));
-
-  const [sorting, setSorting] = React.useState<SortingState>([
-    initialState.sorting,
-  ]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+  const [sorting, setSorting] = React.useState<SortingState>(
+    eventTableState.sorting
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(initialState.columnVisibility);
+    React.useState<VisibilityState>(eventTableState.columnVisibility);
+
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data: events ?? [],
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -117,7 +104,6 @@ export function EventsTable({
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
       rowSelection,
     },
@@ -164,7 +150,7 @@ export function EventsTable({
             {events && events.length < 3 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center">
-                  <FlexBox container flexDirection="column" gap="10px">
+                  <FlexBox container flexDirection="column" gap="4px">
                     Add an event
                     <FontAwesomeIcon
                       icon={faCirclePlus}
@@ -178,26 +164,6 @@ export function EventsTable({
           </TableBody>
         </Table>
       </div>
-      {/* <div className="flex items-center justify-end py-4 space-x-2">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="default"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div> */}
     </div>
   );
 }
