@@ -38,6 +38,20 @@ export async function updateEvent(eventId: number, updatedEvent: EventState) {
   return data;
 }
 
+export async function deleteEvent(eventId: number) {
+  const { data, error } = await supabase
+    .from("events")
+    .delete()
+    .eq("id", eventId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Event could not be deleted");
+  }
+
+  return data;
+}
+
 export async function getEventAttendanceById(eventId: number) {
   const { data, error } = await supabase
     .from("eventsAttendance")
