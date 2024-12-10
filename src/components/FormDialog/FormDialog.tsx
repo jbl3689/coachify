@@ -1,9 +1,14 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement } from "react";
 
-import { Button } from '../ui/button';
+import { Button } from "../ui/button";
 import {
-    Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle
-} from '../ui/dialog';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
 interface FormDialogProps {
   Title: ReactElement;

@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useAddEvent } from "@/hooks/events/useAddEvent";
-import { DayState, eventTypes } from "@/types/types";
+import { DayState, EventState, eventTypes } from "@/types/types";
 import {
   Form,
   FormControl,
@@ -14,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/Form";
-import TimeSelect from "../ui/TimeSelect";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/button";
 import { FlexBox } from "../ui/FlexBox";
@@ -27,9 +26,11 @@ import {
 } from "../ui/select";
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
+import { useUpdateEvent } from "@/hooks/events/useUpdateEvent";
 
 interface EventFormProps {
   selectedDay: DayState;
+  selectedEvent?: EventState;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -48,27 +49,35 @@ export type EventFormInputs = {
   event_type: string;
 };
 
-function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
+function EventForm({
+  selectedDay,
+  selectedEvent,
+  setIsDialogOpen,
+}: EventFormProps) {
   const navigate = useNavigate();
 
-  const { mutate, isPending } = useAddEvent();
+  const { mutate: addEvent, isPending: isPendingCreate } = useAddEvent();
+  const { mutate: updateEvent, isPending: isPendingUpdate } = useUpdateEvent();
+
   const { increaseDaySession, isIncreasingDaySession } =
     useIncreaseDaySession();
-  const isLoading = isPending || isIncreasingDaySession;
+
+  const isLoading =
+    isPendingCreate || isPendingUpdate || isIncreasingDaySession;
+
+  const [startTime, setStartTime] = useState("");
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      event_start_time: "18:00",
-      event_end_time: "21:00",
-      location: "",
-      event_type: eventTypes[0],
+      event_start_time: selectedEvent?.event_start_time ?? "",
+      event_end_time: selectedEvent?.event_end_time ?? "",
+      location: selectedEvent?.location ?? "",
+      event_type: selectedEvent?.event_type ?? eventTypes[0],
     },
   });
-
-  const currentStartTime = form.watch("event_start_time");
 
   const handleSubmit = (values: z.infer<typeof eventFormSchema>) => {
     const { event_start_time, event_end_time, location, event_type } = values;
@@ -82,18 +91,34 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
       day_id: selectedDay.id,
     };
 
-    mutate(eventData, {
-      onSuccess: () => {
-        increaseDaySession(selectedDay.id);
-        form.reset();
-        console.log("Event added successfully");
-        setIsDialogOpen(false);
-        navigate("/calendar");
-      },
-      onError: (error) => {
-        console.error("Error adding event:", error);
-      },
-    });
+    if (selectedEvent && selectedEvent.id) {
+      updateEvent(
+        { id: selectedEvent.id, newEventData: eventData },
+        {
+          onSuccess: () => {
+            console.log("Event updated successfully");
+            setIsDialogOpen(false);
+            navigate("/calendar");
+          },
+          onError: (error) => {
+            console.error("Error updating event:", error);
+          },
+        }
+      );
+    } else {
+      addEvent(eventData, {
+        onSuccess: () => {
+          increaseDaySession(selectedDay.id);
+          form.reset();
+          console.log("Event added successfully");
+          setIsDialogOpen(false);
+          navigate("/calendar");
+        },
+        onError: (error) => {
+          console.error("Error adding event:", error);
+        },
+      });
+    }
   };
 
   return (
@@ -118,7 +143,16 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
                   <FormItem className="w-full">
                     <FormLabel htmlFor="event_start_time">Start time</FormLabel>
                     <FormControl>
-                      <TimeSelect id="event_start_time" {...field} />
+                      <Input
+                        type="time"
+                        id="event_start_time"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setStartTime(e.target.value);
+                        }}
+                        step={600}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -135,11 +169,17 @@ function EventForm({ selectedDay, setIsDialogOpen }: EventFormProps) {
                     <FormLabel htmlFor="event_end_time">End time</FormLabel>
 
                     <FormControl>
-                      <TimeSelect
+                      <Input
+                        type="time"
                         id="event_end_time"
-                        startTime={parseInt(currentStartTime)}
-                        isDisabled={currentStartTime === ""}
                         {...field}
+                        disabled={!!selectedEvent ? false : !startTime}
+                        min={startTime}
+                        maxLength={5}
+                        title={
+                          startTime ? "You must select a start time first" : ""
+                        }
+                        step={600}
                       />
                     </FormControl>
                     <FormMessage />

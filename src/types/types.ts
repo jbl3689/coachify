@@ -104,13 +104,12 @@ export type DayState = {
 };
 
 export type EventState = {
-  id: number;
+  id?: number;
   event_start_time: string;
   event_end_time: string;
   event_type: string;
   day_id: number;
   location: string;
-  is_morning: boolean;
   session_number: number;
 };
 
