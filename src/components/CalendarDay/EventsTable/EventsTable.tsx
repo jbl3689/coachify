@@ -26,6 +26,7 @@ import { EventState } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FlexBox } from "@/components/ui/FlexBox";
+import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
 
 // export type EventState = {
 //   id: string;
@@ -84,6 +85,8 @@ export function EventsTable({
   onRowClick,
   handleOpenDialog,
 }: EventTableProps) {
+  const isUserAdmin = useIsUserAdmin();
+
   const [sorting, setSorting] = React.useState<SortingState>(
     eventTableState.sorting
   );
@@ -147,7 +150,7 @@ export function EventsTable({
               </TableRow>
             ))}
 
-            {events && events.length < 3 ? (
+            {isUserAdmin && events && events.length < 3 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center">
                   <FlexBox container flexDirection="column" gap="4px">

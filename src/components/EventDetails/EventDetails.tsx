@@ -18,6 +18,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/AlertDialog";
 import { useDeleteEvent } from "@/hooks/events/useDeleteEvent";
+import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -25,14 +26,7 @@ interface DayDetailsProps {
 }
 
 function EventDetails({ selectedDay, selectedEvent }: DayDetailsProps) {
-  // const eventAttendance = [
-  //   {
-  //     id: 1,
-  //     name: "James Blake",
-  //   },
-  // ];
-  // const { eventAttendance } = useEventAttendance(displayedEvent?.id ?? 0);
-
+  const isUserAdmin = useIsUserAdmin();
   const { mutate: deleteEvent, isPending } = useDeleteEvent();
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -63,12 +57,14 @@ function EventDetails({ selectedDay, selectedEvent }: DayDetailsProps) {
                 <br />
                 {selectedEvent.location}
               </div>
-              <div className="flex flex-col gap-4 ml-auto ">
-                <Button onClick={() => setIsDialogOpen(true)}>Edit</Button>
-                <AlertDialogTrigger>
-                  <Button variant="destructive">Delete</Button>
-                </AlertDialogTrigger>
-              </div>
+              {isUserAdmin ? (
+                <div className="flex flex-col gap-4 ml-auto ">
+                  <Button onClick={() => setIsDialogOpen(true)}>Edit</Button>
+                  <AlertDialogTrigger>
+                    <Button variant="destructive">Delete</Button>
+                  </AlertDialogTrigger>
+                </div>
+              ) : null}
             </FlexBox>
           </CardContent>
         </Card>
