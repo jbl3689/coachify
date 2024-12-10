@@ -6,6 +6,7 @@ export type ReduxUserState = {
   auth_user_id: string | null;
   full_name: string | null;
   email: string | null;
+  isUserAdmin: boolean;
 };
 
 const initialState: ReduxUserState = {
@@ -13,6 +14,7 @@ const initialState: ReduxUserState = {
   auth_user_id: null,
   full_name: null,
   email: null,
+  isUserAdmin: false,
 };
 
 const userSlice = createSlice({
@@ -24,11 +26,15 @@ const userSlice = createSlice({
       state.auth_user_id = action.payload.auth_user_id;
       state.full_name = action.payload.full_name;
       state.email = action.payload.email;
+      state.isUserAdmin = action.payload.isUserAdmin;
+    },
+    setIsUserAdmin: (state, action: PayloadAction<boolean>) => {
+      state.isUserAdmin = action.payload;
     },
   },
 });
 
-export const { setCurrentUser } = userSlice.actions;
+export const { setCurrentUser, setIsUserAdmin } = userSlice.actions;
 
 export default userSlice.reducer;
 
