@@ -27,7 +27,7 @@ interface DayDetailsProps {
 
 function EventDetails({ selectedDay, selectedEvent }: DayDetailsProps) {
   const isUserAdmin = useIsUserAdmin();
-  const { mutate: deleteEvent, isPending } = useDeleteEvent();
+  const { mutate: deleteEvent } = useDeleteEvent();
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
