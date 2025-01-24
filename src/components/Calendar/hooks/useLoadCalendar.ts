@@ -111,6 +111,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
     weekData,
     selectedDay,
     selectedEvent,
+    setSelectedDay,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,

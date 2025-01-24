@@ -15,6 +15,7 @@ function Calendar() {
     selectedDay,
     isPending,
     selectedEvent,
+    setSelectedDay,
     handleClickWeekNavigate,
     handleNavigateToToday,
     handleDayClick,
@@ -50,6 +51,7 @@ function Calendar() {
           <EventDetails
             selectedDay={selectedDay}
             selectedEvent={selectedEvent}
+            setSelectedDay={setSelectedDay}
           />
         ) : null}
       </div>

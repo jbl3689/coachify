@@ -5,7 +5,7 @@ import { FlexBox } from "../ui/FlexBox";
 import { Button } from "../ui/button";
 import FormDialog from "../FormDialog/FormDialog";
 import EventForm from "../EventForm/EventForm";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,9 +23,14 @@ import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
 interface DayDetailsProps {
   selectedDay: DayState;
   selectedEvent: EventState;
+  setSelectedDay: Dispatch<SetStateAction<DayState | null>>;
 }
 
-function EventDetails({ selectedDay, selectedEvent }: DayDetailsProps) {
+function EventDetails({
+  selectedDay,
+  selectedEvent,
+  setSelectedDay,
+}: DayDetailsProps) {
   const isUserAdmin = useIsUserAdmin();
   const { mutate: deleteEvent } = useDeleteEvent();
 
@@ -109,7 +114,10 @@ function EventDetails({ selectedDay, selectedEvent }: DayDetailsProps) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive"
-              onClick={() => selectedEvent.id && deleteEvent(selectedEvent.id)}
+              onClick={() => {
+                selectedEvent.id && deleteEvent(selectedEvent.id);
+                setSelectedDay(null);
+              }}
             >
               Delete
             </AlertDialogAction>
