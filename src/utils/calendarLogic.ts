@@ -17,10 +17,31 @@ export const addDays = (date: Date, days: number) => {
   return result;
 };
 
-// Define your logic here
-export const calendarLogic = () => {};
+export const roundToNearestBlock = (minuteBlock: number, offset?: number) => {
+  const dateNow = new Date();
+  const ms = 1000 * 60 * minuteBlock;
+  let timeBlock = new Date(Math.ceil(dateNow.getTime() / ms) * ms);
 
-// Export any additional functions or variables if needed
-export const anotherFunction = () => {
-  // Your function implementation goes here
+  if (offset) {
+    timeBlock.setMinutes(timeBlock.getMinutes() + offset);
+  }
+
+  return timeBlock.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+};
+
+export const addMinutes = (dateString: string, minutes: number) => {
+  const date = new Date(dateString);
+  console.log("date", date);
+  date.setMinutes(date.getMinutes() + minutes);
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
 };

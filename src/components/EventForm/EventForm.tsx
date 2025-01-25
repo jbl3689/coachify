@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -27,6 +27,7 @@ import {
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
 import { useUpdateEvent } from "@/hooks/events/useUpdateEvent";
+import { addMinutes, roundToNearestBlock } from "@/utils/calendarLogic";
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -65,15 +66,17 @@ function EventForm({
   const isLoading =
     isPendingCreate || isPendingUpdate || isIncreasingDaySession;
 
-  const [startTime, setStartTime] = useState("");
+  const defaultTimeBlock = 15;
+  const timeBlockStart = roundToNearestBlock(defaultTimeBlock);
+  const timeBlockEnd = roundToNearestBlock(defaultTimeBlock, 60);
 
   // zodResolver will link the form validation to the schema
   // anytime the data changes, the form will be revalidated based on the form schema
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      event_start_time: selectedEvent?.event_start_time ?? "",
-      event_end_time: selectedEvent?.event_end_time ?? "",
+      event_start_time: selectedEvent?.event_start_time ?? timeBlockStart,
+      event_end_time: selectedEvent?.event_end_time ?? timeBlockEnd,
       location: selectedEvent?.location ?? "",
       event_type: selectedEvent?.event_type ?? eventTypes[0],
     },
@@ -147,10 +150,6 @@ function EventForm({
                         type="time"
                         id="event_start_time"
                         {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          setStartTime(e.target.value);
-                        }}
                         step={600}
                       />
                     </FormControl>
@@ -173,12 +172,7 @@ function EventForm({
                         type="time"
                         id="event_end_time"
                         {...field}
-                        disabled={!!selectedEvent ? false : !startTime}
-                        min={startTime}
                         maxLength={5}
-                        title={
-                          startTime ? "You must select a start time first" : ""
-                        }
                         step={600}
                       />
                     </FormControl>
