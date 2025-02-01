@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import useBreakpoint from "use-breakpoint";
 
 import {
   DropdownMenu,
@@ -13,11 +14,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { FlexBox } from "../ui/FlexBox";
 import { useUser } from "@/hooks/user/useUser";
 import { Skeleton } from "../ui/Skeleton";
-import useBreakpoint from "use-breakpoint";
 import { BREAKPOINTS } from "@/types/types";
-import { HiMenu } from "react-icons/hi";
+import { ThemeToggle } from "../ThemeToggle";
 
-function Navbar() {
+export const Navbar = () => {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
   const currentUrl = useLocation().pathname;
 
@@ -31,19 +31,22 @@ function Navbar() {
     .toUpperCase();
 
   const isLoadingData = isLoading || isFetching || isPending;
+  const LoadingSkeleton = () => (
+    <>
+      <Skeleton className="w-32 h-10" />
+      <div className="flex gap-10 text-xl">
+        <div className="flex items-center gap-2">
+          <Skeleton className="w-20 h-6" />
+          <Skeleton className="w-10 h-10 rounded-full" />
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28 text-textBase">
       {isLoadingData ? (
-        <>
-          <Skeleton className="w-32 h-10" />
-          <div className="flex gap-10 text-xl">
-            <div className="flex items-center gap-2">
-              <Skeleton className="w-20 h-6" />
-              <Skeleton className="w-10 h-10 rounded-full" />
-            </div>
-          </div>
-        </>
+        <LoadingSkeleton />
       ) : (
         <>
           <Link to="/" className="text-4xl text-primary">
@@ -60,14 +63,6 @@ function Navbar() {
           >
             {isAuthenticated ? (
               <>
-                <Link to="/calendar" className="my-auto">
-                  {breakpoint === "mobile" || breakpoint === "mobileLarge" ? (
-                    <HiMenu className="text-5xl" />
-                  ) : (
-                    "Calendar"
-                  )}
-                </Link>
-
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <FlexBox container alignItems="center" gap="10px">
@@ -113,11 +108,11 @@ function Navbar() {
                 )}
               </>
             )}
+
+            <ThemeToggle />
           </FlexBox>
         </>
       )}
     </header>
   );
-}
-
-export default Navbar;
+};

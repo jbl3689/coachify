@@ -10,9 +10,8 @@ import AppLayout from "./components/ui/AppLayout";
 import { ThemeProvider } from "./context/themeProvider";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
 import Loader from "./components/ui/Loader";
+import Homepage from "./pages/Homepage";
 
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Calendar = lazy(() => import("./pages/Calendar"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Account = lazy(() => import("./pages/Account"));
@@ -37,15 +36,7 @@ const router = createBrowserRouter([
         path: "/",
         element: (
           <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/calendar",
-        element: (
-          <ProtectedRoute>
-            <Calendar />
+            <Homepage />
           </ProtectedRoute>
         ),
       },

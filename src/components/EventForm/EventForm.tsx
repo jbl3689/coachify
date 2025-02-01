@@ -27,7 +27,7 @@ import {
 import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
 import { useUpdateEvent } from "@/hooks/events/useUpdateEvent";
-import { addMinutes, roundToNearestBlock } from "@/utils/calendarLogic";
+import { roundToNearestBlock } from "@/utils/calendarLogic";
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -101,7 +101,7 @@ function EventForm({
           onSuccess: () => {
             console.log("Event updated successfully");
             setIsDialogOpen(false);
-            navigate("/calendar");
+            navigate("/");
           },
           onError: (error) => {
             console.error("Error updating event:", error);
@@ -115,7 +115,7 @@ function EventForm({
           form.reset();
           console.log("Event added successfully");
           setIsDialogOpen(false);
-          navigate("/calendar");
+          navigate("/");
         },
         onError: (error) => {
           console.error("Error adding event:", error);
@@ -203,6 +203,7 @@ function EventForm({
                         id="location"
                         {...field}
                         placeholder="Enter location"
+                        maxLength={20}
                       />
                     </FormControl>
                     <FormMessage />

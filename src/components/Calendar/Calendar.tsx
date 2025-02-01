@@ -6,7 +6,7 @@ import WeekView from "../WeekView/WeekView";
 import useLoadCalendar from "./hooks/useLoadCalendar";
 import EventDetails from "../EventDetails/EventDetails";
 
-function Calendar() {
+export const Calendar = () => {
   const eventDetailsRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -57,6 +57,4 @@ function Calendar() {
       </div>
     </div>
   );
-}
-
-export default Calendar;
+};

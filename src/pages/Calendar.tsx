@@ -1,5 +1,4 @@
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
-import CalendarWeek from "../components/Calendar/CalendarWeek";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import {
   AlertDialogAction,
@@ -10,6 +9,8 @@ import {
 } from "@/components/ui/AlertDialog";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import { Calendar as CalendarWeek } from "@/components/Calendar";
 
 function Calendar() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
