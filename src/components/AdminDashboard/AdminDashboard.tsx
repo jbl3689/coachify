@@ -1,31 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
-
-import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
-import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { Calendar, CircleUser, Swords, Users } from "lucide-react";
 
 import DashboardCard from "../ui/DashboardCard";
-
-import { FlexBox } from "@/components/ui/FlexBox";
-import Heading from "../ui/Heading";
-import Loader from "../ui/Loader";
-import UserListTable from "../UserListTable/UserListTable";
 import { Card, CardContent } from "../ui/card";
-import AddUserSheet from "../AddUserSheet/AddUserSheet";
-import Uploader from "@/data/Uploader";
-import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
+import Loader from "../ui/Loader";
+import { FlexBox } from "@/components/ui/FlexBox";
+import UserListTable from "../UserListTable/UserListTable";
+import DashboardDataCard from "../ui/DashboardDataCard";
+import { Badge } from "../ui/Badge";
+
+import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import { useTeamAdmins } from "@/hooks/user/useTeamAdmins";
+import { upcomingFixtures } from "@/data/mockFixtureData";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
   const { admins } = useTeamAdmins();
-
-  const selectedTeamId = useSelector(getSelectedTeam());
-  // const selectedTeam = teams?.find((team) => team.id === selectedTeamId);
-  const dispatch = useDispatch();
-
-  function handleUpdateTeam(value: string) {
-    dispatch(setSelectedTeam(parseInt(value)));
-  }
 
   if (isLoading || isFetching || teams === undefined || teams === null) {
     return <Loader />;
@@ -34,62 +23,77 @@ function AdminDashboard() {
 
   return (
     <FlexBox container flexDirection="column" gap="25px">
-      <TeamSelectDropdown
-        teams={teams}
-        selectedTeamId={selectedTeamId}
-        handleUpdateTeam={handleUpdateTeam}
-      />
-
       {!isTeamListEmpty ? (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <DashboardCard>24km ran this week</DashboardCard>
-            <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
-            <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
-            <DashboardCard>
-              <Heading as="h4" className="mb-4">
-                Admins
-              </Heading>
-              <ul>
-                {admins &&
-                  admins.map((admin) => (
-                    <li key={admin.id}>- {admin.full_name}</li>
-                  ))}
-              </ul>
-            </DashboardCard>
+            <DashboardCard
+              title="Squad size"
+              statistic="25"
+              Icon={<Users />}
+              subtext="2 players injured"
+            />
+            <DashboardCard
+              title="Upcoming Training"
+              statistic="5th Sep 18:00"
+              Icon={<Calendar />}
+              subtext="Pitch 1"
+            />
+            <DashboardCard
+              title="Upcoming Game"
+              statistic="Feb 3 15:00"
+              Icon={<Swords />}
+              subtext="Home"
+            />
+            <DashboardCard
+              title="Admins"
+              statistic="James Blake"
+              Icon={<CircleUser />}
+              subtext={
+                admins && admins.map((admin) => admin.full_name).join(", ")
+              }
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-3">
-            <DashboardCard className="col-span-2 lg:col-span-1">
-              <FlexBox
-                container
-                flexDirection="column"
-                justifyContent="space-between"
-                height="auto"
-              >
-                <Heading as="h3">Admin Tools</Heading>
-                <FlexBox
-                  container
-                  flexDirection="column"
-                  justifyContent="space-between"
-                  gap="16px"
-                  width="80%"
-                  margin="15px auto"
-                >
-                  <AddUserSheet />
+            <DashboardDataCard
+              className="col-span-2 lg:col-span-1"
+              title="Upcoming Fixtures"
+            >
+              <div className="space-y-4">
+                {upcomingFixtures.map((fixture) => (
+                  <div
+                    key={fixture.id}
+                    className="flex items-center justify-between p-4 text-left rounded-lg bg-muted"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{fixture.opponent}</span>
+                        <Badge
+                          variant={fixture.isHome ? "default" : "destructive"}
+                        >
+                          {fixture.isHome ? "Home" : "Away"}
+                        </Badge>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {fixture.competition}
+                      </div>
+                      <div className="text-sm">
+                        {fixture.date} at {fixture.time}
+                      </div>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {fixture.venue}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </DashboardDataCard>
 
-                  <Uploader />
-                </FlexBox>
-              </FlexBox>
-            </DashboardCard>
+            {/* <AddUserSheet />
+
+            <Uploader /> */}
+
             <Card className="col-span-2">
-              {/* <CardHeader>
-                <CardTitle>
-                  <Heading as="h3" className="text-left">
-                    Player List
-                  </Heading>
-                </CardTitle>
-              </CardHeader> */}
               <CardContent>
                 <UserListTable />
               </CardContent>

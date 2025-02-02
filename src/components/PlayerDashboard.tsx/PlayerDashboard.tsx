@@ -16,6 +16,8 @@ import { useTeamUsers } from "@/hooks/user/useTeamUsers";
 import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
+import { Calendar, CircleUser, Dumbbell, Swords, Users } from "lucide-react";
+import { Card } from "../ui/card";
 
 function PlayerDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
@@ -45,10 +47,30 @@ function PlayerDashboard() {
       {!isTeamListEmpty ? (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <DashboardCard>24km ran this week</DashboardCard>
-            <DashboardCard>Upcoming Training: 5th Sep 18:00</DashboardCard>
-            <DashboardCard>Upcoming Game: 9th Sep 14:00</DashboardCard>
-            <DashboardCard>Manager: James Blake </DashboardCard>
+            <DashboardCard
+              title="Squad size"
+              statistic="25"
+              Icon={<Users />}
+              subtext="2 players injured"
+            />
+            <DashboardCard
+              title="Upcoming Training"
+              statistic="5th Sep 18:00"
+              Icon={<Calendar />}
+              subtext="Pitch 1"
+            />
+            <DashboardCard
+              title="Upcoming Game"
+              statistic="9th Sep 14:00"
+              Icon={<Swords />}
+              subtext="Home"
+            />
+            <DashboardCard
+              title="Training Attendance"
+              statistic="90%"
+              Icon={<Dumbbell />}
+              subtext={"Great work!"}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-3">
@@ -59,14 +81,14 @@ function PlayerDashboard() {
                 alt={selectedTeam?.team_name}
               ></img>
             </DashboardCard> */}
-            <DashboardCard className="col-span-2">
+            <Card className="col-span-2">
               <FlexBox
                 container
                 flexDirection="column"
                 justifyContent="space-between"
                 height="auto"
               ></FlexBox>
-            </DashboardCard>
+            </Card>
 
             <Table className="overflow-hidden border-2 border-white ">
               <TableHeader className="bg-bgPrimary">

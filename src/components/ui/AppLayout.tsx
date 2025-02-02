@@ -21,7 +21,7 @@ function AppLayout() {
     <StyledAppLayout>
       <Navbar />
       <StyledMainWrapper>
-        <main className="w-11/12 mx-auto text-xl text-center text-textBase">
+        <main className="w-11/12 mx-auto text-xl text-center">
           <Outlet />
         </main>
       </StyledMainWrapper>

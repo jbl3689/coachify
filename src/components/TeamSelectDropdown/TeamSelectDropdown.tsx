@@ -30,7 +30,7 @@ function TeamSelectDropdown({
   return teams && teams.length > 0 ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default" className="py-8 mx-auto w-96">
+        <Button variant="outline" className="">
           {isTeamListEmpty
             ? "Assign yourself to a team"
             : teams?.find((team) => team.id === selectedTeamId)?.team_name}
@@ -49,7 +49,7 @@ function TeamSelectDropdown({
           {teams?.map((team) => (
             <DropdownMenuRadioItem
               value={team.id.toString()}
-              className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red text-textBase"}`}
+              className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red"}`}
               key={team.id}
             >
               {team.team_name}
@@ -61,7 +61,7 @@ function TeamSelectDropdown({
   ) : (
     <Alert variant="destructive">
       <AlertTitle>
-        You must assign yourself to a team before you can access the dashboard
+        You must assign yourself to a team before you use the app
       </AlertTitle>
       <AlertDescription>
         Contact an admin to assign you to a team OR create a new team{" "}

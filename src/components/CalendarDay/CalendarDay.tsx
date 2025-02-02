@@ -58,7 +58,7 @@ function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
       >
         <CardHeader className="text-left">
           <CardTitle
-            className={`w-full ${isToday ? "text-accentLight" : "text-textBase"} text-3xl font-semibold`}
+            className={`w-full ${isToday && "text-accentLight"} text-3xl font-semibold`}
           >
             {dayOfWeekAbbreviations[day.day as dayOfWeek]}
           </CardTitle>

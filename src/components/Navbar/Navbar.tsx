@@ -16,6 +16,10 @@ import { useUser } from "@/hooks/user/useUser";
 import { Skeleton } from "../ui/Skeleton";
 import { BREAKPOINTS } from "@/types/types";
 import { ThemeToggle } from "../ThemeToggle";
+import { useUserTeams } from "@/hooks/teams/useUserTeams";
+import { useDispatch, useSelector } from "react-redux";
+import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
+import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
 
 export const Navbar = () => {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
@@ -29,6 +33,14 @@ export const Navbar = () => {
     .map((part) => part[0])
     .join("")
     .toUpperCase();
+
+  const { teams } = useUserTeams();
+  const selectedTeamId = useSelector(getSelectedTeam());
+  const dispatch = useDispatch();
+
+  function handleUpdateTeam(value: string) {
+    dispatch(setSelectedTeam(parseInt(value)));
+  }
 
   const isLoadingData = isLoading || isFetching || isPending;
   const LoadingSkeleton = () => (
@@ -44,7 +56,7 @@ export const Navbar = () => {
   );
 
   return (
-    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28 text-textBase">
+    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28">
       {isLoadingData ? (
         <LoadingSkeleton />
       ) : (
@@ -59,10 +71,16 @@ export const Navbar = () => {
                 ? "8px"
                 : "24px"
             }
-            className="flex text-xl"
+            alignItems="center"
           >
             {isAuthenticated ? (
               <>
+                <TeamSelectDropdown
+                  teams={teams}
+                  selectedTeamId={selectedTeamId}
+                  handleUpdateTeam={handleUpdateTeam}
+                />
+
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <FlexBox container alignItems="center" gap="10px">
