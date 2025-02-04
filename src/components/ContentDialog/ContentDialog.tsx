@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 
-interface FormDialogProps {
+interface ContentDialogProps {
   Title: ReactElement;
   Description?: ReactElement;
   children: React.ReactNode;
@@ -18,13 +18,13 @@ interface FormDialogProps {
   onClose: () => void;
 }
 
-function FormDialog({
+export const ContentDialog = ({
   Title,
   Description,
   children,
   isOpen,
   onClose,
-}: FormDialogProps) {
+}: ContentDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -43,6 +43,4 @@ function FormDialog({
       </DialogContent>
     </Dialog>
   );
-}
-
-export default FormDialog;
+};

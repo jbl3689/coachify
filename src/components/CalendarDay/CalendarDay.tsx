@@ -13,8 +13,8 @@ import {
   CardTitle,
 } from "../ui/card";
 import { EventsTable } from "./EventsTable";
-import FormDialog from "../FormDialog/FormDialog";
 import EventForm from "../EventForm/EventForm";
+import { ContentDialog } from "../ContentDialog";
 
 interface CalendarDayProps {
   day: DayState;
@@ -75,7 +75,7 @@ function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
         </CardContent>
       </Card>
 
-      <FormDialog
+      <ContentDialog
         Title={
           <div>
             <h2 className="mb-6 ">
@@ -90,7 +90,7 @@ function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
         onClose={() => setIsDialogOpen(false)}
       >
         <EventForm selectedDay={day} setIsDialogOpen={setIsDialogOpen} />
-      </FormDialog>
+      </ContentDialog>
     </>
   );
 }

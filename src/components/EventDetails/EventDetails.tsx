@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { format, parse } from "date-fns";
 import { FlexBox } from "../ui/FlexBox";
 import { Button } from "../ui/button";
-import FormDialog from "../FormDialog/FormDialog";
+import { ContentDialog } from "../ContentDialog";
 import EventForm from "../EventForm/EventForm";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
@@ -74,7 +74,7 @@ function EventDetails({
           </CardContent>
         </Card>
 
-        <FormDialog
+        <ContentDialog
           Title={
             <div>
               <h2 className="mb-6 ">
@@ -97,7 +97,7 @@ function EventDetails({
             selectedEvent={selectedEvent}
             setIsDialogOpen={setIsDialogOpen}
           />
-        </FormDialog>
+        </ContentDialog>
 
         <AlertDialogContent>
           <AlertDialogHeader>

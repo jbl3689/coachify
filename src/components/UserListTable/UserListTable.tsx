@@ -2,11 +2,11 @@ import { useTeamUsers } from "@/hooks/user/useTeamUsers";
 import { DataTable } from "../ui/DataTable";
 import { columns } from "./columns";
 import Loader from "../ui/Loader";
-import FormDialog from "../FormDialog/FormDialog";
 import { useState } from "react";
 import { UserState } from "@/types/types";
 import { Row } from "@tanstack/react-table";
 import UserForm from "../UserForm/UserForm";
+import { ContentDialog } from "../ContentDialog";
 
 function UserListTable() {
   const { users, isFetching, isLoading, refetch } = useTeamUsers();
@@ -38,7 +38,7 @@ function UserListTable() {
         data={users!}
         header="Player List"
       />
-      <FormDialog
+      <ContentDialog
         Title={
           <div>
             <h2>Update User Details</h2>
@@ -51,7 +51,7 @@ function UserListTable() {
           {...selectedRowData?.original}
           onFormClose={() => handleCloseDialog(true)}
         />
-      </FormDialog>
+      </ContentDialog>
     </>
   );
 }
