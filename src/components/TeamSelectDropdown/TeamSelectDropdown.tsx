@@ -30,7 +30,7 @@ function TeamSelectDropdown({
   return teams && teams.length > 0 ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="">
+        <Button variant="outline" className="font-semibold">
           {isTeamListEmpty
             ? "Assign yourself to a team"
             : teams?.find((team) => team.id === selectedTeamId)?.team_name}
@@ -49,7 +49,7 @@ function TeamSelectDropdown({
           {teams?.map((team) => (
             <DropdownMenuRadioItem
               value={team.id.toString()}
-              className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red"}`}
+              className={`hover:cursor-pointer text-md ${team.id === selectedTeamId && "border-red font-semibold"}`}
               key={team.id}
             >
               {team.team_name}
