@@ -5,6 +5,8 @@ import { FaClock } from "react-icons/fa";
 import { EventState } from "../../types/types";
 import { FlexBox } from "../ui/FlexBox";
 import { Badge } from "../ui/Badge";
+import { Button } from "../ui/button";
+import { Check, Cross, X } from "lucide-react";
 
 interface EventBoxProps {
   event: EventState;
@@ -34,34 +36,41 @@ function EventDetailsBox({ event }: EventBoxProps) {
   };
 
   return (
-    <FlexBox
-      container
-      flexDirection="column"
-      justifyContent="space-between"
-      alignItems="center"
-      gap="5px"
-    >
-      <Badge
-        className={
-          "flex justify-between w-5/6 text-xs " + getVariant(event.event_type)
-        }
+    <div className="relative group overflow-hidden">
+      <FlexBox
+        container
+        flexDirection="column"
+        justifyContent="space-between"
+        alignItems="center"
+        gap="5px"
       >
-        {event.event_type}
-        <FaPersonRunning />
-      </Badge>
-      {event.location ? (
-        <Badge variant="secondary" className="flex justify-between w-5/6">
-          {event.location} <HiHome />
+        <Badge
+          className={
+            "flex justify-between w-5/6 text-xs " + getVariant(event.event_type)
+          }
+        >
+          {event.event_type}
+          <FaPersonRunning />
         </Badge>
-      ) : null}
-      <Badge variant="secondary" className="flex justify-between w-5/6">
-        {startTime ? format(startTime, "h:mma") : ""} -{" "}
-        {endTime ? format(endTime, "h:mma") : ""} <FaClock />
-      </Badge>
-      {/* <Badge variant="destructive">
+        {event.location ? (
+          <Badge variant="secondary" className="flex justify-between w-5/6">
+            {event.location} <HiHome />
+          </Badge>
+        ) : null}
+        <Badge variant="secondary" className="flex justify-between w-5/6">
+          {startTime ? format(startTime, "h:mma") : ""} -{" "}
+          {endTime ? format(endTime, "h:mma") : ""} <FaClock />
+        </Badge>
+        {/* <Badge variant="destructive">
             {eventAttendance?.length ?? 0} / 32
           </Badge> */}
-    </FlexBox>
+      </FlexBox>
+
+      <FlexBox className="absolute bottom-[-20px] z-100 right-[-20px] opacity-0 group-hover:opacity-100 transition-opacity">
+        <Check size={24} color="green" />
+        <X size={24} color="red" />
+      </FlexBox>
+    </div>
   );
 }
 
