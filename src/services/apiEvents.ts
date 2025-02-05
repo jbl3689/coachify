@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
 import { EventAttendanceState, EventState } from "../types/types";
 import supabase from "./supabase";
+import { getSelectedTeam } from "@/context/teamSlice";
+import { getTeamUsers } from "./apiUsers";
 
 export async function getEventsByDayId(dayId: number) {
   const { data, error } = await supabase
@@ -13,12 +16,33 @@ export async function getEventsByDayId(dayId: number) {
   return data;
 }
 
-export async function createEvent(newEvent: EventState) {
-  const { data, error } = await supabase.from("events").insert([newEvent]);
+export async function createEvent(newEvent: EventState, teamId: number) {
+  const { data, error } = await supabase
+    .from("events")
+    .insert([newEvent])
+    .select("id");
 
   if (error) {
     console.error(error);
     throw new Error("Event could not be created");
+  }
+
+  const teamUsers = await getTeamUsers(teamId);
+  const eventAttendance = teamUsers.map(
+    (user) =>
+      ({
+        event_id: data[0].id,
+        user_id: user.id,
+      }) as EventAttendanceState
+  );
+
+  const { error: attendanceError } = await supabase
+    .from("eventsAttendance")
+    .insert([...eventAttendance]);
+
+  if (attendanceError) {
+    console.error(attendanceError);
+    throw new Error("Event attendance could not be created");
   }
 
   return data;

@@ -114,8 +114,8 @@ export type EventState = {
 };
 
 export type EventAttendanceState = {
-  id: number;
-  isAttending: boolean;
+  id?: number;
+  isAttending?: boolean;
   event_id: number;
   user_id: number;
 };

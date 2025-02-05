@@ -28,6 +28,8 @@ import { useIncreaseDaySession } from "@/hooks/days/useIncreaseDaySession";
 import { useNavigate } from "react-router-dom";
 import { useUpdateEvent } from "@/hooks/events/useUpdateEvent";
 import { roundToNearestBlock } from "@/utils/calendarLogic";
+import { useSelector } from "react-redux";
+import { getSelectedTeam } from "@/context/teamSlice";
 
 interface EventFormProps {
   selectedDay: DayState;
@@ -56,7 +58,7 @@ function EventForm({
   setIsDialogOpen,
 }: EventFormProps) {
   const navigate = useNavigate();
-
+  const teamId = useSelector(getSelectedTeam());
   const { mutate: addEvent, isPending: isPendingCreate } = useAddEvent();
   const { mutate: updateEvent, isPending: isPendingUpdate } = useUpdateEvent();
 
@@ -109,18 +111,21 @@ function EventForm({
         }
       );
     } else {
-      addEvent(eventData, {
-        onSuccess: () => {
-          increaseDaySession(selectedDay.id);
-          form.reset();
-          console.log("Event added successfully");
-          setIsDialogOpen(false);
-          navigate("/");
-        },
-        onError: (error) => {
-          console.error("Error adding event:", error);
-        },
-      });
+      addEvent(
+        { eventData, teamId },
+        {
+          onSuccess: () => {
+            increaseDaySession(selectedDay.id);
+            form.reset();
+            console.log("Event added successfully");
+            setIsDialogOpen(false);
+            navigate("/");
+          },
+          onError: (error) => {
+            console.error("Error adding event:", error);
+          },
+        }
+      );
     }
   };
 
