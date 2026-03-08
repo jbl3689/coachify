@@ -19,6 +19,14 @@ This is a showcase project to demonstrate a real-world React + TypeScript stack,
 
 ---
 
+## Screenshots
+
+### Calendar view
+<img width="1440" height="726" alt="Screenshot 2026-03-08 at 2 57 07 PM" src="https://github.com/user-attachments/assets/f0a543e0-4630-44d5-b616-1d47f61cdb06" />
+
+### Dashboard view
+<img width="2880" height="1578" alt="image" src="https://github.com/user-attachments/assets/eb7e5825-13ee-4fee-ab53-a8864c3bde5a" />
+
 ## 🧰 Tech stack
 
 ### Frontend
