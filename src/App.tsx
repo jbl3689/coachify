@@ -4,14 +4,14 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import AppLayout from "./components/ui/AppLayout";
 import { ThemeProvider } from "./context/themeProvider";
-import ProtectedRoute from "./components/ui/ProtectedRoute";
 import Loader from "./components/ui/Loader";
-import Homepage from "./pages/Homepage";
 
+const AppLayout = lazy(() => import("./components/ui/AppLayout"));
+const ProtectedRoute = lazy(() => import("./components/ui/ProtectedRoute"));
+const Homepage = lazy(() => import("./pages/Homepage"));
+const DemoExperience = lazy(() => import("./components/DemoExperience"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Account = lazy(() => import("./pages/Account"));
@@ -25,6 +25,14 @@ const queryClient = new QueryClient({
 });
 
 const router = createBrowserRouter([
+  {
+    path: "/demo",
+    element: (
+      <Suspense fallback={<Loader />}>
+        <DemoExperience />
+      </Suspense>
+    ),
+  },
   {
     element: (
       <Suspense fallback={<Loader />}>
@@ -68,8 +76,6 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-
         <DndProvider backend={HTML5Backend}>
           <RouterProvider router={router}></RouterProvider>
         </DndProvider>

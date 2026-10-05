@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import styled from "styled-components";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Navbar } from "../Navbar";
 
 const StyledAppLayout = styled.div`
@@ -19,6 +20,7 @@ const StyledMainWrapper = styled.div`
 function AppLayout() {
   return (
     <StyledAppLayout>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Navbar />
       <StyledMainWrapper>
         <main className="w-11/12 mx-auto text-xl text-center">

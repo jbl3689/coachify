@@ -2,6 +2,14 @@
 
 Coachify is a full-stack coaching management dashboard built with modern web technologies. It helps coaches run training sessions, manage teams & players, schedule a calendar of sessions, and track attendance — all backed by Supabase and packaged as a web + native mobile app using Capacitor.
 
+## Explore the web demo
+
+Run `npm install` and `npm run dev`, then open **http://localhost:5173/demo**. The demo needs no account or Supabase configuration. It shows a sample team with a dashboard, calendar, event details, coach/player preview, theme switch and a player RSVP interaction. RSVP choices reset when the page reloads. No changes are sent to the live database.
+
+This is a portfolio preview of the product direction. The existing signed-in application remains at `/` and still requires Supabase environment variables and a configured database. The sample screens do not imply that all real account, team or event workflows are complete.
+
+Portfolio-ready images are in [`docs/screenshots`](docs/screenshots): [dashboard](docs/screenshots/demo-dashboard.png), [calendar](docs/screenshots/demo-calendar.png) and [mobile](docs/screenshots/demo-mobile.png).
+
 ---
 
 ## 🚀 What is this project?
@@ -20,6 +28,12 @@ This is a showcase project to demonstrate a real-world React + TypeScript stack,
 ---
 
 ## Screenshots
+
+### Public demo dashboard
+![Coachify sample team dashboard](docs/screenshots/demo-dashboard.png)
+
+### Public demo calendar
+![Coachify sample team calendar](docs/screenshots/demo-calendar.png)
 
 ### Calendar view
 <img width="1440" height="726" alt="Screenshot 2026-03-08 at 2 57 07 PM" src="https://github.com/user-attachments/assets/f0a543e0-4630-44d5-b616-1d47f61cdb06" />
