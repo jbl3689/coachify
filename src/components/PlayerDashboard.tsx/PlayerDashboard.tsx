@@ -16,7 +16,7 @@ import { useTeamUsers } from "@/hooks/user/useTeamUsers";
 import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
-import { Calendar, CircleUser, Dumbbell, Swords, Users } from "lucide-react";
+import { Calendar, Dumbbell, Swords, Users } from "lucide-react";
 import { Card } from "../ui/card";
 
 function PlayerDashboard() {
