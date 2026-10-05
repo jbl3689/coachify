@@ -10,4 +10,4 @@ Created a separate `/demo` route with sample data so visitors can inspect the pr
 
 Checks: `npm run build` passed; focused ESLint passed; browser checks covered dashboard/calendar navigation, coach/player switch, RSVP, theme and a narrow mobile viewport. Full ESLint now runs and reports 458 issues across older files, mostly formatting. No deployment or live database action was taken.
 
-Next: review screenshots and demo behaviour, open the PR, then tackle real account/team/event workflows and dependency updates in separately scoped slices. Hosting and portfolio integration require James's approval.
+Opened [PR #4](https://github.com/jbl3689/coachify/pull/4) for review. Next: review screenshots and demo behaviour, then tackle real account/team/event workflows and dependency updates in separately scoped slices. Hosting and portfolio integration require James's approval. The five-question learning review and separate merge authorisation are pending.
