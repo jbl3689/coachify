@@ -138,6 +138,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
 
   return {
     visibleDays,
+    weekDaysData,
     visibleRange,
     weekDaysLoaded,
     isPending,

@@ -20,6 +20,7 @@ import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
 import { useGuestMode } from "@/demo/session";
+import { publicSignupEnabled } from "@/config/features";
 
 function PublicNavbar() {
   const currentUrl = useLocation().pathname;
@@ -29,15 +30,15 @@ function PublicNavbar() {
         Coachify
       </Link>
       <FlexBox container gap="24px" alignItems="center">
-        {currentUrl === "/login" ? (
+        {currentUrl === "/login" && publicSignupEnabled ? (
           <Link to="/signup" className="text-primary hover:text-primaryLight">
             Sign up
           </Link>
-        ) : (
+        ) : currentUrl === "/signup" ? (
           <Link to="/login" className="text-primary hover:text-primaryLight">
             Log in
           </Link>
-        )}
+        ) : null}
         <ThemeToggle />
       </FlexBox>
     </header>

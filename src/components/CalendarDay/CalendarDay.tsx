@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { setDayEvents } from "../../context/calendarSlice";
-import { useEvents } from "../../hooks/events/useEvents";
-import { dayOfWeek, dayOfWeekAbbreviations, DayState } from "../../types/types";
+import {
+  dayOfWeek,
+  dayOfWeekAbbreviations,
+  DayState,
+  EventState,
+} from "../../types/types";
 import {
   Card,
   CardContent,
@@ -18,14 +22,18 @@ import EventForm from "../EventForm/EventForm";
 
 interface CalendarDayProps {
   day: DayState;
+  events: EventState[] | undefined;
   isSelected: boolean;
   handleDayClick: (sessionNumber: number) => void;
 }
 
-function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
+function CalendarDay({
+  day,
+  events,
+  isSelected,
+  handleDayClick,
+}: CalendarDayProps) {
   const dispatch = useDispatch();
-
-  const { events } = useEvents(day.id || 0);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const eventDate = new Date(day.date);
@@ -37,12 +45,12 @@ function CalendarDay({ day, isSelected, handleDayClick }: CalendarDayProps) {
   const isToday = eventDate.getTime() === currentDate.getTime();
 
   useEffect(() => {
-    if (events && events?.length > 0) {
+    if (events) {
       dispatch(
         setDayEvents({
           dayDate: day.date,
           events: events,
-        })
+        }),
       );
     }
   }, [day.date, dispatch, events]);
