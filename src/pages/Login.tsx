@@ -1,9 +1,13 @@
 import Heading from "../components/ui/Heading";
 import LoginForm from "../components/LoginForm/LoginForm";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useBreakpoint from "use-breakpoint";
 import { BREAKPOINTS } from "@/types/types";
+import { enterGuestMode } from "@/demo/session";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 export const LoginLayout = styled.main`
   min-height: 60vh;
@@ -16,6 +20,20 @@ export const LoginLayout = styled.main`
 
 function Login() {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  const navigate = useNavigate();
+  const [isStartingDemo, setIsStartingDemo] = useState(false);
+
+  async function handleExploreDemo() {
+    setIsStartingDemo(true);
+    try {
+      await enterGuestMode();
+      navigate("/", { replace: true });
+    } catch (error) {
+      toast.error("The demo could not be started. Please try again.");
+      console.error(error);
+      setIsStartingDemo(false);
+    }
+  }
 
   return (
     <LoginLayout>
@@ -38,6 +56,14 @@ function Login() {
       </div>
 
       <LoginForm />
+      <Button
+        variant="outline"
+        className="justify-self-center"
+        onClick={handleExploreDemo}
+        disabled={isStartingDemo}
+      >
+        {isStartingDemo ? "Starting demo…" : "Explore demo"}
+      </Button>
     </LoginLayout>
   );
 }

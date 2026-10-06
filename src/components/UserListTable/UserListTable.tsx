@@ -7,12 +7,14 @@ import { useState } from "react";
 import { UserState } from "@/types/types";
 import { Row } from "@tanstack/react-table";
 import UserForm from "../UserForm/UserForm";
+import { useGuestMode } from "@/demo/session";
 
 function UserListTable() {
   const { users, isFetching, isLoading, refetch } = useTeamUsers();
+  const isGuest = useGuestMode();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [selectedRowData, setSelectedRowData] = useState<Row<UserState> | null>(
-    null
+    null,
   );
 
   const handleOpenDialog = (row: Row<UserState>) => {
@@ -34,24 +36,32 @@ function UserListTable() {
   return (
     <>
       <DataTable
-        columns={columns(handleOpenDialog)}
+        columns={
+          isGuest
+            ? columns(handleOpenDialog).filter(
+                (column) => column.id !== "updateUser",
+              )
+            : columns(handleOpenDialog)
+        }
         data={users!}
         header="Player List"
       />
-      <FormDialog
-        Title={
-          <div>
-            <h2>Update User Details</h2>
-          </div>
-        }
-        isOpen={isDialogOpen}
-        onClose={() => handleCloseDialog(false)}
-      >
-        <UserForm
-          {...selectedRowData?.original}
-          onFormClose={() => handleCloseDialog(true)}
-        />
-      </FormDialog>
+      {!isGuest && (
+        <FormDialog
+          Title={
+            <div>
+              <h2>Update User Details</h2>
+            </div>
+          }
+          isOpen={isDialogOpen}
+          onClose={() => handleCloseDialog(false)}
+        >
+          <UserForm
+            {...selectedRowData?.original}
+            onFormClose={() => handleCloseDialog(true)}
+          />
+        </FormDialog>
+      )}
     </>
   );
 }

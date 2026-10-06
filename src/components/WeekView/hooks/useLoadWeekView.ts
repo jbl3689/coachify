@@ -9,6 +9,7 @@ import { addDays } from "../../../utils/calendarLogic";
 import { useAddDay } from "@/hooks/days/useAddDay";
 import { useDays } from "@/hooks/days/useDays";
 import { getDayObject } from "../utils/getDayObject";
+import { getGuestMode } from "@/demo/session";
 
 interface LoadWeekViewProps {
   weekData: WeekState;
@@ -24,7 +25,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
   const [isPending, setIsPending] = useState(isCreatingDay || false);
   const [weekDaysData, setWeekDaysData] = useState<DayState[]>([]);
   const weekDaysLoaded = !weekDaysData.some(
-    (day) => day === undefined || day.id === undefined
+    (day) => day === undefined || day.id === undefined,
   );
 
   const {
@@ -40,7 +41,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
 
       if (weekData.is_populated) return dayObject;
 
-      if (!dayObject) {
+      if (!dayObject && !getGuestMode()) {
         createDay({
           date: date.toLocaleDateString("en-CA"),
           day: date.toLocaleDateString("en-NZ", { weekday: "long" }),
@@ -60,7 +61,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
         try {
           const date = new Date(weekData.week_start_date);
           const results = Array.from({ length: 7 }, (_, i) =>
-            loadDayData(addDays(date, i))
+            loadDayData(addDays(date, i)),
           );
 
           const weekDaysData = await Promise.all(results);
@@ -82,7 +83,7 @@ const useLoadWeekView = ({ weekData }: LoadWeekViewProps) => {
   }, [weekData, daysData]);
 
   useEffect(() => {
-    if (daysData && daysData.length === 7) {
+    if (!getGuestMode() && daysData && daysData.length === 7) {
       updateWeek({
         weekId: weekData.id,
         weekData: { ...weekData, is_populated: true },
