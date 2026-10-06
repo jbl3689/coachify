@@ -83,6 +83,18 @@
   }
 }
 
+body.guest-demo {
+  --jb-primary: 357 99% 47%;
+  --jb-secondary: 218 32% 20%;
+  --jb-accent: 43 78% 57%;
+  --color-primary-base: #9c1422;
+  --color-primary-light: #c8102e;
+  --color-secondary-base: #202b43;
+  --color-secondary-light: #34415e;
+  --color-accent-base: #8a6d2f;
+  --color-accent-light: #b89a56;
+}
+
 ::-webkit-scrollbar {
   width: 16px;
 }

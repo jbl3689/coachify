@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DayState, EventState } from "@/types/types";
+import { useGuestMode } from "@/demo/session";
 
 // Define props based on what you need
 interface EventCardHeaderProps {
@@ -25,6 +26,7 @@ const EventCardHeader = ({
   const endTime = displayedEvent?.event_end_time
     ? parse(displayedEvent.event_end_time, "HH:mm:ss", new Date())
     : null;
+  const isGuest = useGuestMode();
 
   return (
     <div className="flex flex-row items-center justify-between ">
@@ -48,7 +50,7 @@ const EventCardHeader = ({
         </CardDescription>
       </CardHeader>
 
-      {!displayedEvent && (
+      {!displayedEvent && !isGuest && (
         <div className="flex gap-4 px-4">
           <Button
             onClick={() => handleOpenDialog(sessionNumber)}

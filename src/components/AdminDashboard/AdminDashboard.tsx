@@ -11,10 +11,33 @@ import { Badge } from "../ui/Badge";
 import { useUserTeams } from "@/hooks/teams/useUserTeams";
 import { useTeamAdmins } from "@/hooks/user/useTeamAdmins";
 import { upcomingFixtures } from "@/data/mockFixtureData";
+import { useGuestMode } from "@/demo/session";
+import { demoDays, demoEvents } from "@/demo/fixtures";
+import { useTeamUsers } from "@/hooks/user/useTeamUsers";
+import { format, parse } from "date-fns";
 
 function AdminDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
   const { admins } = useTeamAdmins();
+  const { users } = useTeamUsers();
+  const isGuest = useGuestMode();
+
+  const guestEvents = demoEvents.map((event) => {
+    const day = demoDays.find((candidate) => candidate.id === event.day_id);
+    return {
+      ...event,
+      date: day?.date ?? "",
+      displayDate: day ? format(new Date(day.date), "d MMM") : "",
+      displayTime: format(
+        parse(event.event_start_time, "HH:mm:ss", new Date()),
+        "HH:mm",
+      ),
+    };
+  });
+  const nextTraining = guestEvents.find(
+    (event) => event.event_type === "Training",
+  );
+  const nextGame = guestEvents.find((event) => event.event_type === "Game");
 
   if (isLoading || isFetching || teams === undefined || teams === null) {
     return <Loader />;
@@ -28,25 +51,33 @@ function AdminDashboard() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <DashboardCard
               title="Squad size"
-              statistic="25"
+              statistic={isGuest ? String(users?.length ?? 0) : "25"}
               Icon={<Users />}
-              subtext="2 players injured"
+              subtext={isGuest ? "Sample squad" : "2 players injured"}
             />
             <DashboardCard
               title="Upcoming Training"
-              statistic="5th Sep 18:00"
+              statistic={
+                isGuest && nextTraining
+                  ? `${nextTraining.displayDate} ${nextTraining.displayTime}`
+                  : "5th Sep 18:00"
+              }
               Icon={<Calendar />}
-              subtext="Pitch 1"
+              subtext={isGuest ? nextTraining?.location : "Pitch 1"}
             />
             <DashboardCard
               title="Upcoming Game"
-              statistic="Feb 3 15:00"
+              statistic={
+                isGuest && nextGame
+                  ? `${nextGame.displayDate} ${nextGame.displayTime}`
+                  : "Feb 3 15:00"
+              }
               Icon={<Swords />}
-              subtext="Home"
+              subtext={isGuest ? nextGame?.location : "Home"}
             />
             <DashboardCard
               title="Admins"
-              statistic="James Blake"
+              statistic={isGuest ? "1" : "James Blake"}
               Icon={<CircleUser />}
               subtext={
                 admins && admins.map((admin) => admin.full_name).join(", ")
@@ -60,29 +91,47 @@ function AdminDashboard() {
               title="Upcoming Fixtures"
             >
               <div className="space-y-4">
-                {upcomingFixtures.map((fixture) => (
+                {(isGuest ? guestEvents : upcomingFixtures).map((fixture) => (
                   <div
                     key={fixture.id}
                     className="flex items-center justify-between p-4 text-left rounded-lg bg-muted"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">{fixture.opponent}</span>
+                        <span className="font-medium">
+                          {"opponent" in fixture
+                            ? fixture.opponent
+                            : fixture.event_type}
+                        </span>
                         <Badge
-                          variant={fixture.isHome ? "default" : "destructive"}
+                          variant={
+                            "isHome" in fixture
+                              ? fixture.isHome
+                                ? "default"
+                                : "destructive"
+                              : "default"
+                          }
                         >
-                          {fixture.isHome ? "Home" : "Away"}
+                          {"isHome" in fixture
+                            ? fixture.isHome
+                              ? "Home"
+                              : "Away"
+                            : "Sample event"}
                         </Badge>
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {fixture.competition}
+                        {"competition" in fixture
+                          ? fixture.competition
+                          : fixture.event_type}
                       </div>
                       <div className="text-sm">
-                        {fixture.date} at {fixture.time}
+                        {"opponent" in fixture
+                          ? `${fixture.date} at ${fixture.time}`
+                          : `${fixture.displayDate} at ${fixture.displayTime}`}
                       </div>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {fixture.venue}
+                      {"venue" in fixture ? fixture.venue : fixture.location}
                     </div>
                   </div>
                 ))}

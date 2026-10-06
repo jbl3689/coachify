@@ -27,6 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FlexBox } from "@/components/ui/FlexBox";
 import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
+import { useGuestMode } from "@/demo/session";
 
 // export type EventState = {
 //   id: string;
@@ -86,9 +87,10 @@ export function EventsTable({
   handleOpenDialog,
 }: EventTableProps) {
   const isUserAdmin = useIsUserAdmin();
+  const isGuest = useGuestMode();
 
   const [sorting, setSorting] = React.useState<SortingState>(
-    eventTableState.sorting
+    eventTableState.sorting,
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(eventTableState.columnVisibility);
@@ -126,7 +128,7 @@ export function EventsTable({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -150,7 +152,7 @@ export function EventsTable({
               </TableRow>
             ))}
 
-            {isUserAdmin && events && events.length < 3 ? (
+            {isUserAdmin && !isGuest && events && events.length < 3 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center">
                   <FlexBox container flexDirection="column" gap="4px">

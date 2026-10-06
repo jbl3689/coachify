@@ -4,9 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useTeamAdmins } from "./useTeamAdmins";
+import { useGuestMode } from "@/demo/session";
 
-export const useUser = () => {
+export const useUser = (enabled = true) => {
   const dispatch = useDispatch();
+  const isGuest = useGuestMode();
 
   const {
     isLoading,
@@ -15,8 +17,9 @@ export const useUser = () => {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", isGuest ? "guest" : "live"],
     queryFn: getUser,
+    enabled,
   });
 
   const { admins } = useTeamAdmins();
@@ -29,14 +32,14 @@ export const useUser = () => {
       dispatch(
         setCurrentUser({
           id: user.id,
-          auth_user_id: user.auth_user_id!,
+          auth_user_id: user.auth_user_id || "guest-coach",
           full_name: user.full_name,
           email: user.email,
           isUserAdmin: isUserAdmin,
-        })
+        }),
       );
     }
-  }, [user, dispatch]);
+  }, [user, admins, dispatch]);
 
   return { isLoading, user, error, isFetching, refetch };
 };

@@ -19,6 +19,7 @@ import {
 } from "../ui/AlertDialog";
 import { useDeleteEvent } from "@/hooks/events/useDeleteEvent";
 import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
+import { useGuestMode } from "@/demo/session";
 
 interface DayDetailsProps {
   selectedDay: DayState;
@@ -32,6 +33,7 @@ function EventDetails({
   setSelectedDay,
 }: DayDetailsProps) {
   const isUserAdmin = useIsUserAdmin();
+  const isGuest = useGuestMode();
   const { mutate: deleteEvent } = useDeleteEvent();
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -62,7 +64,7 @@ function EventDetails({
                 <br />
                 {selectedEvent.location}
               </div>
-              {isUserAdmin ? (
+              {isUserAdmin && !isGuest ? (
                 <div className="flex flex-col gap-4 ml-auto ">
                   <Button onClick={() => setIsDialogOpen(true)}>Edit</Button>
                   <AlertDialogTrigger>
