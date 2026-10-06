@@ -13,6 +13,19 @@ export async function getEventsByDayId(dayId: number) {
   return data;
 }
 
+export async function getEventsByDayIds(dayIds: number[]) {
+  if (dayIds.length === 0) return [];
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .in("day_id", dayIds);
+  if (error) {
+    console.error(error);
+    throw new Error("Events could not be loaded");
+  }
+  return data;
+}
+
 export async function createEvent(newEvent: EventState) {
   const { data, error } = await supabase.from("events").insert([newEvent]);
 

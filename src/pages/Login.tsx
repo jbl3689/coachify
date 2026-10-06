@@ -1,13 +1,14 @@
 import Heading from "../components/ui/Heading";
 import LoginForm from "../components/LoginForm/LoginForm";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBreakpoint from "use-breakpoint";
 import { BREAKPOINTS } from "@/types/types";
 import { enterGuestMode } from "@/demo/session";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
+import { publicSignupEnabled } from "@/config/features";
 
 export const LoginLayout = styled.main`
   min-height: 60vh;
@@ -21,6 +22,7 @@ export const LoginLayout = styled.main`
 function Login() {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isStartingDemo, setIsStartingDemo] = useState(false);
 
   async function handleExploreDemo() {
@@ -41,18 +43,25 @@ function Login() {
         <Heading as={breakpoint === "mobile" ? "h3" : "h2"}>
           Log in to your account
         </Heading>
-        <Heading
-          as={breakpoint === "mobile" ? "h4" : "h3"}
-          className="text-textAlt"
-        >
-          or create one{" "}
-          <Link
-            to="/signup"
-            className="text-primary hover:cursor-pointer hover:text-primaryLight"
+        {publicSignupEnabled && (
+          <Heading
+            as={breakpoint === "mobile" ? "h4" : "h3"}
+            className="text-textAlt"
           >
-            here
-          </Link>
-        </Heading>
+            or create one{" "}
+            <Link
+              to="/signup"
+              className="text-primary hover:cursor-pointer hover:text-primaryLight"
+            >
+              here
+            </Link>
+          </Heading>
+        )}
+        {location.state?.inviteAccepted && (
+          <p className="text-base text-textAlt">
+            Password set. You can log in now.
+          </p>
+        )}
       </div>
 
       <LoginForm />

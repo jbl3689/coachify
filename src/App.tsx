@@ -1,7 +1,11 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Toaster } from "react-hot-toast";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -10,16 +14,18 @@ import AppLayout from "./components/ui/AppLayout";
 import { ThemeProvider } from "./context/themeProvider";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
 import Loader from "./components/ui/Loader";
-import Homepage from "./pages/Homepage";
+import { publicSignupEnabled } from "./config/features";
 
+const Homepage = lazy(() => import("./pages/Homepage"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Account = lazy(() => import("./pages/Account"));
+const AcceptInvite = lazy(() => import("./pages/AcceptInvite"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0,
+      staleTime: 60_000,
     },
   },
 });
@@ -54,7 +60,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: publicSignupEnabled ? (
+          <Signup />
+        ) : (
+          <Navigate to="/login" replace />
+        ),
+      },
+      {
+        path: "/accept-invite",
+        element: <AcceptInvite />,
       },
       {
         path: "*",
@@ -68,7 +82,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
 
         <DndProvider backend={HTML5Backend}>
           <RouterProvider router={router}></RouterProvider>

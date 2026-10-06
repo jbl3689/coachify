@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 
 interface UpdateUserParams {
   newUserData: UserState;
-  id: number | null;
+  id: number;
 }
 
 export function useUpdateUser() {

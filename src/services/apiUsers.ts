@@ -10,7 +10,7 @@ export async function getUser() {
     throw new Error("Authenticated user could not be loaded");
   }
 
-  let { data: user, error: userTableError } = await supabase
+  const { data: user, error: userTableError } = await supabase
     .from("users")
     .select("*")
     .eq("auth_user_id", userAccount.user.id)
@@ -40,7 +40,7 @@ export async function getUsers() {
 }
 
 export async function getUsersNotInTeam(selectedTeamId: number) {
-  let { data: userIds, error: userIdsError } = await supabase
+  const { data: userIds, error: userIdsError } = await supabase
     .from("team_members")
     .select("user_id")
     .eq("team_id", selectedTeamId);
@@ -58,7 +58,7 @@ export async function getUsersNotInTeam(selectedTeamId: number) {
   }
 
   // Fetch only the users that are not in the team
-  let { data: users, error: usersError } = await supabase
+  const { data: users, error: usersError } = await supabase
     .from("users")
     .select("*")
     .not("id", "in", `(${userIdList.join(",")})`);
@@ -107,7 +107,7 @@ export async function createUser(newUser: {
 }
 
 export async function getTeamUsers(selectedTeamId: number) {
-  let { data: userIds, error: userIdsError } = await supabase
+  const { data: userIds, error: userIdsError } = await supabase
     .from("team_members")
     .select("user_id")
     .eq("team_id", selectedTeamId);
@@ -125,7 +125,7 @@ export async function getTeamUsers(selectedTeamId: number) {
   }
 
   // Fetch only the users that have an id in the userIdList
-  let { data: users, error: usersError } = await supabase
+  const { data: users, error: usersError } = await supabase
     .from("users")
     .select("*")
     .in("id", userIdList);
@@ -139,7 +139,7 @@ export async function getTeamUsers(selectedTeamId: number) {
 }
 
 export async function getTeamAdmins(selectedTeamId: number) {
-  let { data: userIds, error: userIdsError } = await supabase
+  const { data: userIds, error: userIdsError } = await supabase
     .from("team_members")
     .select("user_id")
     .eq("team_id", selectedTeamId)
@@ -158,7 +158,7 @@ export async function getTeamAdmins(selectedTeamId: number) {
   }
 
   // Fetch only the users that have an id in the userIdList
-  let { data: users, error: usersError } = await supabase
+  const { data: users, error: usersError } = await supabase
     .from("users")
     .select("*")
     .in("id", userIdList);
@@ -171,24 +171,17 @@ export async function getTeamAdmins(selectedTeamId: number) {
   return users as UserState[];
 }
 
-export async function createUpdateUser(
-  updatedUser: UserState,
-  id: number | null
-) {
-  let query: any = supabase.from("users");
-
-  // A) CREATE
-  if (!id) query = query.insert([{ ...updatedUser }]);
-
-  // B) EDIT
-  if (id) query = query.update({ ...updatedUser }).eq("id", id);
-
-  const { data: user, error } = await query.select().single();
-
-  // const { data, error } = await supabase
-  //   .from("users")
-  //   .update(updatedUser)
-  //   .eq("id", updatedUser.id);
+export async function createUpdateUser(updatedUser: UserState, id: number) {
+  const { data: user, error } = await supabase
+    .from("users")
+    .update({
+      full_name: updatedUser.full_name,
+      pos_primary: updatedUser.pos_primary,
+      pos_secondary: updatedUser.pos_secondary,
+    })
+    .eq("id", id)
+    .select()
+    .single();
 
   if (error) {
     console.error(error);

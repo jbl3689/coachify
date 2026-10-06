@@ -10,6 +10,13 @@ import { BREAKPOINTS, DayState, WeekState } from "../../types/types";
 import CalendarDay from "../CalendarDay/CalendarDay";
 import Loader from "../ui/Loader";
 import useLoadWeekView from "./hooks/useLoadWeekView";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useGuestMode } from "@/demo/session";
+import { getEventsByDayIds } from "@/services/apiEvents";
+import { EventState } from "@/types/types";
+
+const noEvents: EventState[] = [];
 
 interface WeekViewProps {
   weekData: WeekState;
@@ -19,9 +26,32 @@ interface WeekViewProps {
 
 function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   const { breakpoint } = useBreakpoint(BREAKPOINTS);
+  const isGuest = useGuestMode();
 
-  const { handleDayNavigate, visibleDays, visibleRange, weekDaysLoaded } =
-    useLoadWeekView({ weekData });
+  const {
+    handleDayNavigate,
+    visibleDays,
+    visibleRange,
+    weekDaysLoaded,
+    weekDaysData,
+  } = useLoadWeekView({ weekData });
+  const dayIds = weekDaysData.flatMap((day) =>
+    day?.id === undefined ? [] : [day.id],
+  );
+  const { data: weekEvents } = useQuery({
+    queryKey: ["events", isGuest ? "guest" : "live", weekData.id, dayIds],
+    queryFn: () => getEventsByDayIds(dayIds),
+    enabled: weekDaysLoaded && dayIds.length > 0,
+  });
+  const eventsByDay = useMemo(() => {
+    const result = new Map<number, EventState[]>();
+    for (const event of weekEvents ?? []) {
+      const dayEvents = result.get(event.day_id) ?? [];
+      dayEvents.push(event);
+      result.set(event.day_id, dayEvents);
+    }
+    return result;
+  }, [weekEvents]);
 
   return (
     <div className="flex flex-row">
@@ -45,6 +75,9 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
             <CalendarDay
               key={day.id}
               day={day}
+              events={
+                weekEvents ? (eventsByDay.get(day.id) ?? noEvents) : undefined
+              }
               isSelected={day.id === selectedDay}
               handleDayClick={(sessionNumber: number) =>
                 handleDayClick(day, sessionNumber)

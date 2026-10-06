@@ -35,7 +35,7 @@ This is a showcase project to demonstrate a real-world React + TypeScript stack,
 - **Vite** (dev server, build tooling)
 - **Tailwind CSS** + **Radix UI** for styling & accessible components
 - **Redux Toolkit** + **React Query** for state + server data
-- **React Router v6** for routing
+- **React Router v7** for routing
 - **React DnD** for drag + drop interactions
 - **Zod + React Hook Form** for validation (forms)
 - **React Hot Toast** for notifications
@@ -103,6 +103,7 @@ Create a `.env` file in the project root (this file is ignored by Git):
 ```text
 VITE_SUPABASE_URL=https://<your-supabase-project>.supabase.co
 VITE_SUPABASE_KEY=<your-supabase-anon-key>
+VITE_ENABLE_PUBLIC_SIGNUP=false
 ```
 
 ### 5) Run the app (web)
@@ -112,6 +113,42 @@ npm run dev
 ```
 
 Then open http://localhost:5173
+
+## Public web deployment
+
+The web build is a static Vite app. Vercel is configured in `vercel.json` to
+serve `index.html` for app routes such as `/login` and `/account`. Import this
+repository as a Vite project, use Node 22, run `npm run build`, and publish the
+`dist` directory. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_KEY` in the host's
+build environment using the Supabase project URL and **publishable/anon** key.
+Never use a secret or service-role key in a `VITE_` variable. Keep
+`VITE_ENABLE_PUBLIC_SIGNUP=false` (or omit it) while public signup is closed.
+
+The signup switch only controls the browser app. To actually refuse signup API
+requests, disable **Allow new users to sign up** in Supabase Authentication
+settings. Existing users can still sign in. An admin can invite new users from
+Supabase Authentication > Users > Add user > Send invitation. Configure the
+Supabase Auth Site URL to the final HTTPS site address and add any required
+preview or local URLs to its Redirect URLs list before sending invitations.
+Set the Supabase **Invite user** email template link to:
+
+```html
+<a href="{{ .SiteURL }}/accept-invite?token_hash={{ .TokenHash }}&type=invite">Accept invitation</a>
+```
+
+The invitation route verifies the one-use token and lets the user set a
+password. Apply `supabase/migrations/20261006140000_create_auth_profile.sql`
+first so every Auth invitation creates a matching `public.users` profile.
+The project admin must then add the new profile to the intended team in
+`team_members` (with `is_admin` only for coaches). This is a database admin
+action; app users do not gain the ability to assign themselves to teams.
+
+Before publishing, verify the live database grants and row-level security
+policies for signed-out users, players, and coaches. The repository does not
+contain a complete schema migration, so a successful web build alone does not
+establish safe access to live data. Review and apply the team-scoped policy
+migration in `supabase/migrations/20261006141000_lock_down_public_data.sql`
+before exposing the live backend.
 
 ---
 

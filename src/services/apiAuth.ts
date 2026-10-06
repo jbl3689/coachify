@@ -1,4 +1,5 @@
 import supabase from "./supabase";
+import { publicSignupEnabled } from "@/config/features";
 
 export interface LoginProps {
   email: string;
@@ -12,6 +13,10 @@ export interface SignupProps {
 }
 
 export async function signup({ full_name, email, password }: SignupProps) {
+  if (!publicSignupEnabled) {
+    throw new Error("Public signup is currently closed");
+  }
+
   const { data: user, error } = await supabase.auth.signUp({
     email: email,
     password: password,
@@ -36,21 +41,6 @@ export async function signup({ full_name, email, password }: SignupProps) {
     };
   }
   if (authError) throw new Error(authError.message);
-
-  // Insert user into users table
-  const { error: userError } = await supabase.from("users").insert([
-    {
-      auth_user_id: user.user?.id,
-      email: user.user?.email,
-      full_name: user.user?.user_metadata.full_name,
-    },
-  ]);
-
-  if (userError && user.user) {
-    await supabase.auth.admin.deleteUser(user.user?.id);
-
-    throw new Error(userError.message);
-  }
 
   return user;
 }
