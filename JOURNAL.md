@@ -9,3 +9,4 @@
 - Updated shared page sizing, navbar, account layout, mobile dialog bounds, and table overflow behavior.
 - Browser checked the guest demo at 390 × 844, 800 × 900, and 1440 × 900. No horizontal page overflow was present; calendar counts were one, three, and seven days respectively. Selecting a calendar event displayed its details across the mobile content width.
 - `npm run build` passed. Changed-file ESLint passed with four pre-existing unused-parameter warnings. Repository-wide `npm run lint` still reports hundreds of issues outside these changes. No tests were run.
+- Opened [PR #7](https://github.com/jbl3689/coachify/pull/7) against `main`; it remains unmerged until the five-question learning review is complete.
