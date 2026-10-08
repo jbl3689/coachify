@@ -25,8 +25,8 @@ import { publicSignupEnabled } from "@/config/features";
 function PublicNavbar() {
   const currentUrl = useLocation().pathname;
   return (
-    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28">
-      <Link to="/" className="text-4xl text-primary">
+    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 font-semibold transition-all sm:px-6">
+      <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
         Coachify
       </Link>
       <FlexBox container gap="24px" alignItems="center">
@@ -65,10 +65,10 @@ function SignedInNavbar() {
 
   const isLoadingData = isLoading || isFetching || isPending;
   return (
-    <header className="flex items-center justify-between flex-shrink-0 px-6 py-3 font-semibold transition-all max-h-28">
+    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 font-semibold transition-all sm:px-6">
       {isLoadingData ? (
         <>
-          <Link to="/" className="text-4xl text-primary">
+          <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
             Coachify
           </Link>
           <div className="flex items-center gap-4">
@@ -78,7 +78,7 @@ function SignedInNavbar() {
         </>
       ) : (
         <>
-          <Link to="/" className="text-4xl text-primary">
+          <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
             Coachify
           </Link>
           <FlexBox
@@ -92,11 +92,11 @@ function SignedInNavbar() {
           >
             {isGuest ? (
               <>
-                <span className="text-sm text-muted-foreground">
+                <span className="hidden text-sm text-muted-foreground sm:inline">
                   Guest demo
                 </span>
                 <button
-                  className="text-primary hover:text-primaryLight"
+                  className="whitespace-nowrap text-sm text-primary hover:text-primaryLight sm:text-base"
                   onClick={() => logout()}
                 >
                   Exit demo

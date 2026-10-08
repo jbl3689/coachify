@@ -6,14 +6,14 @@ import { Navbar } from "../Navbar";
 const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--background);
 `;
 
 const StyledMainWrapper = styled.div`
   flex-grow: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  min-height: 0;
 `;
 
 function AppLayout() {
@@ -21,7 +21,7 @@ function AppLayout() {
     <StyledAppLayout>
       <Navbar />
       <StyledMainWrapper>
-        <main className="w-11/12 mx-auto text-xl text-center">
+        <main className="mx-auto w-full max-w-screen-2xl px-3 text-base sm:px-6 sm:text-lg">
           <Outlet />
         </main>
       </StyledMainWrapper>

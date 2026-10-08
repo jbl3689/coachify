@@ -27,9 +27,9 @@ export const guestTeamId = 1;
 export const demoTeams: TeamState[] = [
   {
     id: guestTeamId,
-    team_name: "Arsenal Sample Squad",
-    location: "North London",
-    logo: "/coachify-logo.png",
+    team_name: "Arsenal FC",
+    location: "London Colney",
+    logo: "",
   },
 ];
 
