@@ -45,7 +45,7 @@ function PlayerDashboard() {
 
       {!isTeamListEmpty ? (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             <DashboardCard
               title="Squad size"
               statistic="25"
@@ -92,8 +92,11 @@ function PlayerDashboard() {
                   users.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>{user.full_name}</TableCell>
-                      <TableCell>{user.pos_primary ?? "-"}</TableCell>
-                      <TableCell>{user.pos_secondary ?? "-"}</TableCell>
+                      <TableCell>
+                        {[user.pos_primary, user.pos_secondary]
+                          .filter(Boolean)
+                          .join(" / ") || "-"}
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
