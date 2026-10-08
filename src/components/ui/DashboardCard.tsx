@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import { cn } from "@/lib/utils";
 
 interface DashboardCardProps {
   title?: string;
@@ -18,13 +19,8 @@ function DashboardCard({
   className,
 }: DashboardCardProps) {
   return (
-    <Card className="text-left">
-      <CardHeader
-        className={
-          "flex flex-row items-center justify-between pb-2 space-y-0" +
-          className
-        }
-      >
+    <Card className={cn("text-left", className)}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm">{title}</CardTitle>
         <span className="w-4 h-4 text-muted-foreground">{Icon}</span>
       </CardHeader>

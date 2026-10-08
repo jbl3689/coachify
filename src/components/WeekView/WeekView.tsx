@@ -56,12 +56,15 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
   return (
     <div className="flex flex-row">
       {breakpoint !== "desktop" && (
-        <span
-          className={`text-3xl font-semiBold my-auto mr-1 ${visibleRange[0] === 0 ? "text-stone-600" : "cursor-pointer hover:text-accentLight"}`}
+        <button
+          type="button"
+          aria-label="Show previous day"
+          disabled={visibleRange[0] === 0}
+          className="my-auto mr-1 shrink-0 p-2 text-2xl font-semibold enabled:hover:text-accentLight disabled:text-stone-600"
           onClick={() => handleDayNavigate(false)}
         >
           <FontAwesomeIcon icon={faChevronLeft} />
-        </span>
+        </button>
       )}
 
       <div
@@ -91,12 +94,15 @@ function WeekView({ weekData, selectedDay, handleDayClick }: WeekViewProps) {
         )}
       </div>
       {breakpoint !== "desktop" && (
-        <span
-          className={`text-3xl font-semiBold my-auto ml-1 ${visibleRange[0] === 7 ? "text-stone-600" : "cursor-pointer hover:text-accentLight"}`}
+        <button
+          type="button"
+          aria-label="Show next day"
+          disabled={visibleRange[1] === 7}
+          className="my-auto ml-1 shrink-0 p-2 text-2xl font-semibold enabled:hover:text-accentLight disabled:text-stone-600"
           onClick={() => handleDayNavigate(true)}
         >
           <FontAwesomeIcon icon={faChevronRight} />
-        </span>
+        </button>
       )}
     </div>
   );

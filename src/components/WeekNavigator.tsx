@@ -48,22 +48,31 @@ function WeekNavigator({
           Week of {formatDate(selectedWeek)}
         </Label>
       </FadeInContainer>
-      <div className="flex items-center justify-center gap-4">
-        <span
-          className="text-3xl cursor-pointer hover:text-accentLight font-semiBold"
+      <div className="flex items-center justify-center gap-3">
+        <button
+          type="button"
+          aria-label="Previous week"
+          className="p-2 text-2xl font-semibold hover:text-accentLight sm:text-3xl"
           onClick={() => onClickWeekNavigate(false)}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
-        </span>
-        <Button type="button" variant="default" onClick={handleNavigateToToday}>
+        </button>
+        <Button
+          type="button"
+          variant="default"
+          className="whitespace-nowrap"
+          onClick={handleNavigateToToday}
+        >
           Current week
         </Button>
-        <span
-          className="text-3xl cursor-pointer font-semiBold hover:text-accentLight"
+        <button
+          type="button"
+          aria-label="Next week"
+          className="p-2 text-2xl font-semibold hover:text-accentLight sm:text-3xl"
           onClick={() => onClickWeekNavigate(true)}
         >
           <FontAwesomeIcon icon={faArrowRight} />
-        </span>
+        </button>
       </div>
     </FlexBox>
   );

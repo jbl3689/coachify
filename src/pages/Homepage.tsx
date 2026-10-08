@@ -4,8 +4,8 @@ import Dashboard from "./Dashboard";
 
 function Homepage() {
   return (
-    <Tabs defaultValue="dashboard" className="space-y-4">
-      <TabsList>
+    <Tabs defaultValue="dashboard" className="w-full space-y-4">
+      <TabsList className="grid w-full grid-cols-2 sm:w-auto">
         <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
         <TabsTrigger value="calendar">Calendar</TabsTrigger>
       </TabsList>

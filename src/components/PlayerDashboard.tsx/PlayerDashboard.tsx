@@ -17,7 +17,6 @@ import TeamSelectDropdown from "../TeamSelectDropdown/TeamSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedTeam, setSelectedTeam } from "@/context/teamSlice";
 import { Calendar, Dumbbell, Swords, Users } from "lucide-react";
-import { Card } from "../ui/card";
 
 function PlayerDashboard() {
   const { teams, isLoading, isFetching } = useUserTeams();
@@ -73,7 +72,7 @@ function PlayerDashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
             {/* <DashboardCard>
               <img
                 className="rounded-2xl"
@@ -81,16 +80,7 @@ function PlayerDashboard() {
                 alt={selectedTeam?.team_name}
               ></img>
             </DashboardCard> */}
-            <Card className="col-span-2">
-              <FlexBox
-                container
-                flexDirection="column"
-                justifyContent="space-between"
-                height="auto"
-              ></FlexBox>
-            </Card>
-
-            <Table className="overflow-hidden border-2 border-white ">
+            <Table className="overflow-hidden border-2 border-white lg:col-span-2">
               <TableHeader className="bg-bgPrimary">
                 <TableRow>
                   <TableHead>Name</TableHead>

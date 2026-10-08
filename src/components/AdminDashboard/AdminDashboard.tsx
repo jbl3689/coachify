@@ -85,16 +85,16 @@ function AdminDashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
             <DashboardDataCard
               className="col-span-2 lg:col-span-1"
               title="Upcoming Fixtures"
             >
-              <div className="space-y-4">
+              <div className="min-w-0 space-y-4">
                 {(isGuest ? guestEvents : upcomingFixtures).map((fixture) => (
                   <div
                     key={fixture.id}
-                    className="flex items-center justify-between p-4 text-left rounded-lg bg-muted"
+                    className="flex min-w-0 flex-col justify-between gap-2 rounded-lg bg-muted p-4 text-left sm:flex-row sm:items-center"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -130,7 +130,7 @@ function AdminDashboard() {
                           : `${fixture.displayDate} at ${fixture.displayTime}`}
                       </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="break-words text-sm text-muted-foreground sm:text-right">
                       {"venue" in fixture ? fixture.venue : fixture.location}
                     </div>
                   </div>
@@ -142,7 +142,7 @@ function AdminDashboard() {
 
             <Uploader /> */}
 
-            <Card className="col-span-2">
+            <Card className="min-w-0 lg:col-span-2">
               <CardContent>
                 <UserListTable />
               </CardContent>

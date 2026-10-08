@@ -62,19 +62,19 @@ function CalendarDay({
   return (
     <>
       <Card
-        className={`grid h-[500px] grid-rows-[1fr,4fr] gap-2 transition-all shadow-md border ${isSelected ? "border-accentBase border-2" : ""} hover:font-semibold w-11/12 mx-auto`}
+        className={`mx-auto grid h-[440px] w-full min-w-0 grid-rows-[auto,1fr] gap-2 border shadow-md transition-all hover:font-semibold sm:h-[500px] ${isSelected ? "border-2 border-accentBase" : ""}`}
       >
-        <CardHeader className="text-left">
+        <CardHeader className="p-3 text-left sm:p-6">
           <CardTitle
-            className={`w-full ${isToday && "text-accentLight"} text-3xl font-semibold`}
+            className={`w-full text-2xl font-semibold sm:text-3xl ${isToday ? "text-accentLight" : ""}`}
           >
             {dayOfWeekAbbreviations[day.day as dayOfWeek]}
           </CardTitle>
-          <CardDescription className="text-lg font-light">
+          <CardDescription className="text-base font-light sm:text-lg">
             {format(new Date(day.date), "dd-MMM")}
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="min-h-0 overflow-y-auto p-0">
           <EventsTable
             events={events}
             onRowClick={handleDayClick}

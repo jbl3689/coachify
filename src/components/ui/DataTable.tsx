@@ -73,8 +73,8 @@ export function DataTable<TData, TValue>({
   }, [breakpoint]);
 
   return (
-    <div>
-      <div className="flex items-center py-4">
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-center gap-2 py-4">
         <Heading>{header}</Heading>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -103,7 +103,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="border-4 rounded-md border-foreground">
+      <div className="min-w-0 overflow-hidden rounded-md border-4 border-foreground">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -115,7 +115,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -134,7 +134,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
