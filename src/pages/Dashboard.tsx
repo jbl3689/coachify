@@ -2,12 +2,16 @@ import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
 import PlayerDashboard from "@/components/PlayerDashboard.tsx/PlayerDashboard";
 import { useIsUserAdmin } from "@/hooks/user/useIsUserAdmin";
 
-function Dashboard() {
+function Dashboard({ onShowCalendar }: { onShowCalendar: () => void }) {
   const isUserAdmin = useIsUserAdmin();
 
   return (
     <div className="gap-10">
-      {isUserAdmin ? <AdminDashboard /> : <PlayerDashboard />}
+      {isUserAdmin ? (
+        <AdminDashboard onShowCalendar={onShowCalendar} />
+      ) : (
+        <PlayerDashboard />
+      )}
     </div>
   );
 }

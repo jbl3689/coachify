@@ -20,12 +20,14 @@ function DashboardCard({
 }: DashboardCardProps) {
   return (
     <Card className={cn("text-left", className)}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6 sm:pb-2">
         <CardTitle className="text-sm">{title}</CardTitle>
         <span className="w-4 h-4 text-muted-foreground">{Icon}</span>
       </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{statistic}</div>
+      <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+        <div className="break-words text-xl font-bold leading-tight sm:text-2xl">
+          {statistic}
+        </div>
         <p className="text-xs text-muted-foreground">{subtext}</p>
       </CardContent>
     </Card>

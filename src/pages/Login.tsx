@@ -39,7 +39,7 @@ function Login() {
 
   return (
     <LoginLayout>
-      <div>
+      <div className="text-center">
         <Heading as={breakpoint === "mobile" ? "h3" : "h2"}>
           Log in to your account
         </Heading>

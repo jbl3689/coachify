@@ -10,3 +10,6 @@
 - Browser checked the guest demo at 390 × 844, 800 × 900, and 1440 × 900. No horizontal page overflow was present; calendar counts were one, three, and seven days respectively. Selecting a calendar event displayed its details across the mobile content width.
 - `npm run build` passed. Changed-file ESLint passed with four pre-existing unused-parameter warnings. Repository-wide `npm run lint` still reports hundreds of issues outside these changes. No tests were run.
 - Opened [PR #7](https://github.com/jbl3689/coachify/pull/7) against `main`; it remains unmerged until the five-question learning review is complete.
+- James reported that the login heading lost its alignment after shared text alignment was removed. Scoped centering to the login/signup headings and kept field labels left aligned; phone inputs now use the available form width.
+- Refined the coach mobile dashboard to show three upcoming fixtures first, a direct button to the full calendar, compact two-column summary cards, and the player list afterward. Kept the same semantic and visual order across screen widths. Sorted and filtered demo events by their scheduled date/time so past events no longer appear first.
+- Rechecked login at 390 px and 2048 px, plus dashboard and the calendar CTA at 390 px. The CTA switches to the Calendar tab. Build and ESLint on changed files pass.

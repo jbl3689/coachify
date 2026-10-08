@@ -37,7 +37,7 @@ function Signup() {
 
   return (
     <SignupLayout>
-      <div>
+      <div className="text-center">
         <Heading as={breakpoint === "mobile" ? "h3" : "h2"}>
           Create an account
         </Heading>

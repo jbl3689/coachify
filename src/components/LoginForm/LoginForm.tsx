@@ -58,7 +58,7 @@ function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col w-4/6 max-w-md gap-4 mx-auto"
+          className="mx-auto flex w-full max-w-md flex-col gap-4 sm:w-4/6"
         >
           <FlexBox
             container
@@ -72,7 +72,7 @@ function LoginForm() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full text-left">
                   <FormLabel htmlFor="email">Enter email</FormLabel>
                   <FormControl>
                     <Input
@@ -91,7 +91,7 @@ function LoginForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full text-left">
                   <FormLabel htmlFor="password">Enter password</FormLabel>
                   <FormControl>
                     <Input
