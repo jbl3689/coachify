@@ -16,7 +16,11 @@ export const LoginLayout = styled.main`
   grid-template-columns: 100%;
   align-content: center;
   justify-content: center;
-  gap: 3.2rem;
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 26rem;
+  margin: 2rem auto;
+  padding: 2rem 0;
 `;
 
 function Login() {
@@ -40,9 +44,10 @@ function Login() {
   return (
     <LoginLayout>
       <div className="text-center">
-        <Heading as={breakpoint === "mobile" ? "h3" : "h2"}>
-          Log in to your account
-        </Heading>
+        <Heading as="h3">Log in to Coachify</Heading>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Your team, training and match days in one place.
+        </p>
         {publicSignupEnabled && (
           <Heading
             as={breakpoint === "mobile" ? "h4" : "h3"}
@@ -65,14 +70,19 @@ function Login() {
       </div>
 
       <LoginForm />
-      <Button
-        variant="outline"
-        className="justify-self-center"
-        onClick={handleExploreDemo}
-        disabled={isStartingDemo}
-      >
-        {isStartingDemo ? "Starting demo…" : "Explore demo"}
-      </Button>
+      <div className="border-t pt-6 text-center">
+        <p className="mb-3 text-sm text-muted-foreground">
+          Take a look around with a sample team.
+        </p>
+        <Button
+          variant="outline"
+          className="justify-self-center"
+          onClick={handleExploreDemo}
+          disabled={isStartingDemo}
+        >
+          {isStartingDemo ? "Starting demo…" : "Explore demo"}
+        </Button>
+      </div>
     </LoginLayout>
   );
 }

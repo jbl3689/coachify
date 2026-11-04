@@ -11,9 +11,9 @@ function Homepage() {
     <Tabs
       value={activeTab}
       onValueChange={setActiveTab}
-      className="w-full space-y-4"
+      className="w-full space-y-6"
     >
-      <TabsList className="grid w-full grid-cols-2 sm:w-auto">
+      <TabsList className="flex w-full justify-start">
         <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
         <TabsTrigger value="calendar">Calendar</TabsTrigger>
       </TabsList>

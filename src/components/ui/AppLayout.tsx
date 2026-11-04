@@ -8,7 +8,7 @@ const StyledAppLayout = styled.div`
   flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--background);
+  background-color: hsl(var(--background));
 `;
 
 const StyledMainWrapper = styled.div`
@@ -21,7 +21,7 @@ function AppLayout() {
     <StyledAppLayout>
       <Navbar />
       <StyledMainWrapper>
-        <main className="mx-auto w-full max-w-screen-2xl px-3 text-base sm:px-6 sm:text-lg">
+        <main className="mx-auto w-full max-w-screen-2xl px-4 py-6 text-base sm:px-8 sm:py-8">
           <Outlet />
         </main>
       </StyledMainWrapper>

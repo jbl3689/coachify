@@ -46,19 +46,12 @@ function LoginForm() {
     login({ email, password });
   };
 
-  const handleReset = () => {
-    form.reset({
-      email: "",
-      password: "",
-    });
-  };
-
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="mx-auto flex w-full max-w-md flex-col gap-4 sm:w-4/6"
+          className="mx-auto flex w-full max-w-md flex-col gap-6"
         >
           <FlexBox
             container
@@ -73,10 +66,12 @@ function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem className="w-full text-left">
-                  <FormLabel htmlFor="email">Enter email</FormLabel>
+                  <FormLabel htmlFor="email">Email address</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
+                      autoComplete="email"
+                      placeholder="you@yourclub.com"
                       id="email"
                       {...field}
                       disabled={isPending}
@@ -92,10 +87,11 @@ function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem className="w-full text-left">
-                  <FormLabel htmlFor="password">Enter password</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
+                      autoComplete="current-password"
                       id="password"
                       {...field}
                       disabled={isPending}
@@ -107,25 +103,9 @@ function LoginForm() {
             />
           </FlexBox>
 
-          <FlexBox
-            container
-            gap="24px"
-            justifyContent="space-between"
-            alignItems="center"
-            margin="24px 0 0 0"
-          >
-            <Button
-              className="w-full"
-              variant="default"
-              type="submit"
-              disabled={isPending}
-            >
-              Submit
-            </Button>
-            <Button variant="destructive" type="reset" onClick={handleReset}>
-              Clear
-            </Button>
-          </FlexBox>
+          <Button className="w-full" type="submit" disabled={isPending}>
+            {isPending ? "Logging in…" : "Log in"}
+          </Button>
         </form>
       </Form>
     </div>

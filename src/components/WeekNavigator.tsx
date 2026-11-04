@@ -1,12 +1,6 @@
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { format } from "date-fns";
 import { Button } from "./ui/button";
-import FadeInContainer from "./ui/FadeInContainer";
-import { Label } from "./ui/Label";
-import { useBreakpoint } from "use-breakpoint";
-import { BREAKPOINTS } from "@/types/types";
-import { FlexBox } from "./ui/FlexBox";
 
 interface WeekNavigatorProps {
   selectedWeek: Date;
@@ -19,62 +13,35 @@ function WeekNavigator({
   onClickWeekNavigate,
   handleNavigateToToday,
 }: WeekNavigatorProps) {
-  const { breakpoint } = useBreakpoint(BREAKPOINTS);
-
-  const formatDate = (date: Date) => {
-    if (breakpoint === "mobile" || breakpoint === "mobileLarge") {
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    }
-    return date.toDateString();
-  };
-
   return (
-    <FlexBox
-      container
-      gap="20px"
-      flexDirection={breakpoint === "mobile" ? "column" : "row"}
-      justifyContent="space-between"
-      alignItems="center"
-      padding="0 16px 32px 16px"
-    >
-      <FadeInContainer>
-        <Label
-          className={`${breakpoint === "desktop" ? "text-4xl" : "text-3xl"} font-semibold`}
-        >
-          Week of {formatDate(selectedWeek)}
-        </Label>
-      </FadeInContainer>
-      <div className="flex items-center justify-center gap-3">
-        <button
-          type="button"
-          aria-label="Previous week"
-          className="p-2 text-2xl font-semibold hover:text-accentLight sm:text-3xl"
-          onClick={() => onClickWeekNavigate(false)}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
+        Week of {format(selectedWeek, "d MMM yyyy")}
+      </h1>
+      <div className="flex items-center gap-2">
         <Button
           type="button"
-          variant="default"
-          className="whitespace-nowrap"
-          onClick={handleNavigateToToday}
+          variant="outline"
+          size="icon"
+          aria-label="Previous week"
+          onClick={() => onClickWeekNavigate(false)}
         >
+          <ChevronLeft aria-hidden="true" className="h-4 w-4" />
+        </Button>
+        <Button type="button" variant="outline" onClick={handleNavigateToToday}>
           Current week
         </Button>
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="icon"
           aria-label="Next week"
-          className="p-2 text-2xl font-semibold hover:text-accentLight sm:text-3xl"
           onClick={() => onClickWeekNavigate(true)}
         >
-          <FontAwesomeIcon icon={faArrowRight} />
-        </button>
+          <ChevronRight aria-hidden="true" className="h-4 w-4" />
+        </Button>
       </div>
-    </FlexBox>
+    </div>
   );
 }
 

@@ -24,9 +24,16 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import Heading from "./Heading";
+
 import useBreakpoint from "use-breakpoint";
 import { BREAKPOINTS } from "@/types/types";
+
+const columnLabels: Record<string, string> = {
+  full_name: "Name",
+  pos_primary: "Primary position",
+  pos_secondary: "Secondary position",
+  email: "Email",
+};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -71,12 +78,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="min-w-0">
-      <div className="flex flex-wrap items-center gap-2 py-4">
-        <Heading>{header}</Heading>
+      <div className="flex flex-wrap items-center gap-2 pb-5">
+        <h2 className="text-lg font-semibold tracking-tight">{header}</h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Visible Columns
+              Columns
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -93,14 +100,14 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {columnLabels[column.id] ?? column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="min-w-0 overflow-hidden rounded-md border border-foreground">
+      <div className="min-w-0 overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -148,7 +155,22 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {table.getPageCount() > 1 && (
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex flex-wrap items-center justify-end gap-2 pt-4">
+          <p
+            className="mr-auto text-xs tabular-nums text-muted-foreground"
+            aria-live="polite"
+          >
+            {table.getState().pagination.pageIndex *
+              table.getState().pagination.pageSize +
+              1}
+            –
+            {Math.min(
+              (table.getState().pagination.pageIndex + 1) *
+                table.getState().pagination.pageSize,
+              data.length,
+            )}{" "}
+            of {data.length}
+          </p>
           <Button
             variant="outline"
             size="sm"

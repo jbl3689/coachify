@@ -13,14 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/Table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/Table";
 import EventDetailsBox from "@/components/EventDetailsBox/EventDetailsBox";
 import { EventState } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -116,32 +109,29 @@ export function EventsTable({
 
   return (
     <div className="w-full">
-      <div className="border rounded-md">
+      <div>
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+          <TableBody>
+            {events?.length === 0 && (
+              <TableRow>
+                <TableCell className="py-6 text-center text-xs text-muted-foreground">
+                  No events scheduled
+                </TableCell>
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="m-4">
+            )}
             {table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="cursor-pointer"
+                className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+                tabIndex={0}
+                aria-label={`View ${row.original.event_type} at ${row.original.event_start_time.slice(0, 5)}`}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    onRowClick(row.original.session_number);
+                  }
+                }}
                 onClick={() => onRowClick(row.original.session_number)}
               >
                 {row.getVisibleCells().map((cell) => (

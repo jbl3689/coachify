@@ -44,7 +44,7 @@ function UserListTable() {
             : columns(handleOpenDialog)
         }
         data={users!}
-        header="Player List"
+        header="Players"
       />
       {!isGuest && (
         <FormDialog
