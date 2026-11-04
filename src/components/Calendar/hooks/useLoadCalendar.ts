@@ -113,7 +113,7 @@ const useLoadCalendar = ({ eventDetailsRef }: useLoadCalendarProps) => {
 
   useEffect(() => {
     eventDetailsRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [eventDetailsRef, selectedDay]);
+  }, [eventDetailsRef, selectedDay, selectedSessionNumber]);
 
   return {
     isPending,

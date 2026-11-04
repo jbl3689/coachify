@@ -29,59 +29,51 @@ export const demoTeams: TeamState[] = [
     id: guestTeamId,
     team_name: "Arsenal FC",
     location: "London Colney",
-    logo: "",
+    logo: "/arsenal-crest.svg",
   },
 ];
 
+// An illustrative demo squad. Contact details and all schedules/responses are fictional.
+const squad: Pick<UserState, "full_name" | "pos_primary" | "pos_secondary">[] =
+  [
+    { full_name: "Bukayo Saka", pos_primary: "RW", pos_secondary: "RM" },
+    { full_name: "Martin Ødegaard", pos_primary: "CAM", pos_secondary: "CM" },
+    { full_name: "David Raya", pos_primary: "GK" },
+    { full_name: "William Saliba", pos_primary: "CB" },
+    { full_name: "Gabriel Martinelli", pos_primary: "LW", pos_secondary: "RW" },
+    { full_name: "Declan Rice", pos_primary: "CDM", pos_secondary: "CM" },
+    { full_name: "Ben White", pos_primary: "RB", pos_secondary: "CB" },
+    { full_name: "Kepa Arrizabalaga", pos_primary: "GK" },
+    { full_name: "Gabriel Magalhães", pos_primary: "CB" },
+    { full_name: "Jurriën Timber", pos_primary: "RB", pos_secondary: "CB" },
+    { full_name: "Riccardo Calafiori", pos_primary: "LB", pos_secondary: "CB" },
+    { full_name: "Myles Lewis-Skelly", pos_primary: "LB", pos_secondary: "CM" },
+    { full_name: "Cristhian Mosquera", pos_primary: "CB", pos_secondary: "RB" },
+    { full_name: "Piero Hincapié", pos_primary: "CB", pos_secondary: "LB" },
+    { full_name: "Martín Zubimendi", pos_primary: "CDM", pos_secondary: "CM" },
+    { full_name: "Mikel Merino", pos_primary: "CM", pos_secondary: "CDM" },
+    { full_name: "Eberechi Eze", pos_primary: "CAM", pos_secondary: "LW" },
+    { full_name: "Kai Havertz", pos_primary: "ST", pos_secondary: "CAM" },
+    { full_name: "Viktor Gyökeres", pos_primary: "ST" },
+    { full_name: "Noni Madueke", pos_primary: "RW", pos_secondary: "LW" },
+    { full_name: "Christos Tzolis", pos_primary: "LW", pos_secondary: "RW" },
+    { full_name: "Max Dowman", pos_primary: "CAM", pos_secondary: "RW" },
+    { full_name: "Khari Ranson", pos_primary: "GK" },
+    { full_name: "Ezri Konsa", pos_primary: "CB", pos_secondary: "RB" },
+  ];
+
 export const demoUsers: UserState[] = [
   {
-    id: 1,
+    id: guestUserId,
     auth_user_id: "guest-coach",
     full_name: "Mikel Arteta",
     email: "coach@example.invalid",
   },
-  {
-    id: 2,
-    full_name: "Bukayo Saka",
-    email: "alex@example.invalid",
-    pos_primary: "CM",
-  },
-  {
-    id: 3,
-    full_name: "Martin Ødegaard",
-    email: "jordan@example.invalid",
-    pos_primary: "ST",
-  },
-  {
-    id: 4,
-    full_name: "David Raya",
-    email: "riley@example.invalid",
-    pos_primary: "GK",
-  },
-  {
-    id: 5,
-    full_name: "William Saliba",
-    email: "casey@example.invalid",
-    pos_primary: "CB",
-  },
-  {
-    id: 6,
-    full_name: "Gabriel Martinelli",
-    email: "charlie@example.invalid",
-    pos_primary: "LW",
-  },
-  {
-    id: 7,
-    full_name: "Declan Rice",
-    email: "taylor@example.invalid",
-    pos_primary: "RB",
-  },
-  {
-    id: 8,
-    full_name: "Ben White",
-    email: "jamie@example.invalid",
-    pos_primary: "CAM",
-  },
+  ...squad.map((player, index) => ({
+    ...player,
+    id: index + 2,
+    email: `player${String(index + 1).padStart(2, "0")}@example.invalid`,
+  })),
 ];
 
 export const demoMembers = demoUsers.map((user) => ({
@@ -99,6 +91,95 @@ export const demoWeeks: WeekState[] = [-3, -2, -1, 0, 1, 2, 3].map(
   }),
 );
 
+type DemoEventTemplate = Omit<EventState, "id" | "day_id" | "session_number">;
+
+const session = (
+  event_type: string,
+  start: string,
+  end: string,
+  location: string,
+): DemoEventTemplate => ({
+  event_type,
+  event_start_time: `${start}:00`,
+  event_end_time: `${end}:00`,
+  location,
+});
+
+function sessionsForDay(
+  weekday: number,
+  weekOffset: number,
+): DemoEventTemplate[] {
+  const saturdayMatch = Math.abs(weekOffset) % 2 === 0;
+  const homeMatch = Math.abs(weekOffset) % 3 !== 1;
+  switch (weekday) {
+    case 0:
+      return [
+        session("Recovery", "10:00", "11:00", "Recovery Suite"),
+        session("Video Analysis", "11:30", "12:15", "Analysis Room"),
+      ];
+    case 1:
+      return [
+        session("Training", "10:00", "11:30", "London Colney · Pitch 1"),
+        session("Strength & Conditioning", "12:00", "12:45", "Performance Gym"),
+        session("Whiteboard", "14:00", "14:30", "Tactics Room"),
+      ];
+    case 2:
+      return [
+        session("Whiteboard", "09:30", "10:15", "Tactics Room"),
+        session(
+          "Technical Training",
+          "10:45",
+          "11:45",
+          "London Colney · Pitch 2",
+        ),
+      ];
+    case 3:
+      return [
+        session("Training", "10:00", "11:30", "London Colney · Pitch 1"),
+        session("Opposition Analysis", "14:00", "14:45", "Analysis Room"),
+      ];
+    case 4:
+      return [
+        session(
+          "Match Preparation",
+          "10:30",
+          "11:30",
+          "London Colney · Pitch 1",
+        ),
+        session("Set Pieces", "12:00", "12:30", "London Colney · Pitch 2"),
+      ];
+    case 5:
+      return saturdayMatch
+        ? [
+            session(
+              "Game",
+              "15:00",
+              "17:00",
+              homeMatch ? "Emirates Stadium" : "Away Stadium",
+            ),
+          ]
+        : [
+            session(
+              "Pre-match Activation",
+              "10:00",
+              "10:45",
+              "Performance Gym",
+            ),
+          ];
+    default:
+      return saturdayMatch
+        ? [session("Recovery", "10:30", "11:15", "Recovery Suite")]
+        : [
+            session(
+              "Game",
+              "16:30",
+              "18:30",
+              homeMatch ? "Emirates Stadium" : "Away Stadium",
+            ),
+          ];
+  }
+}
+
 export const demoDays: DayState[] = demoWeeks.flatMap((week, weekIndex) =>
   Array.from({ length: 7 }, (_, dayIndex) => {
     const date = dateAt((weekIndex - 3) * 7 + dayIndex);
@@ -107,87 +188,39 @@ export const demoDays: DayState[] = demoWeeks.flatMap((week, weekIndex) =>
       date: localDate(date),
       week_id: week.id,
       day: date.toLocaleDateString("en-GB", { weekday: "long" }),
-      num_of_sessions: 1,
+      num_of_sessions: sessionsForDay(dayIndex, weekIndex - 3).length,
     };
   }),
 );
 
-type DemoEventTemplate = Omit<EventState, "id" | "day_id" | "session_number">;
-type DemoEvent = Omit<EventState, "id">;
-
-const schedule: DemoEventTemplate[] = [
-  {
-    event_type: "Recovery",
-    event_start_time: "10:00:00",
-    event_end_time: "11:00:00",
-    location: "Training Centre",
-  },
-  {
-    event_type: "Training",
-    event_start_time: "10:30:00",
-    event_end_time: "12:00:00",
-    location: "London Colney",
-  },
-  {
-    event_type: "Training",
-    event_start_time: "15:00:00",
-    event_end_time: "16:30:00",
-    location: "London Colney",
-  },
-  {
-    event_type: "Game",
-    event_start_time: "15:00:00",
-    event_end_time: "17:00:00",
-    location: "Emirates Stadium",
-  },
-  {
-    event_type: "Video Analysis",
-    event_start_time: "11:00:00",
-    event_end_time: "11:45:00",
-    location: "Training Centre",
-  },
-];
-
-const trainingWeekdays = new Set([1, 3, 5]);
-const scheduleByDate = new Map<string, DemoEvent[]>();
-
-demoDays.forEach((day) => {
-  const date = new Date(`${day.date}T12:00:00`);
-  const weekOffset = Math.round(
-    (date.getTime() - dateAt(0).getTime()) / (7 * 24 * 60 * 60 * 1000),
-  );
-  const weekday = (date.getDay() + 6) % 7;
-  if (!trainingWeekdays.has(weekday)) return;
-
-  const matchDay = Math.abs(weekOffset) % 2 === 0 ? 5 : 6;
-  const isMatch = weekday === matchDay;
-  const isRecovery = weekday === 1;
-  const session = isMatch
-    ? schedule[3]
-    : isRecovery
-      ? schedule[0]
-      : schedule[weekday === 3 ? 2 : 1];
-  const sessions = scheduleByDate.get(day.date) ?? [];
-  sessions.push({ ...session, day_id: day.id, session_number: 1 });
-
-  if (isMatch && Math.abs(weekOffset) % 3 === 1) {
-    sessions.push({ ...schedule[4], day_id: day.id, session_number: 2 });
-  }
-  scheduleByDate.set(day.date, sessions);
+export const demoEvents: EventState[] = demoDays.flatMap((day) => {
+  const weekday = day.id % 10;
+  const weekOffset = day.week_id - 4;
+  return sessionsForDay(weekday, weekOffset).map((event, index) => ({
+    ...event,
+    id: day.id * 10 + index + 1,
+    day_id: day.id,
+    session_number: index + 1,
+  }));
 });
 
-export const demoEvents: EventState[] = [...scheduleByDate.values()]
-  .flat()
-  .map((event, index) => ({ id: index + 1, ...event }));
-
 export const demoAttendance: EventAttendanceState[] = demoEvents.flatMap(
-  (event) =>
-    demoUsers.slice(1).map((user, index) => ({
-      id: event.id! * 100 + user.id,
-      event_id: event.id!,
-      user_id: user.id,
-      isAttending:
-        (index + event.id!) % 7 !== 0 &&
-        (event.event_type !== "Game" || index < 5),
-    })),
+  (event) => {
+    const day = demoDays.find((candidate) => candidate.id === event.day_id)!;
+    const isFuture =
+      new Date(`${day.date}T${event.event_start_time}`) > new Date();
+    return demoUsers.slice(1).flatMap((user, index) => {
+      const seed = index + event.id!;
+      // Missing records represent unanswered invitations, especially for future sessions.
+      if (isFuture && seed % 9 === 0) return [];
+      return [
+        {
+          id: event.id! * 100 + user.id,
+          event_id: event.id!,
+          user_id: user.id,
+          isAttending: seed % (event.event_type === "Recovery" ? 5 : 11) !== 0,
+        },
+      ];
+    });
+  },
 );

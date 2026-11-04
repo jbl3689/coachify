@@ -11,7 +11,7 @@ export default {
   prefix: "",
   theme: {
     fontFamily: {
-      sans: "Kanit, ui-sans-serif",
+      sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
     },
     container: {
       center: true,

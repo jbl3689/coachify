@@ -22,7 +22,7 @@ export const Calendar = () => {
   } = useLoadCalendar({ eventDetailsRef });
 
   return (
-    <div className="min-w-0 p-2 sm:p-4">
+    <div className="min-w-0">
       {isPending ? (
         <Loader />
       ) : (
@@ -43,10 +43,7 @@ export const Calendar = () => {
         </>
       )}
 
-      <div
-        className="mx-auto w-full max-w-2xl px-0 py-3 transition-all sm:px-4"
-        ref={eventDetailsRef}
-      >
+      <div className="mx-auto mt-3 w-full max-w-5xl py-3" ref={eventDetailsRef}>
         {selectedDay && selectedEvent ? (
           <EventDetails
             selectedDay={selectedDay}

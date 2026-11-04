@@ -1,7 +1,8 @@
 # Status
 
-- 2026-10-08: Responsive layout fixes and coach dashboard redesign are on `fix/mobile-responsive-layout`.
-- Browser checked at 390, 800, and 1440 px with the local guest demo; no horizontal page overflow observed. The coach view now puts upcoming events beside the roster on desktop and stacks them on mobile.
-- Latest production build and changed-file lint pass; ESLint reports one existing unused-parameter warning in the table column callback. Full lint previously reported existing issues elsewhere in the repository.
-- PR #7 remains open and unmerged. James approved adding the dashboard redesign to the PR and asked to skip the learning review. Do not merge without separate approval.
-- Added the selected team's name and location to the coach dashboard identity panel, alongside player and coach totals. Replaced the guest demo's misleading Coachify logo/sample squad label with an Arsenal FC monogram, consistent with the existing demo roster.
+- 2026-11-04: Selected calendar events now page through attendees six at a time, with visible ranges and a reset to page one for each event.
+- 2026-11-04: Local styling refresh covers navigation, login, tables, calendar and event details. Dashboard now includes scheduled weekly minutes, the next session, roster and upcoming schedule.
+- Guest demo has the local Arsenal crest, 24 players, 91 sessions across seven weeks, and varied attendance responses. All contacts, sessions and responses are fictional; guest access stays local and read only.
+- Production build passes; changed-file lint has no errors. Repository lint reports 383 existing errors and 23 warnings. No tests run, as instructed.
+- Browser checked guest dashboard, dense calendar, selection, attendance and roster pagination on desktop/mobile in light/dark themes; no horizontal overflow observed at 390 and 1440 px.
+- Prepared for a new PR on `feat/modern-ui-and-demo` at James’s request. Earlier PR #7 is merged. Do not merge this work without separate approval.

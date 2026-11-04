@@ -25,8 +25,11 @@ import { publicSignupEnabled } from "@/config/features";
 function PublicNavbar() {
   const currentUrl = useLocation().pathname;
   return (
-    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 font-semibold transition-all sm:px-6">
-      <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
+    <header className="flex shrink-0 items-center justify-between gap-3 border-b bg-card px-4 py-4 sm:px-8">
+      <Link
+        to="/"
+        className="shrink-0 text-2xl font-semibold tracking-tight text-foreground"
+      >
         Coachify
       </Link>
       <FlexBox container gap="24px" alignItems="center">
@@ -65,10 +68,13 @@ function SignedInNavbar() {
 
   const isLoadingData = isLoading || isFetching || isPending;
   return (
-    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 font-semibold transition-all sm:px-6">
+    <header className="flex shrink-0 items-center justify-between gap-3 border-b bg-card px-4 py-4 sm:px-8">
       {isLoadingData ? (
         <>
-          <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
+          <Link
+            to="/"
+            className="shrink-0 text-2xl font-semibold tracking-tight text-foreground"
+          >
             Coachify
           </Link>
           <div className="flex items-center gap-4">
@@ -78,7 +84,10 @@ function SignedInNavbar() {
         </>
       ) : (
         <>
-          <Link to="/" className="shrink-0 text-3xl text-primary sm:text-4xl">
+          <Link
+            to="/"
+            className="shrink-0 text-2xl font-semibold tracking-tight text-foreground"
+          >
             Coachify
           </Link>
           <FlexBox
@@ -96,7 +105,7 @@ function SignedInNavbar() {
                   Guest demo
                 </span>
                 <button
-                  className="whitespace-nowrap text-sm text-primary hover:text-primaryLight sm:text-base"
+                  className="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   onClick={() => logout()}
                 >
                   Exit demo
